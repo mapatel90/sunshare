@@ -7,27 +7,27 @@ const MegaMenuApplicationsTab = () => {
             <div className="row g-4">
                 <div className="col-lg-6">
                     <h6 className="dropdown-item-title">Applications</h6>
-                    <Link href="/applications/chat" className="dropdown-item">
+                    <Link href="/admin/applications/chat" className="dropdown-item">
                         <i className="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
                         <span>Chat</span>
                     </Link>
-                    <Link href="/applications/email" className="dropdown-item">
+                    <Link href="/admin/applications/email" className="dropdown-item">
                         <i className="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
                         <span>Email</span>
                     </Link>
-                    <Link href="/applications/tasks" className="dropdown-item">
+                    <Link href="/admin/applications/tasks" className="dropdown-item">
                         <i className="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
                         <span>Tasks</span>
                     </Link>
-                    <Link href="/applications/notes" className="dropdown-item">
+                    <Link href="/admin/applications/notes" className="dropdown-item">
                         <i className="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
                         <span>Notes</span>
                     </Link>
-                    <Link href="/applications/storage" className="dropdown-item">
+                    <Link href="/admin/applications/storage" className="dropdown-item">
                         <i className="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
                         <span>Storage</span>
                     </Link>
-                    <Link href="/applications/calendar" className="dropdown-item">
+                    <Link href="/admin/applications/calendar" className="dropdown-item">
                         <i className="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
                         <span>Calendar</span>
                     </Link>

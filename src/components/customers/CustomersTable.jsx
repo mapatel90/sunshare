@@ -148,7 +148,7 @@ const CustomersTable = () => {
             header: () => "Actions",
             cell: info => (
                 <div className="hstack gap-2 justify-content-end">
-                    <Link href="/customers/view" className="avatar-text avatar-md">
+                    <Link href="/admin/customers/view" className="avatar-text avatar-md">
                         <FiEye />
                     </Link>
                     <Dropdown dropdownItems={actions} triggerClass='avatar-md' triggerPosition={"0,21"} triggerIcon={<FiMoreHorizontal />} />

@@ -47,7 +47,7 @@ const ProposalHeadr = () => {
                     iconStrokeWidth={0}
                     isAvatar={false}
                 />
-                <Link href="/proposal/create" className="btn btn-primary">
+                <Link href="/admin/proposal/create" className="btn btn-primary">
                     <FiPlus size={16} className='me-2' />
                     <span>New Proposal</span>
                 </Link>

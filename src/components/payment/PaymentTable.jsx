@@ -110,7 +110,7 @@ const PaymentTable = () => {
       header: () => "Actions",
       cell: info => (
         <div className="hstack gap-2 justify-content-end">
-          <Link href="/payment/view" className="avatar-text avatar-md">
+          <Link href="/admin/payment/view" className="avatar-text avatar-md">
             <FiEye />
           </Link>
           <Dropdown dropdownItems={actions} triggerIcon={<FiMoreHorizontal />} triggerClass='avatar-md' triggerPosition={"0,21"} />

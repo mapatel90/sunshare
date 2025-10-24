@@ -55,7 +55,7 @@ const ProposalViewTab = () => {
                                 </a>
                             </div>
                             <div className="d-md-none d-lg-flex">
-                                <a href="/proposal/edit" className="action-btn" data-toggle="tooltip" data-title="Edit Proposal">
+                                <a href="/admin/proposal/edit" className="action-btn" data-toggle="tooltip" data-title="Edit Proposal">
                                     <FiEdit size={16} />
                                 </a>
                             </div>

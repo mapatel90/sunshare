@@ -115,7 +115,7 @@ const ProposalTable = () => {
           <a href="#" className="avatar-text avatar-md" data-bs-toggle="offcanvas" data-bs-target="#proposalSent">
             <FiSend />
           </a>
-          <Link href="/proposal/view" className="avatar-text avatar-md">
+          <Link href="/admin/proposal/view" className="avatar-text avatar-md">
             <FiEye />
           </Link>
           <Dropdown dropdownItems={actions} triggerIcon={<FiMoreHorizontal />} triggerClass='avatar-md' triggerPosition={"0,21"} />
