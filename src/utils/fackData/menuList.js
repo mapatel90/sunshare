@@ -5,12 +5,12 @@ export const menuList = [
         path: "#",
         icon: 'feather-airplay',
         dropdownMenu: [
-            {
-                id: 1,
-                name: "CRM",
-                path: "/",
-                subdropdownMenu: false
-            },
+            // {
+            //     id: 1,
+            //     name: "CRM",
+            //     path: "/",
+            //     subdropdownMenu: false
+            // },
             {
                 id: 2,
                 name: "Analytics",
@@ -19,116 +19,116 @@ export const menuList = [
             }
         ]
     },
-    {
-        id: 1,
-        name: "reports",
-        path: "#",
-        icon: 'feather-cast',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Sales Report",
-                path: "/reports/sales",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Leads Report",
-                path: "/reports/leads",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Project Report",
-                path: "/reports/project",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Timesheets Report",
-                path: "/reports/timesheets",
-                subdropdownMenu: false
-            },
+    // {
+    //     id: 1,
+    //     name: "reports",
+    //     path: "#",
+    //     icon: 'feather-cast',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Sales Report",
+    //             path: "/reports/sales",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Leads Report",
+    //             path: "/reports/leads",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Project Report",
+    //             path: "/reports/project",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 4,
+    //             name: "Timesheets Report",
+    //             path: "/reports/timesheets",
+    //             subdropdownMenu: false
+    //         },
 
-        ]
-    },
-    {
-        id: 2,
-        name: "applications",
-        path: '#',
-        icon: 'feather-send',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Chat",
-                path: "/applications/chat",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Email",
-                path: "/applications/email",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Tasks",
-                path: "/applications/tasks",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Notes",
-                path: "/applications/notes",
-                subdropdownMenu: false
-            },
-            {
-                id: 5,
-                name: "Storage",
-                path: "/applications/storage",
-                subdropdownMenu: false
-            },
-            {
-                id: 6,
-                name: "Calendar",
-                path: "/applications/calendar",
-                subdropdownMenu: false
-            },
-        ]
-    },
-    {
-        id: 3,
-        name: "proposal",
-        path: "#",
-        icon: 'feather-at-sign',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Proposal",
-                path: "/proposal/list",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Proposal View",
-                path: "/proposal/view",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Proposal Edit",
-                path: "/proposal/edit",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Proposal Create",
-                path: "/proposal/create",
-                subdropdownMenu: false
-            },
+    //     ]
+    // },
+    // {
+    //     id: 2,
+    //     name: "applications",
+    //     path: '#',
+    //     icon: 'feather-send',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Chat",
+    //             path: "/applications/chat",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Email",
+    //             path: "/applications/email",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Tasks",
+    //             path: "/applications/tasks",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 4,
+    //             name: "Notes",
+    //             path: "/applications/notes",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 5,
+    //             name: "Storage",
+    //             path: "/applications/storage",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 6,
+    //             name: "Calendar",
+    //             path: "/applications/calendar",
+    //             subdropdownMenu: false
+    //         },
+    //     ]
+    // },
+    // {
+    //     id: 3,
+    //     name: "proposal",
+    //     path: "#",
+    //     icon: 'feather-at-sign',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Proposal",
+    //             path: "/proposal/list",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Proposal View",
+    //             path: "/proposal/view",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Proposal Edit",
+    //             path: "/proposal/edit",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 4,
+    //             name: "Proposal Create",
+    //             path: "/proposal/create",
+    //             subdropdownMenu: false
+    //         },
 
-        ],
-    },
+    //     ],
+    // },
     {
         id: 4,
         name: "payment",
@@ -181,32 +181,32 @@ export const menuList = [
             }
         ]
     },
-    {
-        id: 6,
-        name: "leads",
-        path: "#",
-        icon: 'feather-alert-circle',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Leads",
-                path: "/leads/list",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Leads View",
-                path: "/leads/view",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Leads Create",
-                path: "/leads/create",
-                subdropdownMenu: false
-            }
-        ]
-    },
+    // {
+    //     id: 6,
+    //     name: "leads",
+    //     path: "#",
+    //     icon: 'feather-alert-circle',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Leads",
+    //             path: "/leads/list",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Leads View",
+    //             path: "/leads/view",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Leads Create",
+    //             path: "/leads/create",
+    //             subdropdownMenu: false
+    //         }
+    //     ]
+    // },
     {
         id: 7,
         name: "projects",
@@ -233,44 +233,44 @@ export const menuList = [
             }
         ]
     },
-    {
-        id: 8,
-        name: "widgets",
-        path: "#",
-        icon: 'feather-layout',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Lists",
-                path: "/widgets/lists",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Tables",
-                path: "/widgets/tables",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Charts",
-                path: "/widgets/charts",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Statistics",
-                path: "/widgets/statistics",
-                subdropdownMenu: false
-            },
-            {
-                id: 5,
-                name: "Miscellaneous",
-                path: "/widgets/miscellaneous",
-                subdropdownMenu: false
-            },
-        ]
-    },
+    // {
+    //     id: 8,
+    //     name: "widgets",
+    //     path: "#",
+    //     icon: 'feather-layout',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Lists",
+    //             path: "/widgets/lists",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Tables",
+    //             path: "/widgets/tables",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Charts",
+    //             path: "/widgets/charts",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 4,
+    //             name: "Statistics",
+    //             path: "/widgets/statistics",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 5,
+    //             name: "Miscellaneous",
+    //             path: "/widgets/miscellaneous",
+    //             subdropdownMenu: false
+    //         },
+    //     ]
+    // },
     {
         id: 9,
         name: "settings",
@@ -497,33 +497,33 @@ export const menuList = [
             },
         ]
     },
-    {
-        id: 11,
-        name: "help center",
-        path: "#",
-        icon: 'feather-life-buoy',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Support",
-                path: "https://wrapbootstrap.com/user/theme_ocean",
-                target:"_blank",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "KnowledgeBase",
-                path: "/help/knowledgebase",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Documentations",
-                path: "https://duralux-next-doc.vercel.app/",
-                target:"_blank",
-                subdropdownMenu: false
-            }
-        ]
-    },
+    // {
+    //     id: 11,
+    //     name: "help center",
+    //     path: "#",
+    //     icon: 'feather-life-buoy',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Support",
+    //             path: "https://wrapbootstrap.com/user/theme_ocean",
+    //             target:"_blank",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "KnowledgeBase",
+    //             path: "/help/knowledgebase",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Documentations",
+    //             path: "https://duralux-next-doc.vercel.app/",
+    //             target:"_blank",
+    //             subdropdownMenu: false
+    //         }
+    //     ]
+    // },
     
 ]
