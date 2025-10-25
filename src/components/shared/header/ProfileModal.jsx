@@ -1,10 +1,19 @@
+'use client'
+
 import Image from 'next/image'
 import React, { Fragment } from 'react'
 import { FiActivity, FiBell, FiChevronRight, FiDollarSign, FiLogOut, FiSettings, FiUser } from "react-icons/fi"
+import { useAuth } from '@/contexts/AuthContext'
 
 const activePosition = ["Active", "Always", "Bussy", "Inactive", "Disabled", "Cutomization"]
 const subscriptionsList = ["Plan", "Billings", "Referrals", "Payments", "Statements", "Subscriptions"]
 const ProfileModal = () => {
+    const { user, logout } = useAuth()
+    console.log("user",user);   
+    const handleLogout = (e) => {
+        e.preventDefault()
+        logout()
+    }
     return (
         <div className="dropdown nxl-h-item">
             <a href="#" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
@@ -13,10 +22,10 @@ const ProfileModal = () => {
             <div className="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown">
                 <div className="dropdown-header">
                     <div className="d-flex align-items-center">
-                        <Image width={40} height={40} src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar" />
+                        <Image width={40} height={40} src={user?.avatar || "/images/avatar/1.png"} alt="user-image" className="img-fluid user-avtar" />
                         <div>
-                            <h6 className="text-dark mb-0">Alexandra Della <span className="badge bg-soft-success text-success ms-1">PRO</span></h6>
-                            <span className="fs-12 fw-medium text-muted">alex.della@outlook.com</span>
+                            <h6 className="text-dark mb-0">{user?.name || 'User'} <span className="badge bg-soft-success text-success ms-1">{user?.userRole?.toUpperCase() || 'USER'}</span></h6>
+                            <span className="fs-12 fw-medium text-muted">{user?.email || 'user@example.com'}</span>
                         </div>
                     </div>
                 </div>
@@ -96,7 +105,7 @@ const ProfileModal = () => {
                     <span>Account Settings</span>
                 </a>
                 <div className="dropdown-divider"></div>
-                <a href="./auth-login-minimal.html" className="dropdown-item">
+                <a href="#" className="dropdown-item" onClick={handleLogout}>
                     <i> <FiLogOut /></i>
                     <span>Logout</span>
                 </a>

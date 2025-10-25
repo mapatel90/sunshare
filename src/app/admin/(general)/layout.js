@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/shared/header/Header";
 import NavigationManu from "@/components/shared/navigationMenu/NavigationMenu";
 import SupportDetails from "@/components/supportDetails";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import dynamic from "next/dynamic";
 import useBootstrapUtils from "@/hooks/useBootstrapUtils";
 
@@ -13,7 +14,7 @@ const layout = ({ children }) => {
     useBootstrapUtils(pathName)
 
     return (
-        <>
+        <ProtectedRoute>
             <Header />
             <NavigationManu />
             <main className="nxl-container">
@@ -22,7 +23,7 @@ const layout = ({ children }) => {
                 </div>
             </main>
             <SupportDetails />
-        </>
+        </ProtectedRoute>
     )
 }
 

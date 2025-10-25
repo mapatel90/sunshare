@@ -14,7 +14,7 @@ router.post('/register', async (req, res) => {
       email,
       password,
       phoneNumber,
-      userRole = 'user',
+      userRole = 3, // Default to role 3 (user) as per schema
       address1,
       address2,
       city,
@@ -94,6 +94,18 @@ router.post('/register', async (req, res) => {
 // Login user
 router.post('/login', async (req, res) => {
   try {
+    // Debug logging
+    console.log('Request headers:', req.headers);
+    console.log('Request body:', req.body);
+    
+    // Check if body exists
+    if (!req.body) {
+      return res.status(400).json({
+        success: false,
+        message: 'Request body is required'
+      });
+    }
+    
     const { email, password } = req.body;
 
     // Validate input

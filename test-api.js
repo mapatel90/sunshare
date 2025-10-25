@@ -16,6 +16,7 @@ async function testAPI() {
 
     // Test login
     console.log('\n2️⃣ Testing login...');
+    // console.log(`${baseURL}/api/auth/login`);
     const loginResponse = await fetch(`${baseURL}/api/auth/login`, {
       method: 'POST',
       headers: {

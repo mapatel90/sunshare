@@ -66,6 +66,9 @@ NODE_ENV=development
 
 ### 3. Database Setup
 ```bash
+# Run Prisma Migration 
+npx prisma migrate dev --name init
+
 # Generate Prisma client
 npm run prisma:generate
 
