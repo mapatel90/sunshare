@@ -29,7 +29,7 @@ const ProfileModal = () => {
                         </div>
                     </div>
                 </div>
-                <div className="dropdown">
+                {/* <div className="dropdown">
                     <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
                         <span className="hstack">
                             <i className="wd-10 ht-10 border border-2 border-gray-1 bg-success rounded-circle me-2"></i>
@@ -54,9 +54,9 @@ const ProfileModal = () => {
                             })
                         }
                     </div>
-                </div>
-                <div className="dropdown-divider"></div>
-                <div className="dropdown">
+                </div> */}
+                {/* <div className="dropdown-divider"></div> */}
+                {/* <div className="dropdown">
                     <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
                         <span className="hstack">
                             <i className=" me-2"><FiDollarSign /></i>
@@ -82,17 +82,17 @@ const ProfileModal = () => {
                         }
 
                     </div>
-                </div>
-                <div className="dropdown-divider"></div>
+                </div> */}
+                {/* <div className="dropdown-divider"></div> */}
                 <a href="#" className="dropdown-item">
                     <i ><FiUser /></i>
                     <span>Profile Details</span>
                 </a>
-                <a href="#" className="dropdown-item">
+                {/* <a href="#" className="dropdown-item">
                     <i ><FiActivity /></i>
                     <span>Activity Feed</span>
-                </a>
-                <a href="#" className="dropdown-item">
+                </a> */}
+                {/* <a href="#" className="dropdown-item">
                     <i ><FiDollarSign /></i>
                     <span>Billing Details</span>
                 </a>
@@ -103,7 +103,7 @@ const ProfileModal = () => {
                 <a href="#" className="dropdown-item">
                     <i><FiSettings /></i>
                     <span>Account Settings</span>
-                </a>
+                </a> */}
                 <div className="dropdown-divider"></div>
                 <a href="#" className="dropdown-item" onClick={handleLogout}>
                     <i> <FiLogOut /></i>

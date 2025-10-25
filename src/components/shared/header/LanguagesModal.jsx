@@ -15,11 +15,11 @@ const LanguagesModal = () => {
           <div className="select-language px-4 py-2 hstack justify-content-between gap-4">
             <div className="lh-lg">
               <h6 className="mb-0">Select Language</h6>
-              <p className="fs-11 text-muted mb-0">12 languages avaiable!</p>
+              <p className="fs-11 text-muted mb-0">languages available</p>
             </div>
-            <span className="avatar-text avatar-md" data-toggle="tooltip" data-title="Add Language">
+            {/* <span className="avatar-text avatar-md" data-toggle="tooltip" data-title="Add Language">
               <FiPlus />
-            </span>
+            </span> */}
           </div>
           <div className="dropdown-divider"></div>
           <div className="row px-4 pt-3">

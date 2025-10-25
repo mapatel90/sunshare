@@ -174,26 +174,26 @@ const Header = () => {
                             </a>
                         </div>
                         {/* <!--! [Start] nxl-lavel-mega-menu-wrapper !--> */}
-                        <div className="nxl-lavel-mega-menu-wrapper d-flex gap-3">
+                        {/* <div className="nxl-lavel-mega-menu-wrapper d-flex gap-3">
                             <HeaderDropDownModal />
                             <MegaMenu />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 {/* <!--! [End] Header Left !-->
                 <!--! [Start] Header Right !--> */}
                 <div className="header-right ms-auto">
                     <div className="d-flex align-items-center">
-                        <SearchModal />
+                        {/* <SearchModal /> */}
                         <LanguagesModal />
-                        <div className="nxl-h-item d-none d-sm-flex" >
+                        {/* <div className="nxl-h-item d-none d-sm-flex" >
                             <div className="full-screen-switcher">
                                 <span className="nxl-head-link me-0">
                                     <FiMaximize size={20} className="maximize" onClick={fullScreenMaximize} />
                                     <FiMinimize size={20} className="minimize" onClick={fullScreenMinimize} />
                                 </span>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="nxl-h-item dark-light-theme">
                             <div className="nxl-head-link me-0 dark-button" onClick={() => handleThemeMode("dark")}>
                                 <FiMoon size={20} />
@@ -202,7 +202,7 @@ const Header = () => {
                                 <FiSun size={20} />
                             </div>
                         </div>
-                        <TimesheetsModal />
+                        {/* <TimesheetsModal /> */}
                         <NotificationsModal />
                         <ProfileModal />
                     </div>
