@@ -29,9 +29,9 @@ const LoginForm = ({ registerPath, resetPath }) => {
     return (
         <>
             <h2 className="fs-20 fw-bolder mb-4">Login</h2>
-            <h4 className="fs-13 fw-bold mb-2">Login to your account</h4>
+            {/* <h4 className="fs-13 fw-bold mb-2">Login to your account</h4>
             <p className="fs-12 fw-medium text-muted">Thank you for get back <strong>Sunshare</strong> web applications, let's access our the best recommendation for you.</p>
-            
+             */}
             {error && (
                 <div className="alert alert-danger" role="alert">
                     {error}
