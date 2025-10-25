@@ -7,9 +7,11 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { FiSunrise } from "react-icons/fi";
 import Menus from './Menus';
 import { NavigationContext } from '@/contentApi/navigationProvider';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const NavigationManu = () => {
     const { navigationOpen, setNavigationOpen } = useContext(NavigationContext)
+    const { t } = useLanguage()
     const pathName = usePathname()
     useEffect(() => {
         setNavigationOpen(false)
@@ -29,7 +31,7 @@ const NavigationManu = () => {
                     <PerfectScrollbar>
                         <ul className="nxl-navbar">
                             <li className="nxl-item nxl-caption">
-                                <label>Navigation</label>
+                                <label>{t('navigation.navigation', 'Navigation')}</label>
                             </li>
                             <Menus />
                         </ul>

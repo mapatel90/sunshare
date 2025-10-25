@@ -7,13 +7,13 @@ export const menuList = [
         dropdownMenu: [
             // {
             //     id: 1,
-            //     name: "CRM",
+            //     name: "crm",
             //     path: "/",
             //     subdropdownMenu: false
             // },
             {
                 id: 2,
-                name: "Analytics",
+                name: "analytics",
                 path: "/admin/dashboards/analytics",
                 subdropdownMenu: false
             }
@@ -137,19 +137,19 @@ export const menuList = [
         dropdownMenu: [
             {
                 id: 1,
-                name: "Payment",
+                name: "payment",
                 path: "/admin/payment/list",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: "Invoice View",
+                name: "invoiceview",
                 path: "/admin/payment/view",
                 subdropdownMenu: false
             },
             {
                 id: 4,
-                name: "Invoice Create",
+                name: "invoicecreate",
                 path: "/admin/payment/create",
                 subdropdownMenu: false
             }
@@ -163,19 +163,19 @@ export const menuList = [
         dropdownMenu: [
             {
                 id: 1,
-                name: "Customers",
+                name: "customers",
                 path: "/admin/customers/list",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: "Customers View",
+                name: "customersview",
                 path: "/admin/customers/view",
                 subdropdownMenu: false
             },
             {
                 id: 3,
-                name: "Customers Create",
+                name: "customerscreate",
                 path: "/admin/customers/create",
                 subdropdownMenu: false
             }
@@ -215,19 +215,19 @@ export const menuList = [
         dropdownMenu: [
             {
                 id: 1,
-                name: "Projects",
+                name: "projects",
                 path: "/admin/projects/list",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: "Projects View",
+                name: "projectsview",
                 path: "/admin/projects/view",
                 subdropdownMenu: false
             },
             {
                 id: 3,
-                name: "Projects Create",
+                name: "projectscreate",
                 path: "/admin/projects/create",
                 subdropdownMenu: false
             }
@@ -279,85 +279,85 @@ export const menuList = [
         dropdownMenu: [
             {
                 id: 1,
-                name: "Ganeral",
+                name: "general",
                 path: "/admin/settings/ganeral",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: "SEO",
+                name: "seo",
                 path: "/admin/settings/seo",
                 subdropdownMenu: false
             },
             {
                 id: 3,
-                name: "Tags",
+                name: "tags",
                 path: "/admin/settings/tags",
                 subdropdownMenu: false
             },
             {
                 id: 4,
-                name: "Email",
+                name: "email",
                 path: "/admin/settings/email",
                 subdropdownMenu: false
             },
             {
                 id: 5,
-                name: "Tasks",
+                name: "tasks",
                 path: "/admin/settings/tasks",
                 subdropdownMenu: false
             },
             {
                 id: 6,
-                name: "Leads",
+                name: "leads",
                 path: "/admin/settings/leads",
                 subdropdownMenu: false
             },
             {
                 id: 7,
-                name: "Support",
+                name: "support",
                 path: "/admin/settings/support",
                 subdropdownMenu: false
             },
             {
                 id: 8,
-                name: "Finance",
+                name: "finance",
                 path: "/admin/settings/finance",
                 subdropdownMenu: false
             },
             {
                 id: 9,
-                name: "Gateways",
+                name: "gateways",
                 path: "/admin/settings/gateways",
                 subdropdownMenu: false
             },
             {
                 id: 10,
-                name: "Customers",
+                name: "customers",
                 path: "/admin/settings/customers",
                 subdropdownMenu: false
             },
             {
                 id: 11,
-                name: "Localization",
+                name: "localization",
                 path: "/admin/settings/localization",
                 subdropdownMenu: false
             },
             {
                 id: 12,
-                name: "reCAPTCHA",
+                name: "recaptcha",
                 path: "/admin/settings/recaptcha",
                 subdropdownMenu: false
             },
             {
                 id: 13,
-                name: "Miscellaneous",
+                name: "miscellaneous",
                 path: "/admin/settings/miscellaneous",
                 subdropdownMenu: false
             },
             {
                 id: 14,
-                name: "Roles Management",
+                name: "rolesmanagement",
                 path: "/admin/settings/role",
                 subdropdownMenu: false
             }
