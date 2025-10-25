@@ -8,10 +8,9 @@ async function main() {
 
   // Create default roles
   const roles = [
-    { name: 'admin', status: 1 },
-    { name: 'manager', status: 1 },
-    { name: 'user', status: 1 },
-    { name: 'customer', status: 1 }
+    { id: 1, name: 'superadmin', status: 1 },
+    { id: 2, name: 'staffadmin', status: 1 },
+    { id: 3, name: 'Offtaker', status: 1 },
   ];
 
   console.log('📝 Creating roles...');
@@ -36,7 +35,7 @@ async function main() {
       lastName: 'Administrator',
       email: 'admin@sunshare.com',
       password: adminPassword,
-      userRole: 'admin',
+      userRole: 1,
       phoneNumber: '+1234567890',
       status: 1 // Active
     }
@@ -49,22 +48,8 @@ async function main() {
       firstName: 'John',
       lastName: 'Manager',
       email: 'manager@sunshare.com',
-      userRole: 'manager',
+      userRole: 2,
       phoneNumber: '+1234567891'
-    },
-    {
-      firstName: 'Jane',
-      lastName: 'User',
-      email: 'user@sunshare.com',
-      userRole: 'user',
-      phoneNumber: '+1234567892'
-    },
-    {
-      firstName: 'Bob',
-      lastName: 'Customer',
-      email: 'customer@sunshare.com',
-      userRole: 'customer',
-      phoneNumber: '+1234567893'
     }
   ];
 
