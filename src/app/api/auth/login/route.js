@@ -39,7 +39,7 @@ export async function POST(request) {
     const user = result.rows[0];
 
     // Check if user is active
-    if (user.status !== 'active') {
+    if (user.status !== 1) {
       return NextResponse.json({
         success: false,
         message: 'Account is not active. Please contact administrator.'

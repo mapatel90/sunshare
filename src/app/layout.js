@@ -6,22 +6,25 @@ import "react-datetime/css/react-datetime.css";
 import NavigationProvider from "@/contentApi/navigationProvider";
 import SettingSideBarProvider from "@/contentApi/settingSideBarProvider";
 import ThemeCustomizer from "@/components/shared/ThemeCustomizer";
+import AuthProvider from "@/contexts/AuthContext";
 
 export const metadata = {
-  title: "Duralux | Dashboard",
-  description: "Duralux is a admin Dashboard create for multipurpose,",
+  title: "Sunshare | Dashboard",
+  description: "Sunshare is a admin Dashboard create for multipurpose,",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <SettingSideBarProvider>
-          <NavigationProvider>
-            {children}
-          </NavigationProvider>
-        </SettingSideBarProvider>
-        <ThemeCustomizer />
+        <AuthProvider>
+          <SettingSideBarProvider>
+            <NavigationProvider>
+              {children}
+            </NavigationProvider>
+          </SettingSideBarProvider>
+          <ThemeCustomizer />
+        </AuthProvider>
       </body>
     </html>
   );
