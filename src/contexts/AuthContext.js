@@ -7,6 +7,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { apiGet, apiPost } from '@/lib/api'
 
 const AuthContext = createContext({})
 
@@ -39,36 +40,26 @@ export default function AuthProvider({ children }) {
         return
       }
 
-      // Verify token by calling your backend server
-      const response = await fetch(`${BACKEND_URL}/api/auth/me`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
+      // Verify token by calling your backend server using API helper
+      const data = await apiGet('/api/auth/me')
 
-      if (response.ok) {
-        const data = await response.json()
-        
-        // Transform user data to match frontend expectations
-        const transformedUser = {
-          id: data.data.id,
-          name: `${data.data.firstName} ${data.data.lastName}`,
-          email: data.data.email,
-          phone: data.data.phoneNumber,
-          role: data.data.userRole,
-          status: data.data.status === 1 ? 'active' : 'inactive',
-          avatar: data.data.avatar || null
-        }
-        
-        setUser(transformedUser)
-      } else {
-        // Token invalid, remove it
-        localStorage.removeItem('accessToken')
-        document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+      // Transform user data to match frontend expectations
+      const transformedUser = {
+        id: data.data.id,
+        name: `${data.data.firstName} ${data.data.lastName}`,
+        email: data.data.email,
+        phone: data.data.phoneNumber,
+        role: data.data.userRole,
+        status: data.data.status === 1 ? 'active' : 'inactive',
+        avatar: data.data.avatar || null
       }
+
+      setUser(transformedUser)
     } catch (error) {
       console.error('Auth check error:', error)
+      // Token invalid, remove it
       localStorage.removeItem('accessToken')
+      document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     } finally {
       setLoading(false)
     }
@@ -77,30 +68,27 @@ export default function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       console.log('🔄 Attempting login for:', email)
-      
-      // Use your backend server from environment variable
-      const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      })
 
-      const data = await response.json()
+      // Use API helper for login (without auth token)
+      const data = await apiPost(
+        '/api/auth/login',
+        { email, password },
+        { includeAuth: false }
+      )
+
       console.log('📡 Login API response:', data)
 
       if (data.success) {
         // Backend returns user with firstName, lastName structure
         const userName = `${data.data.user.firstName} ${data.data.user.lastName}`
         console.log('✅ Login successful for user:', userName)
-        
+
         // Store token (backend returns 'token', not 'accessToken')
         localStorage.setItem('accessToken', data.data.token)
-        
+
         // Set cookie for middleware
         document.cookie = `accessToken=${data.data.token}; path=/; max-age=86400` // 24 hours
-        
+
         // Transform user data to match frontend expectations
         const transformedUser = {
           id: data.data.user.id,
@@ -111,13 +99,13 @@ export default function AuthProvider({ children }) {
           status: data.data.user.status === 1 ? 'active' : 'inactive',
           avatar: data.data.user.avatar || null
         }
-        
+
         // Set user
         setUser(transformedUser)
-        
+
         // Redirect to dashboard
         router.push('/admin/dashboards/analytics')
-        
+
         return { success: true, message: data.message }
       } else {
         console.log('❌ Login failed:', data.message)
@@ -125,7 +113,10 @@ export default function AuthProvider({ children }) {
       }
     } catch (error) {
       console.error('❌ Login error:', error)
-      return { success: false, message: `Network error. Please check your backend server is running at ${BACKEND_URL}` }
+      return {
+        success: false,
+        message: error.message || `Network error. Please check your backend server is running at ${BACKEND_URL}`
+      }
     }
   }
 
