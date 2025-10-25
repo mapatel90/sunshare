@@ -316,7 +316,7 @@ export const menuList = [
             {
                 id: 7,
                 name: "Support",
-                path: "/admin/settings/Support",
+                path: "/admin/settings/support",
                 subdropdownMenu: false
             },
             {
@@ -355,6 +355,12 @@ export const menuList = [
                 path: "/admin/settings/miscellaneous",
                 subdropdownMenu: false
             },
+            {
+                id: 14,
+                name: "Roles Management",
+                path: "/admin/settings/role",
+                subdropdownMenu: false
+            }
         ]
     },
     // {
@@ -525,5 +531,4 @@ export const menuList = [
     //         }
     //     ]
     // },
-    
 ]
