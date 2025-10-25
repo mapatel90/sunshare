@@ -27,7 +27,7 @@ const PaymentHeader = () => {
                     iconStrokeWidth={0}
                     isAvatar={false}
                 />
-                <Link href="/payment/create" className="btn btn-primary">
+                <Link href="/admin/payment/create" className="btn btn-primary">
                     <FiPlus size={16} className='me-2' />
                     <span>Create Invoice</span>
                 </Link>

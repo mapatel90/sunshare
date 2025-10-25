@@ -56,7 +56,7 @@ const ProjectViewHeader = () => {
                     }
                 </div>
             </div>
-            <Link href="/projects/create" className="btn btn-primary">
+            <Link href="/admin/projects/create" className="btn btn-primary">
                 <FiPlus size={16} className='me-2' />
                 <span>Create Project</span>
             </Link>

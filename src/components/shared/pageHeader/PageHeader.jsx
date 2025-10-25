@@ -13,8 +13,15 @@ const PageHeader = ({ children }) => {
         folderName = "Dashboard"
         fileName = "Dashboard"
     } else {
-        folderName = pathName.split("/")[1]
-        fileName = pathName.split("/")[2]
+        const pathParts = pathName.split("/")
+        // Check if path starts with /admin
+        if (pathParts[1] === "admin") {
+            folderName = pathParts[2] || "Dashboard"
+            fileName = pathParts[3] || ""
+        } else {
+            folderName = pathParts[1]
+            fileName = pathParts[2]
+        }
     }
     return (
         <div className="page-header">

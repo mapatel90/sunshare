@@ -33,10 +33,18 @@ const Menus = () => {
     useEffect(() => {
         if (pathName !== "/") {
             const x = pathName.split("/");
-            setActiveParent(x[1]);
-            setActiveChild(x[2]);
-            setOpenDropdown(x[1]);
-            setOpenSubDropdown(x[2]);
+            // Check if path starts with /admin
+            if (x[1] === "admin") {
+                setActiveParent(x[2]);
+                setActiveChild(x[3]);
+                setOpenDropdown(x[2]);
+                setOpenSubDropdown(x[3]);
+            } else {
+                setActiveParent(x[1]);
+                setActiveChild(x[2]);
+                setOpenDropdown(x[1]);
+                setOpenSubDropdown(x[2]);
+            }
         } else {
             setActiveParent("dashboards");
             setOpenDropdown("dashboards");

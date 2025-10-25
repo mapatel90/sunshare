@@ -19,17 +19,17 @@ const ApplicationsLayout = ({ children }) => {
 
     const getClassName = (pathName) => {
         switch (pathName) {
-            case "/applications/email":
+            case "/admin/applications/email":
                 return "apps-email"
-            case "/applications/chat":
+            case "/admin/applications/chat":
                 return "apps-chat"
-            case "/applications/tasks":
+            case "/admin/applications/tasks":
                 return "apps-tasks"
-            case "/applications/notes":
+            case "/admin/applications/notes":
                 return "apps-notes"
-            case "/applications/calendar":
+            case "/admin/applications/calendar":
                 return "apps-calendar"
-            case "/applications/storage":
+            case "/admin/applications/storage":
                 return "apps-storage"
 
             default:

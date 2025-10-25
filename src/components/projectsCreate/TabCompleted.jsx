@@ -10,7 +10,7 @@ const TabCompleted = () => {
             <p className="text-muted mt-2">If you need more info, please check how to create project</p>
             <div className="d-flex justify-content-center gap-1 mt-5">
                 <a href="#" className="btn btn-light">Create New Project</a>
-                <Link href="/projects/view" className="btn btn-primary">Preview Project</Link>
+                <Link href="/admin/projects/view" className="btn btn-primary">Preview Project</Link>
             </div>
         </section>
 

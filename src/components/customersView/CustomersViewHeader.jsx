@@ -17,7 +17,7 @@ const CustomersViewHeader = () => {
                 <FiEye size={16} className='me-2' />
                 <span>Follow</span>
             </a>
-            <Link href="/customers/create" className="btn btn-primary">
+            <Link href="/admin/customers/create" className="btn btn-primary">
                 <FiPlus size={16} className='me-2' />
                 <span>Create Customer</span>
             </Link>

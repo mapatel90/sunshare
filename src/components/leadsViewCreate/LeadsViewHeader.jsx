@@ -20,7 +20,7 @@ const LeadsViewHeader = () => {
             <a href="#" className="btn btn-icon btn-light-brand">
                 <FiPrinter size={16} strokeWidth={1.6} />
             </a>
-            <Link href="/leads/create" className="btn btn-icon btn-light-brand">
+            <Link href="/admin/leads/create" className="btn btn-icon btn-light-brand">
                 <FiEdit size={16} strokeWidth={1.6} />
             </Link>
             <Dropdown

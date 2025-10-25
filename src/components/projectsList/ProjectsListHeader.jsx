@@ -39,7 +39,7 @@ const ProjectsListHeader = () => {
           isAvatar={false}
           iconStrokeWidth={0}
         />
-        <Link href="/projects/create" className="btn btn-primary">
+        <Link href="/admin/projects/create" className="btn btn-primary">
           <FiPlus size={16} className='me-2' />
           <span>Create Prject</span>
         </Link>
