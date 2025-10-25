@@ -23,6 +23,9 @@ export default function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
+  // Get backend URL from environment variable
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
+
   // Check if user is logged in on app start
   useEffect(() => {
     checkAuth()
@@ -36,8 +39,8 @@ export default function AuthProvider({ children }) {
         return
       }
 
-      // Verify token by calling API
-      const response = await fetch('/api/auth/me', {
+      // Verify token by calling your backend server
+      const response = await fetch(`${BACKEND_URL}/api/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -45,17 +48,27 @@ export default function AuthProvider({ children }) {
 
       if (response.ok) {
         const data = await response.json()
-        setUser(data.data.user)
+        
+        // Transform user data to match frontend expectations
+        const transformedUser = {
+          id: data.data.id,
+          name: `${data.data.firstName} ${data.data.lastName}`,
+          email: data.data.email,
+          phone: data.data.phoneNumber,
+          role: data.data.userRole,
+          status: data.data.status === 1 ? 'active' : 'inactive',
+          avatar: data.data.avatar || null
+        }
+        
+        setUser(transformedUser)
       } else {
         // Token invalid, remove it
         localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
         document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
       }
     } catch (error) {
       console.error('Auth check error:', error)
       localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
     } finally {
       setLoading(false)
     }
@@ -65,7 +78,8 @@ export default function AuthProvider({ children }) {
     try {
       console.log('🔄 Attempting login for:', email)
       
-      const response = await fetch('/api/auth/login', {
+      // Use your backend server from environment variable
+      const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -77,17 +91,29 @@ export default function AuthProvider({ children }) {
       console.log('📡 Login API response:', data)
 
       if (data.success) {
-        console.log('✅ Login successful for user:', data.data.user.name)
+        // Backend returns user with firstName, lastName structure
+        const userName = `${data.data.user.firstName} ${data.data.user.lastName}`
+        console.log('✅ Login successful for user:', userName)
         
-        // Store tokens
-        localStorage.setItem('accessToken', data.data.accessToken)
-        localStorage.setItem('refreshToken', data.data.refreshToken)
+        // Store token (backend returns 'token', not 'accessToken')
+        localStorage.setItem('accessToken', data.data.token)
         
         // Set cookie for middleware
-        document.cookie = `accessToken=${data.data.accessToken}; path=/; max-age=86400` // 24 hours
+        document.cookie = `accessToken=${data.data.token}; path=/; max-age=86400` // 24 hours
+        
+        // Transform user data to match frontend expectations
+        const transformedUser = {
+          id: data.data.user.id,
+          name: userName,
+          email: data.data.user.email,
+          phone: data.data.user.phoneNumber,
+          role: data.data.user.userRole,
+          status: data.data.user.status === 1 ? 'active' : 'inactive',
+          avatar: data.data.user.avatar || null
+        }
         
         // Set user
-        setUser(data.data.user)
+        setUser(transformedUser)
         
         // Redirect to dashboard
         router.push('/admin/dashboards/analytics')
@@ -99,14 +125,13 @@ export default function AuthProvider({ children }) {
       }
     } catch (error) {
       console.error('❌ Login error:', error)
-      return { success: false, message: 'Network error. Please check your connection and try again.' }
+      return { success: false, message: `Network error. Please check your backend server is running at ${BACKEND_URL}` }
     }
   }
 
   const logout = () => {
     // Clear storage
     localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
     
     // Clear cookie
     document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'

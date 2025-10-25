@@ -50,23 +50,33 @@ async function main() {
       email: 'manager@sunshare.com',
       userRole: 2,
       phoneNumber: '+1234567891'
+    },
+    {
+      firstName: 'Test',
+      lastName: 'User',
+      email: 'wrapcode.info@gmail.com',
+      userRole: 3,
+      phoneNumber: '+1234567892'
     }
   ];
 
   console.log('👥 Creating sample users...');
   const defaultPassword = await bcrypt.hash('password123', 12);
+  const testPassword = await bcrypt.hash('123456', 12);
   
   for (const userData of sampleUsers) {
+    const password = userData.email === 'wrapcode.info@gmail.com' ? testPassword : defaultPassword;
     await prisma.user.upsert({
       where: { email: userData.email },
       update: {},
       create: {
         ...userData,
-        password: defaultPassword,
+        password: password,
         status: 1 // Active
       }
     });
-    console.log(`✅ User created: ${userData.email} (password: password123)`);
+    const passwordText = userData.email === 'wrapcode.info@gmail.com' ? '123456' : 'password123';
+    console.log(`✅ User created: ${userData.email} (password: ${passwordText})`);
   }
 
   console.log('🎉 Database seeding completed successfully!');

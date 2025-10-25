@@ -6,8 +6,8 @@ import { FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi'
 import { useAuth } from '@/contexts/AuthContext'
 
 const LoginForm = ({ registerPath, resetPath }) => {
-    const [email, setEmail] = useState('wrapcode.info@gmail.com')
-    const [password, setPassword] = useState('123456')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const { login } = useAuth()
