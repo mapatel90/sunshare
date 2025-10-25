@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Roles model
+model Role {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(100)
+  status    Int      @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  
+  @@map("roles")
+}
+
+// Users model
+model User {
+  id          Int       @id @default(autoincrement())
+  userRole    String    @map("user_role") @db.VarChar(50)
+  firstName   String    @map("first_name") @db.VarChar(100)
+  lastName    String    @map("last_name") @db.VarChar(100)
+  email       String    @unique @db.VarChar(150)
+  phoneNumber String?   @map("phone_number") @db.VarChar(20)
+  password    String    @db.VarChar(255)
+  address1    String?   @map("address_1") @db.VarChar(255)
+  address2    String?   @map("address_2") @db.VarChar(255)
+  city        String?   @db.VarChar(100)
+  state       String?   @db.VarChar(100)
+  country     String?   @db.VarChar(100)
+  zipcode     String?   @db.VarChar(20)
+  status      Int       @default(0)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  
+  // Relations (you can add role relation if needed)
+  // role        Role?     @relation(fields: [userRole], references: [name])
+
+  @@map("users")
+}

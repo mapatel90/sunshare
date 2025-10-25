@@ -1,0 +1,97 @@
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+
+const prisma = new PrismaClient();
+
+async function main() {
+  console.log('🌱 Starting database seeding...');
+
+  // Create default roles
+  const roles = [
+    { name: 'admin', status: 1 },
+    { name: 'manager', status: 1 },
+    { name: 'user', status: 1 },
+    { name: 'customer', status: 1 }
+  ];
+
+  console.log('📝 Creating roles...');
+  for (const roleData of roles) {
+    await prisma.role.upsert({
+      where: { name: roleData.name },
+      update: {},
+      create: roleData
+    });
+    console.log(`✅ Role created: ${roleData.name}`);
+  }
+
+  // Create default admin user
+  const adminPassword = await bcrypt.hash('admin123', 12);
+  
+  console.log('👤 Creating admin user...');
+  await prisma.user.upsert({
+    where: { email: 'admin@sunshare.com' },
+    update: {},
+    create: {
+      firstName: 'System',
+      lastName: 'Administrator',
+      email: 'admin@sunshare.com',
+      password: adminPassword,
+      userRole: 'admin',
+      phoneNumber: '+1234567890',
+      status: 1 // Active
+    }
+  });
+  console.log('✅ Admin user created: admin@sunshare.com (password: admin123)');
+
+  // Create sample users
+  const sampleUsers = [
+    {
+      firstName: 'John',
+      lastName: 'Manager',
+      email: 'manager@sunshare.com',
+      userRole: 'manager',
+      phoneNumber: '+1234567891'
+    },
+    {
+      firstName: 'Jane',
+      lastName: 'User',
+      email: 'user@sunshare.com',
+      userRole: 'user',
+      phoneNumber: '+1234567892'
+    },
+    {
+      firstName: 'Bob',
+      lastName: 'Customer',
+      email: 'customer@sunshare.com',
+      userRole: 'customer',
+      phoneNumber: '+1234567893'
+    }
+  ];
+
+  console.log('👥 Creating sample users...');
+  const defaultPassword = await bcrypt.hash('password123', 12);
+  
+  for (const userData of sampleUsers) {
+    await prisma.user.upsert({
+      where: { email: userData.email },
+      update: {},
+      create: {
+        ...userData,
+        password: defaultPassword,
+        status: 1 // Active
+      }
+    });
+    console.log(`✅ User created: ${userData.email} (password: password123)`);
+  }
+
+  console.log('🎉 Database seeding completed successfully!');
+}
+
+main()
+  .catch((e) => {
+    console.error('❌ Error during seeding:', e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
