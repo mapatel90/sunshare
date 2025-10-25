@@ -70,11 +70,11 @@ const Menus = () => {
                             </span>
                         </Link>
                         <ul className={`nxl-submenu ${openDropdown === name.split(' ')[0] ? "nxl-menu-visible" : "nxl-menu-hidden"}`}>
-                            {dropdownMenu.map(({ id, name, path, subdropdownMenu, target }) => {
+                            {dropdownMenu && dropdownMenu.map(({ id, name, path, subdropdownMenu, target }) => {
                                 const x = name;
                                 return (
                                     <Fragment key={id}>
-                                        {subdropdownMenu.length ? (
+                                        {subdropdownMenu && subdropdownMenu.length ? (
                                             <li
                                                 className={`nxl-item nxl-hasmenu ${activeChild === name ? "active" : ""}`}
                                                 onClick={(e) => handleDropdownMenu(e, x)}
@@ -88,7 +88,7 @@ const Menus = () => {
                                                         </i>
                                                     </span>
                                                 </Link>
-                                                {subdropdownMenu.map(({ id, name, path }) => {
+                                                {subdropdownMenu && subdropdownMenu.map(({ id, name, path }) => {
                                                     return (
                                                         <ul
                                                             key={id}

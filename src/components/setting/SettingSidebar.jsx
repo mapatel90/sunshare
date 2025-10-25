@@ -21,6 +21,7 @@ const navItems = [
     { label: "Localization", path: "/admin/settings/localization", icon: "feather-globe" },
     { label: "reCaptcha", path: "/admin/settings/recaptcha", icon: "feather-shield" },
     { label: "Miscellaneous", path: "/admin/settings/miscellaneous", icon: "feather-cast" },
+    { label: "Roles", path: "/admin/settings/role", icon: "feather-shield" }
 ]
 const SettingSidebar = () => {
     const { sidebarOpen, setSidebarOpen } = useContext(SettingSidebarContext)
