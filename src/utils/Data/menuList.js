@@ -131,76 +131,76 @@ export const menuList = [
             },
             {
                 id: 3,
-                name: "tags",
-                path: "/admin/settings/tags",
+                name: "Roles Management",
+                path: "/admin/settings/role",
                 subdropdownMenu: false
             },
+            // {
+            //     id: 4,
+            //     name: "Tags",
+            //     path: "/admin/settings/tags",
+            //     subdropdownMenu: false
+            // },
             {
-                id: 4,
-                name: "email",
+                id: 5,
+                name: "Email",
                 path: "/admin/settings/email",
                 subdropdownMenu: false
             },
+            // {
+            //     id: 6,
+            //     name: "Tasks",
+            //     path: "/admin/settings/tasks",
+            //     subdropdownMenu: false
+            // },
+            // {
+            //     id: 7,
+            //     name: "Leads",
+            //     path: "/admin/settings/leads",
+            //     subdropdownMenu: false
+            // },
+            // {
+            //     id: 8,
+            //     name: "Support",
+            //     path: "/admin/settings/support",
+            //     subdropdownMenu: false
+            // },
             {
-                id: 5,
-                name: "tasks",
-                path: "/admin/settings/tasks",
-                subdropdownMenu: false
-            },
-            {
-                id: 6,
-                name: "leads",
-                path: "/admin/settings/leads",
-                subdropdownMenu: false
-            },
-            {
-                id: 7,
-                name: "support",
-                path: "/admin/settings/support",
-                subdropdownMenu: false
-            },
-            {
-                id: 8,
-                name: "finance",
+                id: 9,
+                name: "Finance",
                 path: "/admin/settings/finance",
                 subdropdownMenu: false
             },
             {
-                id: 9,
-                name: "gateways",
+                id: 10,
+                name: "Gateways",
                 path: "/admin/settings/gateways",
                 subdropdownMenu: false
             },
             {
-                id: 10,
-                name: "customers",
+                id: 11,
+                name: "Customers",
                 path: "/admin/settings/customers",
                 subdropdownMenu: false
             },
             {
-                id: 11,
-                name: "localization",
+                id: 12,
+                name: "Localization",
                 path: "/admin/settings/localization",
                 subdropdownMenu: false
             },
             {
-                id: 12,
-                name: "recaptcha",
+                id: 13,
+                name: "reCAPTCHA",
                 path: "/admin/settings/recaptcha",
                 subdropdownMenu: false
             },
             {
-                id: 13,
-                name: "miscellaneous",
+                id: 14,
+                name: "Miscellaneous",
                 path: "/admin/settings/miscellaneous",
                 subdropdownMenu: false
             },
-            {
-                id: 14,
-                name: "rolesmanagement",
-                path: "/admin/settings/role",
-                subdropdownMenu: false
-            }
         ]
     },
    

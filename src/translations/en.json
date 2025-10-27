@@ -405,5 +405,18 @@
     "your_company_city": "Select your company's city",
     "your_company_zip": "Zip Code [Ex: 11756]",
     "your_company_phone": "Phone Number [Ex: 987-6985-9658-654]"
+  },
+  "roles": {
+    "rolesManagement": "Roles Management",
+    "addRole": "Add Role",
+    "roleName": "Role Name",
+    "roleNameRequired": "Role name is required",
+    "roleManagement": "Role Management",
+    "selectStatus": "Select Status",
+    "totalRoles": "total roles",
+    "roleId": "Role ID",
+    "role": "Role",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At"
   }
 }

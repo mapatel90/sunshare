@@ -5,7 +5,7 @@ import { FiAlertOctagon, FiArchive, FiClock, FiEdit3, FiEye, FiMoreHorizontal, F
 import Dropdown from '@/components/shared/Dropdown';
 import SelectDropdown from '@/components/shared/SelectDropdown';
 import { projectTableData } from '@/utils/Data/projectTableData';
-
+ 
 const actions = [
     { label: "Edit", icon: <FiEdit3 /> },
     { label: "Print", icon: <FiPrinter /> },
@@ -16,11 +16,11 @@ const actions = [
     { type: "divider" },
     { label: "Delete", icon: <FiTrash2 />, },
 ];
-
-
+ 
+ 
 const TableCell = memo(({ options, defaultSelect }) => {
     const [selectedOption, setSelectedOption] = useState(null);
-
+ 
     return (
         <SelectDropdown
             options={options}
@@ -30,21 +30,21 @@ const TableCell = memo(({ options, defaultSelect }) => {
         />
     );
 });
-
+ 
 const ProjectTable = () => {
-
+ 
     const columns = [
         {
             accessorKey: 'id',
             header: ({ table }) => {
                 const checkboxRef = React.useRef(null);
-
+ 
                 useEffect(() => {
                     if (checkboxRef.current) {
                         checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
                     }
                 }, [table.getIsSomeRowsSelected()]);
-
+ 
                 return (
                     <input
                         type="checkbox"
@@ -68,7 +68,7 @@ const ProjectTable = () => {
                 headerClassName: 'width-30',
             },
         },
-
+ 
         {
             accessorKey: 'project-name',
             header: () => 'Project-name',
@@ -154,12 +154,12 @@ const ProjectTable = () => {
             }
         },
     ]
-
+ 
     return (
         <>
             <Table data={projectTableData} columns={columns} />
         </>
     )
 }
-
+ 
 export default ProjectTable
