@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently --names \"FRONTEND,BACKEND\" --prefix-colors \"cyan,yellow\" \"next dev\" \"nodemon server/index.js\"",
-    "dev:frontend": "next dev",
+    "dev": "concurrently --names \"FRONTEND,BACKEND\" --prefix-colors \"cyan,yellow\" \"next dev --turbo\" \"nodemon server/index.js\"",
+    "dev:frontend": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
