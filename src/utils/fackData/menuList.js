@@ -291,76 +291,76 @@ export const menuList = [
             },
             {
                 id: 3,
+                name: "Roles Management",
+                path: "/admin/settings/role",
+                subdropdownMenu: false
+            },
+            {
+                id: 4,
                 name: "Tags",
                 path: "/admin/settings/tags",
                 subdropdownMenu: false
             },
             {
-                id: 4,
+                id: 5,
                 name: "Email",
                 path: "/admin/settings/email",
                 subdropdownMenu: false
             },
             {
-                id: 5,
+                id: 6,
                 name: "Tasks",
                 path: "/admin/settings/tasks",
                 subdropdownMenu: false
             },
             {
-                id: 6,
+                id: 7,
                 name: "Leads",
                 path: "/admin/settings/leads",
                 subdropdownMenu: false
             },
             {
-                id: 7,
+                id: 8,
                 name: "Support",
                 path: "/admin/settings/support",
                 subdropdownMenu: false
             },
             {
-                id: 8,
+                id: 9,
                 name: "Finance",
                 path: "/admin/settings/finance",
                 subdropdownMenu: false
             },
             {
-                id: 9,
+                id: 10,
                 name: "Gateways",
                 path: "/admin/settings/gateways",
                 subdropdownMenu: false
             },
             {
-                id: 10,
+                id: 11,
                 name: "Customers",
                 path: "/admin/settings/customers",
                 subdropdownMenu: false
             },
             {
-                id: 11,
+                id: 12,
                 name: "Localization",
                 path: "/admin/settings/localization",
                 subdropdownMenu: false
             },
             {
-                id: 12,
+                id: 13,
                 name: "reCAPTCHA",
                 path: "/admin/settings/recaptcha",
                 subdropdownMenu: false
             },
             {
-                id: 13,
+                id: 14,
                 name: "Miscellaneous",
                 path: "/admin/settings/miscellaneous",
                 subdropdownMenu: false
             },
-            {
-                id: 14,
-                name: "Roles Management",
-                path: "/admin/settings/role",
-                subdropdownMenu: false
-            }
         ]
     },
     // {

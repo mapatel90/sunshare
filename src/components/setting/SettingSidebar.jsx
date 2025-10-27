@@ -10,6 +10,7 @@ import { SettingSidebarContext } from '@/contentApi/settingSideBarProvider'
 const navItems = [
     { label: "General", path: "/admin/settings/ganeral", icon: "feather-airplay" },
     { label: "SEO", path: "/admin/settings/seo", icon: "feather-search" },
+    { label: "Roles", path: "/admin/settings/role", icon: "feather-shield" },
     { label: "Tags", path: "/admin/settings/tags", icon: "feather-tag" },
     { label: "Email", path: "/admin/settings/email", icon: "feather-mail" },
     { label: "Tasks", path: "/admin/settings/tasks", icon: "feather-check-circle" },
@@ -21,7 +22,6 @@ const navItems = [
     { label: "Localization", path: "/admin/settings/localization", icon: "feather-globe" },
     { label: "reCaptcha", path: "/admin/settings/recaptcha", icon: "feather-shield" },
     { label: "Miscellaneous", path: "/admin/settings/miscellaneous", icon: "feather-cast" },
-    { label: "Roles", path: "/admin/settings/role", icon: "feather-shield" }
 ]
 const SettingSidebar = () => {
     const { sidebarOpen, setSidebarOpen } = useContext(SettingSidebarContext)
