@@ -16,7 +16,7 @@ const useImageUpload = () => {
         }
     };
 
-    return { handleImageUpload, uploadedImage }
+    return { handleImageUpload, uploadedImage, setUploadedImage }
 }
 
 export default useImageUpload
