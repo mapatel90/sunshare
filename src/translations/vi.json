@@ -37,7 +37,8 @@
     "list": "Danh sách",
     "view": "Xem",
     "create": "Tạo",
-    "edit": "Sửa"
+    "edit": "Sửa",
+    "UserManagement": "Quản lý người dùng"
   },
   "authentication": {
     "login": "Đăng nhập",
@@ -191,6 +192,10 @@
     "localization": "Bản địa hóa",
     "recaptcha": "reCAPTCHA",
     "rolesmanagement": "Quản lý vai trò",
+    "usermanagement": "Quản lý người dùng",
+    "users": "Người dùng",
+    "usersview": "Xem người dùng",
+    "userscreate": "Tạo người dùng",
     "support": "Hỗ trợ",
     "authentication": "Xác thực",
     "login": "Đăng nhập",

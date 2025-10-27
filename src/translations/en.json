@@ -37,7 +37,8 @@
     "list": "List",
     "view": "View",
     "create": "Create",
-    "edit": "Edit"
+    "edit": "Edit",
+    "UserManagement": "User Management"
   },
   "authentication": {
     "login": "Login",
@@ -191,6 +192,10 @@
     "localization": "Localization",
     "recaptcha": "reCAPTCHA",
     "rolesmanagement": "Roles Management",
+    "users": "Users",
+    "usersview": "Users View",
+    "userscreate": "Users Create",
+    "usermanagement": "User Management",
     "support": "Support",
     "authentication": "Authentication",
     "login": "Login",
@@ -212,7 +217,7 @@
   },
   "dashboard": {
     "totalSales": "Total Sales",
-    "totalRevenue": "Total Revenue", 
+    "totalRevenue": "Total Revenue",
     "totalCustomers": "Total Customers",
     "totalProjects": "Total Projects",
     "activeProjects": "Active Projects",
@@ -301,7 +306,7 @@
   "misc": {
     "welcomeMessage": "Welcome to Sunshare!",
     "goodMorning": "Good Morning",
-    "goodAfternoon": "Good Afternoon", 
+    "goodAfternoon": "Good Afternoon",
     "goodEvening": "Good Evening",
     "haveAGreatDay": "Have a great day!",
     "thankYou": "Thank you",
