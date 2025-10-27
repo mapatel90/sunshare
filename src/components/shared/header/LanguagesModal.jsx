@@ -1,35 +1,47 @@
+'use client'
 import React from 'react'
 import Link from 'next/link'
-import { headerDropdownLanguagesList } from '@/utils/fackData/headerDropwodnLanguagesList'
-import { FiPlus } from 'react-icons/fi'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const LanguagesModal = () => {
+  const { currentLanguageInfo, languages, changeLanguage, t } = useLanguage();
+
+  const handleLanguageChange = (e, languageCode) => {
+    e.preventDefault();
+    changeLanguage(languageCode);
+  };
+
   return (
     <div className="dropdown nxl-h-item nxl-header-language d-none d-sm-flex">
       <div className="nxl-head-link me-0 nxl-language-link" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-        <img src="/images/flags/4x3/us.svg" alt="" className="img-fluid wd-20" />
+        <img src={currentLanguageInfo.flag} alt={currentLanguageInfo.name} className="img-fluid wd-20" />
       </div>
       <div className="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-language-dropdown">
         <div className="dropdown-divider mt-0"></div>
         <div className="language-items-wrapper">
           <div className="select-language px-4 py-2 hstack justify-content-between gap-4">
             <div className="lh-lg">
-              <h6 className="mb-0">Select Language</h6>
-              <p className="fs-11 text-muted mb-0">languages available</p>
+              <h6 className="mb-0">{t('header.selectLanguage')}</h6>
+              <p className="fs-11 text-muted mb-0">{Object.keys(languages).length} {t('header.languagesAvailable')}</p>
             </div>
-            {/* <span className="avatar-text avatar-md" data-toggle="tooltip" data-title="Add Language">
-              <FiPlus />
-            </span> */}
           </div>
           <div className="dropdown-divider"></div>
           <div className="row px-4 pt-3">
             {
-              headerDropdownLanguagesList.map(({flag, id, language_name}) => {
+              Object.values(languages).map((language) => {
                 return (
-                  <div key={id} className="col-sm-4 col-6 language_select">
-                    <Link href={"#"} className="d-flex align-items-center gap-2">
-                      <div className="avatar-image avatar-sm"><img src={flag} alt="" className="img-fluid" /></div>
-                      <span>{language_name}</span>
+                  <div key={language.code} className="col-sm-6 col-12 language_select mb-2">
+                    <Link 
+                      href="#" 
+                      className={`d-flex align-items-center gap-2 p-2 rounded ${
+                        currentLanguageInfo.code === language.code ? 'bg-primary text-white' : 'text-dark'
+                      }`}
+                      onClick={(e) => handleLanguageChange(e, language.code)}
+                    >
+                      <div className="avatar-image avatar-sm">
+                        <img src={language.flag} alt={language.name} className="img-fluid" />
+                      </div>
+                      <span>{language.name}</span>
                     </Link>
                   </div>
                 )

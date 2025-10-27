@@ -7,8 +7,10 @@ import Pagination from '@/components/shared/Pagination'
 import { projectsData } from '@/utils/fackData/projectsData'
 import CardLoader from '@/components/shared/CardLoader'
 import useCardTitleActions from '@/hooks/useCardTitleActions'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const Remainders = ({title}) => {
+    const { t } = useLanguage()
     const data = projectsData.remaindersProjects
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
 
@@ -26,9 +28,9 @@ const Remainders = ({title}) => {
                         <table className="table table-hover mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Remaining</th>
+                                    <th scope="col">{t('common.name')}</th>
+                                    <th scope="col">{t('common.status')}</th>
+                                    <th scope="col">{t('projects.remaining', 'Remaining')}</th>
                                     <th scope="col">Stage</th>
                                     <th scope="col" className="text-end">Action</th>
                                 </tr>

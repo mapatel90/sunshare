@@ -1,11 +1,14 @@
+'use client'
 import React, { useEffect, useState } from 'react';
 import SelectDropdown from '@/components/shared/SelectDropdown';
 import { eventCategoryOptions, eventOptions } from './AddEventForm';
 import { FiCalendar, FiMapPin, FiTag } from 'react-icons/fi';
 import Datetime from "react-datetime";
 import { format, isValid } from 'date-fns';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const EditEventForm = ({ event, onSubmit }) => {
+    const { t } = useLanguage()
     const [title, setTitle] = useState(event.title);
     const [location, setLocation] = useState(event.extendedProps.details.location);
     const [details, setDetails] = useState(event.extendedProps.details.details);
@@ -157,7 +160,7 @@ const EditEventForm = ({ event, onSubmit }) => {
                 </div>
             </div>
 
-            <button type="submit" className='btn btn-primary w-100'>Save Changes</button>
+            <button type="submit" className='btn btn-primary w-100'>{t('common.saveChanges', 'Save Changes')}</button>
         </form>
 
     );

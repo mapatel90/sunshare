@@ -1,9 +1,12 @@
+'use client'
 import React from 'react'
 import { emailList } from '../utils/fackData/emailList'
 import getIcon from '../utils/getIcon'
 import Link from 'next/link'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const EmailOverview = () => {
+    const { t } = useLanguage()
     const data = emailList.overviews
 
     return (
@@ -12,10 +15,10 @@ const EmailOverview = () => {
                 <div className="card-body">
                     <div className="hstack justify-content-between mb-4 pb-">
                         <div>
-                            <h5 className="mb-1">Email Reports</h5>
-                            <span className="fs-12 text-muted">Email Campaign Reports</span>
+                            <h5 className="mb-1">{t('email.emailReports', 'Email Reports')}</h5>
+                            <span className="fs-12 text-muted">{t('email.emailCampaignReports', 'Email Campaign Reports')}</span>
                         </div>
-                        <Link href="#" className="btn btn-light-brand">View Alls</Link>
+                        <Link href="#" className="btn btn-light-brand">{t('common.viewAll', 'View All')}</Link>
                     </div>
                     <div className="row">
                         {

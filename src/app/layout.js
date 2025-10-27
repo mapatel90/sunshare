@@ -7,6 +7,7 @@ import NavigationProvider from "@/contentApi/navigationProvider";
 import SettingSideBarProvider from "@/contentApi/settingSideBarProvider";
 import ThemeCustomizer from "@/components/shared/ThemeCustomizer";
 import AuthProvider from "@/contexts/AuthContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 export const metadata = {
   title: "Sunshare | Dashboard",
@@ -17,14 +18,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          <SettingSideBarProvider>
-            <NavigationProvider>
-              {children}
-            </NavigationProvider>
-          </SettingSideBarProvider>
-          <ThemeCustomizer />
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <SettingSideBarProvider>
+              <NavigationProvider>
+                {children}
+              </NavigationProvider>
+            </SettingSideBarProvider>
+            <ThemeCustomizer />
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

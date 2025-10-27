@@ -4,11 +4,13 @@ import Image from 'next/image'
 import React, { Fragment } from 'react'
 import { FiActivity, FiBell, FiChevronRight, FiDollarSign, FiLogOut, FiSettings, FiUser } from "react-icons/fi"
 import { useAuth } from '@/contexts/AuthContext'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const activePosition = ["Active", "Always", "Bussy", "Inactive", "Disabled", "Cutomization"]
 const subscriptionsList = ["Plan", "Billings", "Referrals", "Payments", "Statements", "Subscriptions"]
 const ProfileModal = () => {
     const { user, logout } = useAuth()
+    const { t } = useLanguage()
     console.log("user",user);   
     const handleLogout = (e) => {
         e.preventDefault()
@@ -86,7 +88,7 @@ const ProfileModal = () => {
                 {/* <div className="dropdown-divider"></div> */}
                 <a href="#" className="dropdown-item">
                     <i ><FiUser /></i>
-                    <span>Profile Details</span>
+                    <span>{t('header.profile')}</span>
                 </a>
                 {/* <a href="#" className="dropdown-item">
                     <i ><FiActivity /></i>
@@ -107,7 +109,7 @@ const ProfileModal = () => {
                 <div className="dropdown-divider"></div>
                 <a href="#" className="dropdown-item" onClick={handleLogout}>
                     <i> <FiLogOut /></i>
-                    <span>Logout</span>
+                    <span>{t('header.logout')}</span>
                 </a>
             </div>
         </div>

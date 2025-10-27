@@ -5,6 +5,7 @@ import { menuList } from "@/utils/fackData/menuList";
 import getIcon from "@/utils/getIcon";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Menus = () => {
     const [openDropdown, setOpenDropdown] = useState(null);
@@ -12,6 +13,7 @@ const Menus = () => {
     const [activeParent, setActiveParent] = useState("");
     const [activeChild, setActiveChild] = useState("");
     const pathName = usePathname();
+    const { t } = useLanguage();
 
     const handleMainMenu = (e, name) => {
         if (openDropdown === name) {
@@ -63,7 +65,7 @@ const Menus = () => {
                         <Link href={path} className="nxl-link text-capitalize">
                             <span className="nxl-micon"> {getIcon(icon)} </span>
                             <span className="nxl-mtext" style={{ paddingLeft: "2.5px" }}>
-                                {name}
+                                {t(`menu.${name.toLowerCase()}`, name)}
                             </span>
                             <span className="nxl-arrow fs-16">
                                 <FiChevronRight />
@@ -80,7 +82,7 @@ const Menus = () => {
                                                 onClick={(e) => handleDropdownMenu(e, x)}
                                             >
                                                 <Link href={path} className={`nxl-link text-capitalize`}>
-                                                    <span className="nxl-mtext">{name}</span>
+                                                    <span className="nxl-mtext">{t(`menu.${name.toLowerCase().replace(/\s+/g, '')}`, name)}</span>
                                                     <span className="nxl-arrow">
                                                         <i>
                                                             {" "}
@@ -105,7 +107,7 @@ const Menus = () => {
                                                                     className="nxl-link text-capitalize"
                                                                     href={path}
                                                                 >
-                                                                    {name}
+                                                                    {t(`menu.${name.toLowerCase().replace(/\s+/g, '')}`, name)}
                                                                 </Link>
                                                             </li>
                                                         </ul>
@@ -115,7 +117,7 @@ const Menus = () => {
                                         ) : (
                                             <li className={`nxl-item ${pathName === path ? "active" : ""}`}>
                                                 <Link className="nxl-link" href={path} target={target}>
-                                                    {name}
+                                                    {t(`menu.${name.toLowerCase().replace(/\s+/g, '')}`, name)}
                                                 </Link>
                                             </li>
                                         )}

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi'
 import { useAuth } from '@/contexts/AuthContext'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const LoginForm = ({ registerPath, resetPath }) => {
     const [email, setEmail] = useState('')
@@ -11,6 +12,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const { login } = useAuth()
+    const { t } = useLanguage()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -28,7 +30,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
 
     return (
         <>
-            <h2 className="fs-20 fw-bolder mb-4">Login</h2>
+            <h2 className="fs-20 fw-bolder mb-4">{t('authentication.login')}</h2>
             {/* <h4 className="fs-13 fw-bold mb-2">Login to your account</h4>
             <p className="fs-12 fw-medium text-muted">Thank you for get back <strong>Sunshare</strong> web applications, let's access our the best recommendation for you.</p>
              */}
@@ -43,7 +45,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
                     <input 
                         type="email" 
                         className="form-control" 
-                        placeholder="Email or Username" 
+                        placeholder={t('authentication.email')} 
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required 
@@ -53,7 +55,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
                     <input 
                         type="password" 
                         className="form-control" 
-                        placeholder="Password" 
+                        placeholder={t('authentication.password')} 
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required 
@@ -63,11 +65,11 @@ const LoginForm = ({ registerPath, resetPath }) => {
                     <div>
                         <div className="custom-control custom-checkbox">
                             <input type="checkbox" className="custom-control-input" id="rememberMe" />
-                            <label className="custom-control-label c-pointer" htmlFor="rememberMe">Remember Me</label>
+                            <label className="custom-control-label c-pointer" htmlFor="rememberMe">{t('authentication.rememberMe')}</label>
                         </div>
                     </div>
                     <div>
-                        <Link href={resetPath} className="fs-11 text-primary">Forget password?</Link>
+                        <Link href={resetPath} className="fs-11 text-primary">{t('authentication.forgotPassword')}?</Link>
                     </div>
                 </div>
                 <div className="mt-5">
@@ -76,7 +78,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
                         className="btn btn-lg btn-primary w-100"
                         disabled={loading}
                     >
-                        {loading ? 'Logging in...' : 'Login'}
+                        {loading ? t('common.loading') : t('authentication.signIn')}
                     </button>
                 </div>
             </form>
