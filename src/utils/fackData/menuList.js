@@ -291,7 +291,6 @@ export const menuList = [
             },
             {
                 id: 3,
-<<<<<<< HEAD
                 name: "Roles Management",
                 path: "/admin/settings/role",
                 subdropdownMenu: false
@@ -299,131 +298,69 @@ export const menuList = [
             {
                 id: 4,
                 name: "Tags",
-=======
-                name: "tags",
->>>>>>> ff3a8dc2dd2c26258ee9b6bda3e96a839001a39d
                 path: "/admin/settings/tags",
                 subdropdownMenu: false
             },
             {
-<<<<<<< HEAD
                 id: 5,
                 name: "Email",
-=======
-                id: 4,
-                name: "email",
->>>>>>> ff3a8dc2dd2c26258ee9b6bda3e96a839001a39d
                 path: "/admin/settings/email",
                 subdropdownMenu: false
             },
             {
-<<<<<<< HEAD
                 id: 6,
                 name: "Tasks",
-=======
-                id: 5,
-                name: "tasks",
->>>>>>> ff3a8dc2dd2c26258ee9b6bda3e96a839001a39d
                 path: "/admin/settings/tasks",
                 subdropdownMenu: false
             },
             {
-<<<<<<< HEAD
                 id: 7,
                 name: "Leads",
-=======
-                id: 6,
-                name: "leads",
->>>>>>> ff3a8dc2dd2c26258ee9b6bda3e96a839001a39d
                 path: "/admin/settings/leads",
                 subdropdownMenu: false
             },
             {
-<<<<<<< HEAD
                 id: 8,
                 name: "Support",
-=======
-                id: 7,
-                name: "support",
->>>>>>> ff3a8dc2dd2c26258ee9b6bda3e96a839001a39d
                 path: "/admin/settings/support",
                 subdropdownMenu: false
             },
             {
-<<<<<<< HEAD
                 id: 9,
                 name: "Finance",
-=======
-                id: 8,
-                name: "finance",
->>>>>>> ff3a8dc2dd2c26258ee9b6bda3e96a839001a39d
                 path: "/admin/settings/finance",
                 subdropdownMenu: false
             },
             {
-<<<<<<< HEAD
                 id: 10,
                 name: "Gateways",
-=======
-                id: 9,
-                name: "gateways",
->>>>>>> ff3a8dc2dd2c26258ee9b6bda3e96a839001a39d
                 path: "/admin/settings/gateways",
                 subdropdownMenu: false
             },
             {
-<<<<<<< HEAD
                 id: 11,
                 name: "Customers",
-=======
-                id: 10,
-                name: "customers",
->>>>>>> ff3a8dc2dd2c26258ee9b6bda3e96a839001a39d
                 path: "/admin/settings/customers",
                 subdropdownMenu: false
             },
             {
-<<<<<<< HEAD
                 id: 12,
                 name: "Localization",
-=======
-                id: 11,
-                name: "localization",
->>>>>>> ff3a8dc2dd2c26258ee9b6bda3e96a839001a39d
                 path: "/admin/settings/localization",
                 subdropdownMenu: false
             },
             {
-<<<<<<< HEAD
                 id: 13,
                 name: "reCAPTCHA",
-=======
-                id: 12,
-                name: "recaptcha",
->>>>>>> ff3a8dc2dd2c26258ee9b6bda3e96a839001a39d
                 path: "/admin/settings/recaptcha",
                 subdropdownMenu: false
             },
             {
-<<<<<<< HEAD
                 id: 14,
                 name: "Miscellaneous",
                 path: "/admin/settings/miscellaneous",
                 subdropdownMenu: false
             },
-=======
-                id: 13,
-                name: "miscellaneous",
-                path: "/admin/settings/miscellaneous",
-                subdropdownMenu: false
-            },
-            {
-                id: 14,
-                name: "rolesmanagement",
-                path: "/admin/settings/role",
-                subdropdownMenu: false
-            }
->>>>>>> ff3a8dc2dd2c26258ee9b6bda3e96a839001a39d
         ]
     },
     // {
