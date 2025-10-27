@@ -10,6 +10,7 @@ import { dirname, join } from 'path';
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import roleRoutes from './routes/roles.js';
+import locationRoutes from './routes/locations.js';
 
 // Load environment variables
 const __filename = fileURLToPath(import.meta.url);
@@ -52,6 +53,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
+app.use('/api/locations', locationRoutes);
 
 // 404 handler
 app.use((req, res) => {

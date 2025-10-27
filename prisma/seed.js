@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { insertLocationData } from '../server/utils/location-data-package.js';
 
 const prisma = new PrismaClient();
 
@@ -23,10 +24,39 @@ async function main() {
     console.log(`✅ Role created: ${roleData.name}`);
   }
 
+  // Insert comprehensive location data using the package
+  console.log('🌍 Inserting comprehensive location data...');
+  const locationStats = await insertLocationData();
+  // Get some location data for user creation
+  const indiaCountry = await prisma.country.findFirst({ where: { name: 'India' } });
+  const usaCountry = await prisma.country.findFirst({ where: { name: 'United States' } });
+  const vietnamCountry = await prisma.country.findFirst({ where: { name: 'Vietnam' } });
+
   // Create default admin user
   const adminPassword = await bcrypt.hash('admin123', 12);
-  
+
   console.log('👤 Creating admin user...');
+  const ahmedabadCity = await prisma.city.findFirst({
+    where: { name: 'Ahmedabad' },
+    include: { state: true }
+  });
+
+  // Create sample users with location data
+  const mumbaiCity = await prisma.city.findFirst({
+    where: { name: 'Mumbai' },
+    include: { state: true }
+  });
+
+  const losAngelesCity = await prisma.city.findFirst({
+    where: { name: 'Los Angeles' },
+    include: { state: true }
+  });
+
+  const hoChiMinhCity = await prisma.city.findFirst({
+    where: { name: 'Ho Chi Minh City' },
+    include: { state: true }
+  });
+
   await prisma.user.upsert({
     where: { email: 'admin@sunshare.com' },
     update: {},
@@ -37,33 +67,61 @@ async function main() {
       password: adminPassword,
       userRole: 1,
       phoneNumber: '+1234567890',
+      countryId: vietnamCountry?.id,
+      stateId: hoChiMinhCity?.stateId,
+      cityId: hoChiMinhCity?.id,
+      address1: '123 Admin Street',
+      zipcode: '700000',
       status: 1 // Active
     }
   });
   console.log('✅ Admin user created: admin@sunshare.com (password: admin123)');
 
-  // Create sample users
+
+
   const sampleUsers = [
     {
       firstName: 'John',
       lastName: 'Manager',
       email: 'manager@sunshare.com',
       userRole: 2,
-      phoneNumber: '+1234567891'
+      phoneNumber: '+1234567891',
+      countryId: indiaCountry?.id,
+      stateId: mumbaiCity?.stateId,
+      cityId: mumbaiCity?.id,
+      address1: '456 Manager Avenue',
+      zipcode: '400001'
     },
     {
       firstName: 'Test',
       lastName: 'User',
       email: 'wrapcode.info@gmail.com',
       userRole: 3,
-      phoneNumber: '+1234567892'
+      phoneNumber: '+1234567892',
+      countryId: usaCountry?.id,
+      stateId: losAngelesCity?.stateId,
+      cityId: losAngelesCity?.id,
+      address1: '789 Test Boulevard',
+      zipcode: '90210'
+    },
+    {
+      firstName: 'Nguyen',
+      lastName: 'Van Minh',
+      email: 'vietnam.user@sunshare.com',
+      userRole: 3,
+      phoneNumber: '+84901234567',
+      countryId: vietnamCountry?.id,
+      stateId: hoChiMinhCity?.stateId,
+      cityId: hoChiMinhCity?.id,
+      address1: '123 Nguyen Hue Street',
+      zipcode: '700000'
     }
   ];
 
   console.log('👥 Creating sample users...');
   const defaultPassword = await bcrypt.hash('password123', 12);
   const testPassword = await bcrypt.hash('123456', 12);
-  
+
   for (const userData of sampleUsers) {
     const password = userData.email === 'wrapcode.info@gmail.com' ? testPassword : defaultPassword;
     await prisma.user.upsert({

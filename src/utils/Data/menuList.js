@@ -106,9 +106,9 @@ export const menuList = [
             {
                 id: 1,
                 name: "users",
-                path: "/admin/payment/list",
+                path: "/admin/users/list",
                 subdropdownMenu: false
-            },
+            }
         ]
     },
     {
