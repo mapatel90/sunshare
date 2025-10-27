@@ -374,6 +374,7 @@
     "rolesManagement": "Quản lý vai trò",
     "addRole": "Thêm vai trò",
     "roleName": "Tên vai trò",
+    "roleNameRequired": "Tên vai trò là bắt buộc",
     "roleManagement": "Quản lý vai trò",
     "selectStatus": "Chọn trạng thái",
     "totalRoles": "tổng vai trò",

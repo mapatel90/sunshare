@@ -1,5 +1,5 @@
 import React from "react";
-import Role from "@/components/role/role";
+import Role from "@/components/role/Role";
 
 const page = () => {
     return (

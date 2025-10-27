@@ -3,13 +3,77 @@ import React from "react";
 import RoleTable from "./RoleTable";
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { apiPost, apiPut } from "@/lib/api";
 
 const page = () => {
   const { lang } = useLanguage();
   const [openModal, setOpenModal] = useState(false);
+  const [modalMode, setModalMode] = useState("add"); // "add" or "edit"
+  const [editingRole, setEditingRole] = useState(null);
+  const [roleName, setRoleName] = useState("");
+  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
-  const handleOpen = () => setOpenModal(true);
-  const handleClose = () => setOpenModal(false);
+  const handleOpen = () => {
+    setModalMode("add");
+    setEditingRole(null);
+    setRoleName("");
+    setStatus("");
+    setError("");
+    setOpenModal(true);
+  };
+
+  const handleEdit = (role) => {
+    setModalMode("edit");
+    setEditingRole(role);
+    setRoleName(role.name);
+    setStatus(role.status.toString());
+    setError("");
+    setOpenModal(true);
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+    setModalMode("add");
+    setEditingRole(null);
+    setRoleName("");
+    setStatus("");
+    setError("");
+  };
+
+  const handleSubmit = async () => {
+    if (!roleName.trim()) {
+      setError(lang("roles.roleNameRequired") || "Role name is required");
+      return;
+    }
+
+    try {
+      let response;
+      if (modalMode === "add") {
+        response = await apiPost("/api/roles/", {
+          name: roleName,
+          status: status === "" ? 1 : parseInt(status),
+        });
+      } else {
+        // Edit mode
+        response = await apiPut(`/api/roles/${editingRole.id}`, {
+          name: roleName,
+          status: parseInt(status),
+        });
+      }
+
+      if (response.success) {
+        handleClose();
+        setRefresh(!refresh); // ✅ Update table list
+      } else {
+        setError(response.message || "Something went wrong");
+      }
+    } catch (err) {
+      console.error(modalMode === "add" ? "Role insert error:" : "Role update error:", err);
+      setError("Server error");
+    }
+  };
 
   return (
     <div className="content-area" data-scrollbar-target="#psScrollbarInit">
@@ -28,7 +92,7 @@ const page = () => {
 
             <div className="main-content">
               <div className="row">
-                <RoleTable />
+                <RoleTable refresh={refresh} onEdit={handleEdit} />
               </div>
             </div>
 
@@ -84,7 +148,7 @@ const page = () => {
                         color: "#333",
                       }}
                     >
-                      {lang("roles.addRole")}
+                      {modalMode === "add" ? lang("roles.addRole") : `${lang("common.edit")} ${lang("roles.role")}`}
                     </h5>
                     <button
                       className="btn-close"
@@ -127,6 +191,8 @@ const page = () => {
                         type="text"
                         placeholder={lang("roles.roleName")}
                         className="form-control"
+                        value={roleName}
+                        onChange={(e) => setRoleName(e.target.value)}
                         style={{
                           width: "100%",
                           padding: "10px 12px",
@@ -135,6 +201,9 @@ const page = () => {
                           fontSize: "14px",
                         }}
                       />
+                       {error && (
+                        <small style={{ color: "red" }}>{error}</small>
+                      )}
                     </div>
 
                     <div className="mb-3">
@@ -153,6 +222,8 @@ const page = () => {
                       <select
                         id="roleStatus"
                         className="form-select"
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
                         style={{
                           width: "100%",
                           padding: "10px 12px",
@@ -163,8 +234,8 @@ const page = () => {
                         }}
                       >
                         <option value="">{lang("roles.selectStatus")}</option>
-                        <option value="active">{lang("common.active")}</option>
-                        <option value="inactive">{lang("common.inactive")}</option>
+                        <option value="1">{lang("common.active")}</option>
+                        <option value="0">{lang("common.inactive")}</option>
                       </select>
                     </div>
                   </div>
@@ -195,6 +266,7 @@ const page = () => {
                     </button>
                     <button
                       className="btn btn-primary"
+                      onClick={handleSubmit}
                       style={{
                         backgroundColor: "#007bff",
                         border: "none",
@@ -205,7 +277,7 @@ const page = () => {
                         cursor: "pointer",
                       }}
                     >
-                      {lang("common.save")}
+                      {modalMode === "add" ? lang("common.save") : lang("common.update")}
                     </button>
                   </div>
                 </div>

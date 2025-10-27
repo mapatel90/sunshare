@@ -295,36 +295,36 @@ export const menuList = [
                 path: "/admin/settings/role",
                 subdropdownMenu: false
             },
-            {
-                id: 4,
-                name: "Tags",
-                path: "/admin/settings/tags",
-                subdropdownMenu: false
-            },
+            // {
+            //     id: 4,
+            //     name: "Tags",
+            //     path: "/admin/settings/tags",
+            //     subdropdownMenu: false
+            // },
             {
                 id: 5,
                 name: "Email",
                 path: "/admin/settings/email",
                 subdropdownMenu: false
             },
-            {
-                id: 6,
-                name: "Tasks",
-                path: "/admin/settings/tasks",
-                subdropdownMenu: false
-            },
-            {
-                id: 7,
-                name: "Leads",
-                path: "/admin/settings/leads",
-                subdropdownMenu: false
-            },
-            {
-                id: 8,
-                name: "Support",
-                path: "/admin/settings/support",
-                subdropdownMenu: false
-            },
+            // {
+            //     id: 6,
+            //     name: "Tasks",
+            //     path: "/admin/settings/tasks",
+            //     subdropdownMenu: false
+            // },
+            // {
+            //     id: 7,
+            //     name: "Leads",
+            //     path: "/admin/settings/leads",
+            //     subdropdownMenu: false
+            // },
+            // {
+            //     id: 8,
+            //     name: "Support",
+            //     path: "/admin/settings/support",
+            //     subdropdownMenu: false
+            // },
             {
                 id: 9,
                 name: "Finance",

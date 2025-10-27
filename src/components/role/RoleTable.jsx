@@ -1,30 +1,50 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Table from "@/components/shared/table/Table";
-import { apiGet } from "@/lib/api";
+import { apiGet, apiDelete } from "@/lib/api";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const RoleTable = () => {
+const RoleTable = ({ refresh = false, onEdit }) => {
   const { lang } = useLanguage();
   const [rolesData, setRolesData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [localRefresh, setLocalRefresh] = useState(false);
+
+  const fetchRoles = async () => {
+    try {
+      setLoading(true);
+      const response = await apiGet("/api/roles/");
+      if (response.success && response.data.roles) {
+        setRolesData(response.data.roles);
+      }
+    } catch (error) {
+      console.error("Error fetching roles:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (roleId) => {
+    if (!window.confirm(lang("messages.confirmDelete") || "Are you sure you want to delete this role?")) {
+      return;
+    }
+
+    try {
+      const response = await apiDelete(`/api/roles/${roleId}`);
+      if (response.success) {
+        setLocalRefresh(!localRefresh);
+      } else {
+        alert(response.message || "Failed to delete role");
+      }
+    } catch (error) {
+      console.error("Error deleting role:", error);
+      alert("Failed to delete role");
+    }
+  };
 
   useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        setLoading(true);
-        const response = await apiGet("/api/roles/");
-        if (response.success && response.data.roles) {
-          setRolesData(response.data.roles);
-        }
-      } catch (error) {
-        console.error("Error fetching roles:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchRoles();
-  }, []);
+  }, [refresh, localRefresh]);
 
   const columns = [
     {
@@ -49,7 +69,7 @@ const RoleTable = () => {
         );
       },
       meta: {
-        className: "role-name-td",
+        headerClassName: "width-40",
       },
     },
     {
@@ -58,8 +78,16 @@ const RoleTable = () => {
       cell: (info) => {
         const status = info.getValue();
         const statusConfig = {
-          1: { label: lang("common.active"), class: "badge-success", bgColor: "#17c666" },
-          0: { label: lang("common.inactive"), class: "badge-danger", bgColor: "#ea4d4d" },
+          1: {
+            label: lang("common.active"),
+            class: "badge-success",
+            bgColor: "#17c666",
+          },
+          0: {
+            label: lang("common.inactive"),
+            class: "badge-danger",
+            bgColor: "#ea4d4d",
+          },
         };
         const config = statusConfig[status] || statusConfig[0];
         return (
@@ -79,26 +107,31 @@ const RoleTable = () => {
     {
       accessorKey: "actions",
       header: () => lang("table.actions"),
-      cell: (info) => (
-        <div className="d-flex gap-2" style={{ flexWrap: "nowrap" }}>
-          <button
-            type="button"
-            className="btn btn-sm btn-primary"
-            style={{ minWidth: "70px" }}
-          >
-            {lang("common.edit")}
-          </button>
-          <button
-            type="button"
-            className="btn btn-sm btn-danger"
-            style={{ minWidth: "70px" }}
-          >
-            {lang("common.delete")}
-          </button>
-        </div>
-      ),
+      cell: (info) => {
+        const row = info.row.original;
+        return (
+          <div className="d-flex gap-2" style={{ flexWrap: "nowrap" }}>
+            <button
+              type="button"
+              className="btn btn-sm btn-primary"
+              style={{ minWidth: "70px" }}
+              onClick={() => onEdit && onEdit(row)}
+            >
+              {lang("common.edit")}
+            </button>
+            <button
+              type="button"
+              className="btn btn-sm btn-danger"
+              style={{ minWidth: "70px" }}
+              onClick={() => handleDelete(row.id)}
+            >
+              {lang("common.delete")}
+            </button>
+          </div>
+        );
+      },
       meta: {
-        className: "actions-column",
+        disableSort: true,
       },
     },
   ];
