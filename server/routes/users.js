@@ -31,20 +31,25 @@ router.get('/', authenticateToken, async (req, res) => {
     const [users, total] = await Promise.all([
       prisma.user.findMany({
         where,
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
-          email: true,
-          phoneNumber: true,
-          userRole: true,
-          status: true,
-          createdAt: true,
-          updatedAt: true
+        // select: {
+        //   id: true,
+        //   firstName: true,
+        //   lastName: true,
+        //   email: true,
+        //   phoneNumber: true,
+        //   userRole: true,
+        //   status: true,
+        //   createdAt: true,
+        //   updatedAt: true
+        // },
+        include: {
+          city: true,
+          state: true,
+          country: true
         },
         skip: parseInt(offset),
         take: parseInt(limit),
-        orderBy: { createdAt: 'desc' }
+        orderBy: { id: 'asc' }
       }),
       prisma.user.count({ where })
     ]);
@@ -71,6 +76,99 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
+// Create new user
+router.post('/', authenticateToken, async (req, res) => {
+  try {
+    const {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      password,
+      userRole,
+      address1,
+      address2,
+      cityId,
+      stateId,
+      countryId,
+      zipcode,
+      status = 0
+    } = req.body;
+
+    // Validate required fields
+    if (!firstName || !lastName || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'First name, last name, email, and password are required'
+      });
+    }
+
+    // Check if email already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: 'Email already in use'
+      });
+    }
+
+    // Hash password
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Create user
+    const newUser = await prisma.user.create({
+      data: {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        password: hashedPassword,
+        userRole: userRole || 3,
+        address1,
+        address2,
+        cityId: cityId ? parseInt(cityId) : null,
+        stateId: stateId ? parseInt(stateId) : null,
+        countryId: countryId ? parseInt(countryId) : null,
+        zipcode,
+        status: parseInt(status)
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        phoneNumber: true,
+        userRole: true,
+        address1: true,
+        address2: true,
+        cityId: true,
+        stateId: true,
+        countryId: true,
+        zipcode: true,
+        status: true,
+        createdAt: true
+      }
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'User created successfully',
+      data: newUser
+    });
+
+  } catch (error) {
+    console.error('Create user error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
+});
+
 // Get user by ID
 router.get('/:id', authenticateToken, async (req, res) => {
   try {
@@ -87,13 +185,31 @@ router.get('/:id', authenticateToken, async (req, res) => {
         userRole: true,
         address1: true,
         address2: true,
-        city: true,
-        state: true,
-        country: true,
+        cityId: true,
+        stateId: true,
+        countryId: true,
         zipcode: true,
         status: true,
         createdAt: true,
-        updatedAt: true
+        updatedAt: true,
+        city: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        state: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        country: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
       }
     });
 
@@ -130,9 +246,9 @@ router.put('/:id', authenticateToken, async (req, res) => {
       userRole,
       address1,
       address2,
-      city,
-      state,
-      country,
+      cityId,
+      stateId,
+      countryId,
       zipcode,
       status
     } = req.body;
@@ -171,12 +287,12 @@ router.put('/:id', authenticateToken, async (req, res) => {
         ...(lastName && { lastName }),
         ...(email && { email }),
         ...(phoneNumber !== undefined && { phoneNumber }),
-        ...(userRole && { userRole }),
+        ...(userRole && { userRole: parseInt(userRole) }),
         ...(address1 !== undefined && { address1 }),
         ...(address2 !== undefined && { address2 }),
-        ...(city !== undefined && { city }),
-        ...(state !== undefined && { state }),
-        ...(country !== undefined && { country }),
+        ...(cityId !== undefined && { cityId: cityId ? parseInt(cityId) : null }),
+        ...(stateId !== undefined && { stateId: stateId ? parseInt(stateId) : null }),
+        ...(countryId !== undefined && { countryId: countryId ? parseInt(countryId) : null }),
         ...(zipcode !== undefined && { zipcode }),
         ...(status !== undefined && { status: parseInt(status) })
       },
@@ -189,12 +305,30 @@ router.put('/:id', authenticateToken, async (req, res) => {
         userRole: true,
         address1: true,
         address2: true,
-        city: true,
-        state: true,
-        country: true,
+        cityId: true,
+        stateId: true,
+        countryId: true,
         zipcode: true,
         status: true,
-        updatedAt: true
+        updatedAt: true,
+        city: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        state: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        country: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
       }
     });
 

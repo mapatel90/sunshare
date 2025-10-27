@@ -193,6 +193,8 @@
     "recaptcha": "reCAPTCHA",
     "rolesmanagement": "Roles Management",
     "users": "Users",
+    "usersview": "Users View",
+    "userscreate": "Users Create",
     "usermanagement": "User Management",
     "support": "Support",
     "authentication": "Authentication",

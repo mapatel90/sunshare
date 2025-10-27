@@ -194,6 +194,8 @@
     "rolesmanagement": "Quản lý vai trò",
     "usermanagement": "Quản lý người dùng",
     "users": "Người dùng",
+    "usersview": "Xem người dùng",
+    "userscreate": "Tạo người dùng",
     "support": "Hỗ trợ",
     "authentication": "Xác thực",
     "login": "Đăng nhập",
