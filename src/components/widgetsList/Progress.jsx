@@ -3,7 +3,7 @@ import React from 'react'
 import Link from 'next/link';
 import CardHeader from '@/components/shared/CardHeader'
 import CircleProgress from '@/components/shared/CircleProgress';
-import { teamMembersList } from '@/utils/fackData/teamMembersList'
+import { teamMembersList } from '@/utils/Data/teamMembersList'
 import CardLoader from '@/components/shared/CardLoader';
 import useCardTitleActions from '@/hooks/useCardTitleActions';
 import Image from 'next/image';

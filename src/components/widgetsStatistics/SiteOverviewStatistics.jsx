@@ -1,6 +1,6 @@
 import React from 'react'
 import { FiMoreVertical } from 'react-icons/fi'
-import { crmStatisticsData } from '@/utils/fackData/crmStatisticsData'
+import { crmStatisticsData } from '@/utils/Data/crmStatisticsData'
 import getIcon from '@/utils/getIcon'
 import Link from 'next/link'
 

@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import dynamic from 'next/dynamic'
-import { siteOverviewData } from '@/utils/fackData/siteOverviewData'
+import { siteOverviewData } from '@/utils/Data/siteOverviewData'
 import { siteOverviewChartOption } from '@/utils/chartsLogic/siteOverviewChartOption'
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 const SiteOverviewChart = () => {

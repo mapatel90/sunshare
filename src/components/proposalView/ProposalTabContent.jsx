@@ -1,8 +1,8 @@
 'use client'
 import React, { useState } from 'react'
 import { FiAirplay, FiAnchor, FiArchive, FiBook, FiEdit, FiFacebook, FiGithub, FiInstagram, FiLinkedin, FiPlus, FiSend, FiSettings, FiTwitter } from 'react-icons/fi'
-import { servicesData } from '@/utils/fackData/servicesData'
-import { accordionData } from '@/utils/fackData/accordionData'
+import { servicesData } from '@/utils/Data/servicesData'
+import { accordionData } from '@/utils/Data/accordionData'
 import JoditEditor from 'jodit-react'
 import useJoditConfig from '@/hooks/useJoditConfig'
 

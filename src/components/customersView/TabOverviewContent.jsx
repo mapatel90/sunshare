@@ -1,6 +1,6 @@
 import React from 'react'
 import { FiAlertTriangle } from 'react-icons/fi'
-import { projectsData } from '@/utils/fackData/projectsData'
+import { projectsData } from '@/utils/Data/projectsData'
 import ImageGroup from '@/components/shared/ImageGroup'
 import HorizontalProgress from '@/components/shared/HorizontalProgress';
 

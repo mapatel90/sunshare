@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { tasksListData } from '@/utils/fackData/tasksListData';
+import { tasksListData } from '@/utils/Data/tasksListData';
 import { FiStar } from 'react-icons/fi';
 import Dropdown from '@/components/shared/Dropdown';
 import PerfectScrollbar from "react-perfect-scrollbar";

@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { FiStar, FiTrash2 } from 'react-icons/fi';
-import { notesData } from '@/utils/fackData/notesData';
+import { notesData } from '@/utils/Data/notesData';
 import { BsCircleFill } from 'react-icons/bs';
 import NotesHeader from './NotesHeader';
 import PerfectScrollbar from "react-perfect-scrollbar";

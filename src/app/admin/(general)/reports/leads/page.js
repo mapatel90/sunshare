@@ -8,7 +8,7 @@ import ProjectLeads from '@/components/widgetsList/ProjectLeads'
 import ScheduleTwo from '@/components/widgetsList/ScheduleTwo'
 import LeadsStatistics from '@/components/widgetsStatistics/LeadsStatistics'
 import LeadsStatusTwo from '@/components/widgetsTables/LeadsStatusTwo'
-import { upcomingEventsData } from '@/utils/fackData/upcomingEventsData'
+import { upcomingEventsData } from '@/utils/Data/upcomingEventsData'
 import React from 'react'
 
 const page = () => {

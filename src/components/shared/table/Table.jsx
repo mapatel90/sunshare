@@ -5,7 +5,7 @@ import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa'
 import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 
 const Table = ({data, columns}) => {
-    // const [data] = useState([...fackData])
+    // const [data] = useState([...Data])
     const [sorting, setSorting] = useState([])
     const [globalFilter, setGlobalFilter] = useState('')
     const [pagination, setPagination] = useState({

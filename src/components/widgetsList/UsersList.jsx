@@ -4,7 +4,7 @@ import CardHeader from '@/components/shared/CardHeader';
 import useCardTitleActions from '@/hooks/useCardTitleActions';
 import {FiEye, FiScissors, FiShare2, FiX } from 'react-icons/fi';
 import CardLoader from '@/components/shared/CardLoader';
-import { userList } from '@/utils/fackData/userList';
+import { userList } from '@/utils/Data/userList';
 import Dropdown from '@/components/shared/Dropdown';
 import Image from 'next/image';
 

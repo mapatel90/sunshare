@@ -5,7 +5,7 @@ import CardHeader from '@/components/shared/CardHeader'
 import useCardTitleActions from '@/hooks/useCardTitleActions'
 import CardLoader from '@/components/shared/CardLoader'
 import { FiPlus, FiUserPlus } from 'react-icons/fi'
-import { teamMembersList } from '@/utils/fackData/teamMembersList'
+import { teamMembersList } from '@/utils/Data/teamMembersList'
 import Image from 'next/image'
 
 

@@ -5,7 +5,7 @@ import { FiAlertOctagon, FiArchive, FiClock, FiEdit3, FiEye, FiMoreHorizontal, F
 import Dropdown from '@/components/shared/Dropdown';
 import SelectDropdown from '@/components/shared/SelectDropdown';
 import getIcon from '@/utils/getIcon';
-import { leadTableData } from '@/utils/fackData/leadTableData';
+import { leadTableData } from '@/utils/Data/leadTableData';
 
 
 const actions = [

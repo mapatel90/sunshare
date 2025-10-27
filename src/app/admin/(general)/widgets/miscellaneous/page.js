@@ -15,7 +15,7 @@ import SalesMiscellaneous from '@/components/widgetsMiscellaneous/SalesMiscellan
 import CommentMiscellaneous from '@/components/widgetsMiscellaneous/CommentMiscellaneous'
 import StatusMiscellaneous from '@/components/widgetsMiscellaneous/StatusMiscellaneous'
 import Footer from '@/components/shared/Footer'
-import { productsData } from '@/utils/fackData/productsData'
+import { productsData } from '@/utils/Data/productsData'
 
 const page = () => {
     return (

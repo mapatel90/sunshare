@@ -1,6 +1,6 @@
 import React from 'react'
-import { developementConnectionsData } from '@/utils/fackData/developementConnectionsData';
-import { socialConnectionsData } from '@/utils/fackData/socialConnectionsData';
+import { developementConnectionsData } from '@/utils/Data/developementConnectionsData';
+import { socialConnectionsData } from '@/utils/Data/socialConnectionsData';
 
 
 const TabConnections = () => {

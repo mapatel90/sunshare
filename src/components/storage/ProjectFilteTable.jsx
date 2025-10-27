@@ -3,7 +3,7 @@ import { FiEye, FiScissors, FiShare2, FiX } from 'react-icons/fi'
 import ImageGroup from '@/components/shared/ImageGroup'
 import Dropdown from '@/components/shared/Dropdown'
 import Pagination from '@/components/shared/Pagination'
-import { storageProjectData } from '@/utils/fackData/storageData'
+import { storageProjectData } from '@/utils/Data/storageData'
 import { confirmDelete } from '@/utils/confirmDelete'
 import Link from 'next/link'
 

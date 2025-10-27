@@ -2,7 +2,7 @@ import React from 'react'
 import CardHeader from '@/components/shared/CardHeader'
 import Pagination from '@/components/shared/Pagination'
 import HorizontalProgress from '@/components/shared/HorizontalProgress'
-import { projectsData } from '@/utils/fackData/projectsData'
+import { projectsData } from '@/utils/Data/projectsData'
 import { FiBell, FiClock, FiGlobe, FiPrinter } from 'react-icons/fi'
 
 const ProjectTracker = () => {

@@ -50,7 +50,7 @@ export const LanguageProvider = ({ children }) => {
   };
 
   // Get translation for a given key
-  const t = (key, defaultValue = key) => {
+  const lang = (key, defaultValue = key) => {
     const keys = key.split('.');
     let translation = translations[currentLanguage];
     
@@ -77,7 +77,7 @@ export const LanguageProvider = ({ children }) => {
   const value = {
     currentLanguage,
     changeLanguage,
-    t,
+    lang,
     languages: LANGUAGES,
     currentLanguageInfo: LANGUAGES[currentLanguage]
   };

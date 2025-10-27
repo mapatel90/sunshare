@@ -1,5 +1,5 @@
 import React from 'react';
-import { reportSalesStatisticsData } from '@/utils/fackData/reportSalesStatisticsData';
+import { reportSalesStatisticsData } from '@/utils/Data/reportSalesStatisticsData';
 import getIcon from '@/utils/getIcon';
 import Link from 'next/link';
 

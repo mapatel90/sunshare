@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { FiBellOff, FiEyeOff, FiFlag, FiMoreHorizontal, FiSlash } from 'react-icons/fi';
-import { tasksCommentsData } from '../utils/fackData/tasksListData';
+import { tasksCommentsData } from '../utils/Data/tasksListData';
 import Dropdown from './shared/Dropdown';
 const Comments = () => {
     return (

@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import SelectDropdown from '@/components/shared/SelectDropdown'
-import { currencyOptionsData } from '@/utils/fackData/currencyOptionsData'
+import { currencyOptionsData } from '@/utils/Data/currencyOptionsData'
 import { FiCamera, FiInfo } from 'react-icons/fi'
 import { BsCreditCardFill, BsPaypal } from 'react-icons/bs'
 import { FaCcAmex, FaCcDinersClub, FaCcDiscover, FaCcJcb, FaCcMastercard, FaCcVisa } from 'react-icons/fa6'

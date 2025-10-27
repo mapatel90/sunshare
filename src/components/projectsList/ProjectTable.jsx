@@ -4,6 +4,8 @@ import Table from '@/components/shared/table/Table';
 import { FiAlertOctagon, FiArchive, FiClock, FiEdit3, FiEye, FiMoreHorizontal, FiPrinter, FiTrash2 } from 'react-icons/fi'
 import Dropdown from '@/components/shared/Dropdown';
 import { apiGet } from '@/lib/api';
+import SelectDropdown from '@/components/shared/SelectDropdown';
+import { projectTableData } from '@/utils/Data/projectTableData';
 
 const actions = [
     { label: "Edit", icon: <FiEdit3 /> },

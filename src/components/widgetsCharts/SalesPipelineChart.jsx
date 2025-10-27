@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
 import CardHeader from '@/components/shared/CardHeader'
 import { salesPipelineChartOption } from '@/utils/chartsLogic/salesPipelineChartOption'
-import { salesPipelineData } from '@/utils/fackData/salesPipelineData'
+import { salesPipelineData } from '@/utils/Data/salesPipelineData'
 import CardLoader from '@/components/shared/CardLoader'
 import useCardTitleActions from '@/hooks/useCardTitleActions'
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })

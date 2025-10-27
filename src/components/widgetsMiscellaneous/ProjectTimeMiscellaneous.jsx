@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import CircleProgress from '@/components/shared/CircleProgress';
-import { projectsData } from '@/utils/fackData/projectsData';
+import { projectsData } from '@/utils/Data/projectsData';
 
 const ProjectTimeMiscellaneous = () => {
     const data = projectsData.timeSheetsProjects

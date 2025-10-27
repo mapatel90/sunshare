@@ -1,7 +1,7 @@
 import React from 'react'
 import { FiCalendar, FiX } from 'react-icons/fi'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { upcomingScheduleList } from '@/utils/fackData/upcomingScheduleList';
+import { upcomingScheduleList } from '@/utils/Data/upcomingScheduleList';
 import ImageGroup from '@/components/shared/ImageGroup';
 
 const CalenderSidebar = ({ selectedCategories, handleCategoryChange, handleAllCategory, selectAll,  sidebarOpen, setSidebarOpen, handleEventBtnClick  }) => {

@@ -6,7 +6,7 @@ import useJoditConfig from '@/hooks/useJoditConfig';
 import ComposeMailFooter from './ComposeMailFooter';
 import ComposeMailForm from './ComposeMailForm';
 import AccordionItem from './AccordionItem';
-import { emailList } from '@/utils/fackData/emailList';
+import { emailList } from '@/utils/Data/emailList';
 import { confirmDelete } from '@/utils/confirmDelete';
 import topTost from '@/utils/topTost';
 import PerfectScrollbar from "react-perfect-scrollbar";

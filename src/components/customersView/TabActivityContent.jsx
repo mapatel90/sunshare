@@ -1,6 +1,6 @@
 import React from 'react'
 import { FiCheckCircle, FiMoreHorizontal, FiX } from 'react-icons/fi'
-import { profileActivityData } from '@/utils/fackData/profileActivityData'
+import { profileActivityData } from '@/utils/Data/profileActivityData'
 import { ActivityListItem } from '../widgetsList/ActivityTwo';
 
 const logData = [
