@@ -69,7 +69,8 @@ const RoleTable = ({ refresh = false, onEdit }) => {
         );
       },
       meta: {
-        headerClassName: "width-40",
+        headerClassName: "w-40",
+        className: "role-name-td",
       },
     },
     {
@@ -102,6 +103,9 @@ const RoleTable = ({ refresh = false, onEdit }) => {
           </span>
         );
       },
+      meta: {
+        headerClassName: "w-40"
+      },
     },
 
     {
@@ -131,7 +135,8 @@ const RoleTable = ({ refresh = false, onEdit }) => {
         );
       },
       meta: {
-        disableSort: true,
+        headerClassName: "w-20",
+        className: "actions-column",
       },
     },
   ];
