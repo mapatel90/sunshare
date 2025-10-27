@@ -49,6 +49,7 @@ const RoleTable = () => {
         );
       },
       meta: {
+        headerClassName: "w-40",
         className: "role-name-td",
       },
     },
@@ -74,6 +75,9 @@ const RoleTable = () => {
           </span>
         );
       },
+      meta: {
+        headerClassName: "w-40"
+      },
     },
 
     {
@@ -98,6 +102,7 @@ const RoleTable = () => {
         </div>
       ),
       meta: {
+        headerClassName: "w-20",
         className: "actions-column",
       },
     },
