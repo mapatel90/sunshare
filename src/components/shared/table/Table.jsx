@@ -77,7 +77,7 @@ const Table = ({data, columns}) => {
                                                 </tr>
                                             ))}
                                         </thead>
-                                        {/* <tbody>
+                                        <tbody>
                                             {
                                                 table.getRowModel().rows.map((row) => (
                                                     <tr key={row.id} className='single-item chat-single-item'>
@@ -96,7 +96,7 @@ const Table = ({data, columns}) => {
                                                     </tr>
                                                 ))
                                             }
-                                        </tbody> */}
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>

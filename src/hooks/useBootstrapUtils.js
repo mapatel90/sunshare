@@ -1,9 +1,16 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
+
+// Cache bootstrap import to prevent re-importing on every navigation
+let bootstrapLoaded = false;
 
 const useBootstrapUtils = (pathName) => {
     useEffect(() => {
-        import('bootstrap/dist/js/bootstrap.bundle.min')
+        if (!bootstrapLoaded) {
+            import('bootstrap/dist/js/bootstrap.bundle.min').then(() => {
+                bootstrapLoaded = true;
+            });
+        }
         
         let handleResize;
 

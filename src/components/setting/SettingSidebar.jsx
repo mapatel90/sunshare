@@ -11,6 +11,7 @@ import { useLanguage } from '@/contexts/LanguageContext'
 const navItems = [
     { label: "menu.general", path: "/admin/settings/general", icon: "feather-airplay" },
     { label: "menu.seo", path: "/admin/settings/seo", icon: "feather-search" },
+    { label: "menu.rolesmanagement", path: "/admin/settings/role", icon: "feather-shield" },
     { label: "menu.tags", path: "/admin/settings/tags", icon: "feather-tag" },
     { label: "menu.email", path: "/admin/settings/email", icon: "feather-mail" },
     { label: "menu.tasks", path: "/admin/settings/tasks", icon: "feather-check-circle" },
@@ -21,8 +22,7 @@ const navItems = [
     { label: "menu.customers", path: "/admin/settings/customers", icon: "feather-users" },
     { label: "menu.localization", path: "/admin/settings/localization", icon: "feather-globe" },
     { label: "menu.recaptcha", path: "/admin/settings/recaptcha", icon: "feather-shield" },
-    { label: "menu.miscellaneous", path: "/admin/settings/miscellaneous", icon: "feather-cast" },
-    { label: "menu.rolesmanagement", path: "/admin/settings/role", icon: "feather-shield" }
+    { label: "menu.miscellaneous", path: "/admin/settings/miscellaneous", icon: "feather-cast" }
 ]
 
 const SettingSidebar = () => {

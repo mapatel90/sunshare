@@ -372,5 +372,17 @@
     "resources": "Resources",
     "timeline": "Timeline",
     "overview": "Overview"
+  },
+  "roles": {
+    "rolesManagement": "Roles Management",
+    "addRole": "Add Role",
+    "roleName": "Role Name",
+    "roleManagement": "Role Management",
+    "selectStatus": "Select Status",
+    "totalRoles": "total roles",
+    "roleId": "Role ID",
+    "role": "Role",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At"
   }
 }
