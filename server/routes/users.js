@@ -43,6 +43,7 @@ router.get('/', authenticateToken, async (req, res) => {
         //   updatedAt: true
         // },
         include: {
+          // role: true,
           city: true,
           state: true,
           country: true
@@ -127,7 +128,8 @@ router.post('/', authenticateToken, async (req, res) => {
         email,
         phoneNumber,
         password: hashedPassword,
-        userRole: userRole || 3,
+        // ensure userRole is saved as integer
+        userRole: userRole ? parseInt(userRole) : 3,
         address1,
         address2,
         cityId: cityId ? parseInt(cityId) : null,
