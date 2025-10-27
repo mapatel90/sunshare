@@ -26,7 +26,10 @@
     "test:db": "node src/lib/test-db-connection.js",
     "test:backend": "node test-backend-auth.js",
     "check:roles": "node src/lib/check-roles.js",
-    "insert:roles": "node src/lib/insert-roles.js"
+    "insert:roles": "node src/lib/insert-roles.js",
+    "insert:locations": "node scripts/insert-locations.js",
+    "verify:locations": "node scripts/verify-locations.js",
+    "verify:vietnam": "node scripts/verify-vietnam.js"
   },
   "dependencies": {
     "@fullcalendar/daygrid": "^6.1.15",
