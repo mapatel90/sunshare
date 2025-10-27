@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Table from "@/components/shared/table/Table";
 import { apiGet, apiDelete } from "@/lib/api";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { FiTrash2, FiEdit3 } from "react-icons/fi";
 
 const RoleTable = ({ refresh = false, onEdit }) => {
   const { lang } = useLanguage();
@@ -25,7 +26,12 @@ const RoleTable = ({ refresh = false, onEdit }) => {
   };
 
   const handleDelete = async (roleId) => {
-    if (!window.confirm(lang("messages.confirmDelete") || "Are you sure you want to delete this role?")) {
+    if (
+      !window.confirm(
+        lang("messages.confirmDelete") ||
+          "Are you sure you want to delete this role?"
+      )
+    ) {
       return;
     }
 
@@ -69,8 +75,7 @@ const RoleTable = ({ refresh = false, onEdit }) => {
         );
       },
       meta: {
-        headerClassName: "w-40",
-        className: "role-name-td",
+        headerClassName: "width-40",
       },
     },
     {
@@ -103,9 +108,6 @@ const RoleTable = ({ refresh = false, onEdit }) => {
           </span>
         );
       },
-      meta: {
-        headerClassName: "w-40"
-      },
     },
 
     {
@@ -115,28 +117,30 @@ const RoleTable = ({ refresh = false, onEdit }) => {
         const row = info.row.original;
         return (
           <div className="d-flex gap-2" style={{ flexWrap: "nowrap" }}>
-            <button
-              type="button"
-              className="btn btn-sm btn-primary"
-              style={{ minWidth: "70px" }}
+            <FiEdit3
+              size={18}
               onClick={() => onEdit && onEdit(row)}
-            >
-              {lang("common.edit")}
-            </button>
-            <button
-              type="button"
-              className="btn btn-sm btn-danger"
-              style={{ minWidth: "70px" }}
+              style={{
+                color: "#007bff",
+                cursor: "pointer",
+                transition: "transform 0.2s ease",
+              }}
+            />
+
+            <FiTrash2
               onClick={() => handleDelete(row.id)}
-            >
-              {lang("common.delete")}
-            </button>
+              size={18}
+              style={{
+                color: "#dc3545",
+                cursor: "pointer",
+                transition: "transform 0.2s ease",
+              }}
+            />
           </div>
         );
       },
       meta: {
-        headerClassName: "w-20",
-        className: "actions-column",
+        disableSort: true,
       },
     },
   ];
