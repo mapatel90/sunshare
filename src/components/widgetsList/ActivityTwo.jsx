@@ -3,7 +3,7 @@ import React from 'react'
 import CardHeader from '@/components/shared/CardHeader';
 import useCardTitleActions from '@/hooks/useCardTitleActions';
 import CardLoader from '@/components/shared/CardLoader';
-import { profileActivityData } from '@/utils/fackData/profileActivityData';
+import { profileActivityData } from '@/utils/Data/profileActivityData';
 import { FiCheck, FiEye, FiMoreVertical } from 'react-icons/fi';
 
 const ActivityTwo = ({ title }) => {

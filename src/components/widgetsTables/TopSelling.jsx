@@ -3,7 +3,7 @@ import React from 'react'
 import CardHeader from '@/components/shared/CardHeader';
 import useCardTitleActions from '@/hooks/useCardTitleActions';
 import CardLoader from '@/components/shared/CardLoader';
-import { productsData } from '@/utils/fackData/productsData';
+import { productsData } from '@/utils/Data/productsData';
 import Image from 'next/image';
 
 const TopSelling = ({ title }) => {

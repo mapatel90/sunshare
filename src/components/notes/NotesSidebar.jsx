@@ -1,6 +1,6 @@
 import React from 'react'
 import { FiArchive, FiBriefcase, FiCast, FiCheckCircle, FiCommand, FiLayers, FiPlus, FiStar, FiTool, FiUser, FiX } from 'react-icons/fi'
-import { notesData } from '@/utils/fackData/notesData'
+import { notesData } from '@/utils/Data/notesData'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 const NotesSidebar = ({ setSelectTab, selectTab, sidebarOpen, setSidebarOpen }) => {

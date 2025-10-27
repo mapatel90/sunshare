@@ -3,7 +3,7 @@ import { FiActivity, FiCalendar, FiClock, FiCodepen, FiDownload, FiExternalLink,
 import ImageGroup from '@/components/shared/ImageGroup'
 import { imageList } from '../projectsView/TabProjectOverview'
 import getIcon from '@/utils/getIcon'
-import { userList } from '@/utils/fackData/userList'
+import { userList } from '@/utils/Data/userList'
 import { BsPatchCheck, BsPatchPlus, BsPatchQuestion } from 'react-icons/bs'
 import topTost from '@/utils/topTost'
 

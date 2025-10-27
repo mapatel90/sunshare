@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { FiCopy, FiDownload, FiEdit2, FiInfo, FiLink2, FiMove, FiScissors, FiShare2, FiTrash2 } from 'react-icons/fi'
 import CloudStorageCard from './CloudStorageCard';
 import RecentFileCard from './RecentFileCard';
-import { cloudStorageData, storageFolderData } from '@/utils/fackData/storageData';
+import { cloudStorageData, storageFolderData } from '@/utils/Data/storageData';
 import FoldersCard from './FoldersCard';
 import ProjectFilteTable from './ProjectFilteTable';
 import StrogeHeader from './StorageHeader';

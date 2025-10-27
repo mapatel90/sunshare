@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import CardHeader from '@/components/shared/CardHeader';
 import useCardTitleActions from '@/hooks/useCardTitleActions';
 import CardLoader from '@/components/shared/CardLoader';
-import { profileActivityData2 } from '@/utils/fackData/profileActivityData';
+import { profileActivityData2 } from '@/utils/Data/profileActivityData';
 import ImageGroup from '@/components/shared/ImageGroup';
 
 const Activity = ({ title }) => {

@@ -8,23 +8,23 @@ import { useLanguage } from '@/contexts/LanguageContext'
 const PageHeader = ({ children }) => {
     const [openSidebar, setOpenSidebar] = useState(false)
     const pathName = usePathname()
-    const { t } = useLanguage()
+    const { lang } = useLanguage()
     let folderName = ""
     let fileName = ""
     if (pathName === "/") {
-        folderName = t('menu.dashboards', 'Dashboard')
-        fileName = t('menu.dashboards', 'Dashboard')
+        folderName = lang('menu.dashboards', 'Dashboard')
+        fileName = lang('menu.dashboards', 'Dashboard')
     } else {
         const pathParts = pathName.split("/")
         // Check if path starts with /admin
         if (pathParts[1] === "admin") {
             const folderKey = pathParts[2] || "dashboards"
             const fileKey = pathParts[3] || ""
-            folderName = t(`menu.${folderKey}`, folderKey)
-            fileName = fileKey ? t(`menu.${fileKey}`, fileKey) : ""
+            folderName = lang(`menu.${folderKey}`, folderKey)
+            fileName = fileKey ? lang(`menu.${fileKey}`, fileKey) : ""
         } else {
-            folderName = t(`menu.${pathParts[1]}`, pathParts[1])
-            fileName = pathParts[2] ? t(`menu.${pathParts[2]}`, pathParts[2]) : ""
+            folderName = lang(`menu.${pathParts[1]}`, pathParts[1])
+            fileName = pathParts[2] ? lang(`menu.${pathParts[2]}`, pathParts[2]) : ""
         }
     }
     return (
@@ -34,7 +34,7 @@ const PageHeader = ({ children }) => {
                     <h5 className="m-b-10 text-capitalize">{folderName}</h5>
                 </div>
                 <ul className="breadcrumb">
-                    <li className="breadcrumb-item"><Link href="/">{t('navigation.home', 'Home')}</Link></li>
+                    <li className="breadcrumb-item"><Link href="/">{lang('navigation.home', 'Home')}</Link></li>
                     <li className="breadcrumb-item text-capitalize">{fileName}</li>
                 </ul>
             </div>
@@ -43,7 +43,7 @@ const PageHeader = ({ children }) => {
                     <div className="d-flex d-md-none">
                         <Link href="#" onClick={() => setOpenSidebar(false)} className="page-header-right-close-toggle">
                             <FiArrowLeft size={16} className="me-2" />
-                            <span>{t('common.back')}</span>
+                            <span>{lang('common.back')}</span>
                         </Link>
                     </div>
                     {children}

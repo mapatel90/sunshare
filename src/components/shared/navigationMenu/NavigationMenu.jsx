@@ -11,7 +11,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 const NavigationManu = () => {
     const { navigationOpen, setNavigationOpen } = useContext(NavigationContext)
-    const { t } = useLanguage()
+    const { lang } = useLanguage()
     const pathName = usePathname()
     useEffect(() => {
         setNavigationOpen(false)
@@ -31,7 +31,7 @@ const NavigationManu = () => {
                     <PerfectScrollbar>
                         <ul className="nxl-navbar">
                             <li className="nxl-item nxl-caption">
-                                <label>{t('navigation.navigation', 'Navigation')}</label>
+                                <label>{lang('navigation.navigation', 'Navigation')}</label>
                             </li>
                             <Menus />
                         </ul>

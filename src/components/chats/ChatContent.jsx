@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import ChartsHeader from './ChatHeader'
-import { chatMessageData } from '@/utils/fackData/chatMessageData'
+import { chatMessageData } from '@/utils/Data/chatMessageData'
 import MessageEditor from './MessageEditor'
 import PerfectScrollbar from "react-perfect-scrollbar";
 import ChatMessage from './ChatMessage';

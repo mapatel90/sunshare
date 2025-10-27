@@ -1,5 +1,5 @@
 import React from 'react'
-import { recentDealData } from '@/utils/fackData/recentDealData'
+import { recentDealData } from '@/utils/Data/recentDealData'
 import CircleProgress from '@/components/shared/CircleProgress'
 import Link from 'next/link'
 

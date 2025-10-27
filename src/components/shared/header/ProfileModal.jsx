@@ -10,7 +10,7 @@ const activePosition = ["Active", "Always", "Bussy", "Inactive", "Disabled", "Cu
 const subscriptionsList = ["Plan", "Billings", "Referrals", "Payments", "Statements", "Subscriptions"]
 const ProfileModal = () => {
     const { user, logout } = useAuth()
-    const { t } = useLanguage()
+    const { lang } = useLanguage()
     console.log("user",user);   
     const handleLogout = (e) => {
         e.preventDefault()
@@ -88,7 +88,7 @@ const ProfileModal = () => {
                 {/* <div className="dropdown-divider"></div> */}
                 <a href="#" className="dropdown-item">
                     <i ><FiUser /></i>
-                    <span>{t('header.profile')}</span>
+                    <span>{lang('header.profile')}</span>
                 </a>
                 {/* <a href="#" className="dropdown-item">
                     <i ><FiActivity /></i>
@@ -109,7 +109,7 @@ const ProfileModal = () => {
                 <div className="dropdown-divider"></div>
                 <a href="#" className="dropdown-item" onClick={handleLogout}>
                     <i> <FiLogOut /></i>
-                    <span>{t('header.logout')}</span>
+                    <span>{lang('header.logout')}</span>
                 </a>
             </div>
         </div>

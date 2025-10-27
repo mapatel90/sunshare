@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react'
 import Link from 'next/link'
 import CardHeader from '@/components/shared/CardHeader'
-import { projectsData } from '@/utils/fackData/projectsData'
+import { projectsData } from '@/utils/Data/projectsData'
 import CardLoader from '@/components/shared/CardLoader'
 import useCardTitleActions from '@/hooks/useCardTitleActions'
 

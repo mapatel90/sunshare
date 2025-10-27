@@ -1,6 +1,6 @@
 'use client'
 import React, { Fragment, useState } from 'react'
-import { userList } from '@/utils/fackData/userList'
+import { userList } from '@/utils/Data/userList'
 import { FiX } from 'react-icons/fi'
 import Dropdown from '@/components/shared/Dropdown'
 import { FiAlertTriangle, FiArchive, FiBellOff, FiCheckCircle, FiMail, FiMoreVertical, FiPhoneCall, FiStar, FiTrash2, FiVideo } from 'react-icons/fi'

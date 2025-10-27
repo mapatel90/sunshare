@@ -5,7 +5,7 @@ import { FiAlertOctagon, FiArchive, FiClock, FiEdit3, FiEye, FiMoreHorizontal, F
 import Dropdown from '@/components/shared/Dropdown';
 import SelectDropdown from '@/components/shared/SelectDropdown';
 import Select from 'react-select'
-import { customersTableData } from '@/utils/fackData/customersTableData';
+import { customersTableData } from '@/utils/Data/customersTableData';
 import Link from 'next/link';
 
 

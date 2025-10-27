@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 import CardHeader from '@/components/shared/CardHeader'
-import { leadsStatusData } from '@/utils/fackData/leadsStatusData'
+import { leadsStatusData } from '@/utils/Data/leadsStatusData'
 import CardLoader from '@/components/shared/CardLoader'
 import useCardTitleActions from '@/hooks/useCardTitleActions'
 import Image from 'next/image'

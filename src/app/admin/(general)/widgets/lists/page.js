@@ -21,7 +21,7 @@ import Upgrade from '@/components/widgetsList/Upgrade'
 import ScheduleTwo from '@/components/widgetsList/ScheduleTwo'
 import InvoiceOverview from '@/components/widgetsList/InvoiceOverview'
 import ProjectLeads from '@/components/widgetsList/ProjectLeads'
-import { upcomingEventsData } from '@/utils/fackData/upcomingEventsData'
+import { upcomingEventsData } from '@/utils/Data/upcomingEventsData'
 import Footer from '@/components/shared/Footer'
 import UsersList from '@/components/widgetsList/UsersList'
 

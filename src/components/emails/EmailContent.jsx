@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import EmailHeader from './EmailHeader'
-import { emailList } from '@/utils/fackData/emailList'
+import { emailList } from '@/utils/Data/emailList'
 import EmailFooter from './EmailFooter'
 import EmailList from './EmailList'
 import PerfectScrollbar from "react-perfect-scrollbar";

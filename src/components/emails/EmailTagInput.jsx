@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { emailList } from '@/utils/fackData/emailList';
+import { emailList } from '@/utils/Data/emailList';
 
 
 const removeDuplicates = (array, key) => {

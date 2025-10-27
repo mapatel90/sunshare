@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 import CardHeader from '@/components/shared/CardHeader'
-import { upcomingScheduleList } from '@/utils/fackData/upcomingScheduleList'
+import { upcomingScheduleList } from '@/utils/Data/upcomingScheduleList'
 import ImageGroup from '@/components/shared/ImageGroup'
 import CardLoader from '@/components/shared/CardLoader'
 import useCardTitleActions from '@/hooks/useCardTitleActions'

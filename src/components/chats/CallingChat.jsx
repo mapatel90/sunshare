@@ -1,7 +1,7 @@
 import React from 'react'
 import { FiAlertTriangle, FiEyeOff, FiTrash2 } from 'react-icons/fi'
 import Dropdown from '@/components/shared/Dropdown'
-import { chatMessageData } from '@/utils/fackData/chatMessageData'
+import { chatMessageData } from '@/utils/Data/chatMessageData'
 import { FileMessage } from './ChatMessage'
 import PerfectScrollbar from "react-perfect-scrollbar";
 import useEmojiPicker from '@/hooks/useEmojiPicker'

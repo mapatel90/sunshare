@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useLanguage } from '@/contexts/LanguageContext'
 
 const LanguagesModal = () => {
-  const { currentLanguageInfo, languages, changeLanguage, t } = useLanguage();
+  const { currentLanguageInfo, languages, changeLanguage, lang } = useLanguage();
 
   const handleLanguageChange = (e, languageCode) => {
     e.preventDefault();
@@ -21,8 +21,8 @@ const LanguagesModal = () => {
         <div className="language-items-wrapper">
           <div className="select-language px-4 py-2 hstack justify-content-between gap-4">
             <div className="lh-lg">
-              <h6 className="mb-0">{t('header.selectLanguage')}</h6>
-              <p className="fs-11 text-muted mb-0">{Object.keys(languages).length} {t('header.languagesAvailable')}</p>
+              <h6 className="mb-0">{lang('header.selectLanguage')}</h6>
+              <p className="fs-11 text-muted mb-0">{Object.keys(languages).length} {lang('header.languagesAvailable')}</p>
             </div>
           </div>
           <div className="dropdown-divider"></div>

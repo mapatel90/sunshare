@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import CardHeader from '@/components/shared/CardHeader'
-import { browserList } from '@/utils/fackData/browserList'
+import { browserList } from '@/utils/Data/browserList'
 import useCardTitleActions from '@/hooks/useCardTitleActions'
 import CardLoader from '@/components/shared/CardLoader'
 import getIcon from '@/utils/getIcon'

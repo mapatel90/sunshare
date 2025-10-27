@@ -6,10 +6,10 @@ import MultiSelectImg from '@/components/shared/MultiSelectImg'
 import MultiSelectTags from '@/components/shared/MultiSelectTags'
 import Loading from '@/components/shared/Loading'
 import AddProposal from './AddProposal'
-import { currencyOptionsData } from '@/utils/fackData/currencyOptionsData'
+import { currencyOptionsData } from '@/utils/Data/currencyOptionsData'
 import useDatePicker from '@/hooks/useDatePicker';
 import { addDays } from 'date-fns';
-import { timezonesData } from '@/utils/fackData/timeZonesData';
+import { timezonesData } from '@/utils/Data/timeZonesData';
 import { propasalLeadOptions, propsalDiscountOptions, propsalRelatedOptions, propsalStatusOptions, propsalVisibilityOptions, taskAssigneeOptions, taskLabelsOptions } from '@/utils/options';
 import useLocationData from '@/hooks/useLocationData';
 

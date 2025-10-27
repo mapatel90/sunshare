@@ -2,7 +2,7 @@
 import React from 'react'
 import Pagination from '@/components/shared/Pagination'
 import CardHeader from '@/components/shared/CardHeader'
-import { projectsData } from '@/utils/fackData/projectsData'
+import { projectsData } from '@/utils/Data/projectsData'
 import { FiArrowRight } from 'react-icons/fi'
 import CardLoader from '@/components/shared/CardLoader'
 import useCardTitleActions from '@/hooks/useCardTitleActions'

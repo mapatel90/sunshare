@@ -5,7 +5,7 @@ import CardHeader from '@/components/shared/CardHeader'
 import useCardTitleActions from '@/hooks/useCardTitleActions'
 import CardLoader from '@/components/shared/CardLoader'
 import { FiBell, FiClock, FiMessageSquare } from 'react-icons/fi'
-import { projectsData } from '@/utils/fackData/projectsData'
+import { projectsData } from '@/utils/Data/projectsData'
 
 
 const ProgressTwo = ({ title }) => {

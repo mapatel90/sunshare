@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import Table from '@/components/shared/table/Table'
 import { FiAlertOctagon, FiArchive, FiClock, FiEdit3, FiEye, FiMoreHorizontal, FiPrinter, FiSend, FiTrash2 } from 'react-icons/fi'
 import Dropdown from '@/components/shared/Dropdown';
-import { proposalTableData } from '@/utils/fackData/proposalTableData';
+import { proposalTableData } from '@/utils/Data/proposalTableData';
 import Link from 'next/link';
 
 
