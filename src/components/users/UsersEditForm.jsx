@@ -27,6 +27,8 @@ const UsersEditForm = () => {
     status: ''
   })
   const [errors, setErrors] = useState({})
+  const [roles, setRoles] = useState([])
+  const [loadingRoles, setLoadingRoles] = useState(false)
   
   // Use location data hook
   const {
@@ -46,6 +48,35 @@ const UsersEditForm = () => {
       fetchUser()
     }
   }, [userId])
+
+  // Load active roles for the User Role dropdown
+  useEffect(() => {
+    let mounted = true
+    const params = { status: 1 }
+    const queryString = new URLSearchParams(params).toString()
+
+    const fetchRoles = async () => {
+      setLoadingRoles(true)
+      try {
+        const res = await apiGet(`/api/roles?${queryString}`)
+        if (!mounted) return
+        if (res && res.success && Array.isArray(res.data.roles)) {
+          setRoles(res.data.roles)
+        } else if (Array.isArray(res)) {
+          // fallback in case api helper returns array directly
+          setRoles(res)
+        }
+      } catch (err) {
+        console.error('Error loading roles:', err)
+      } finally {
+        if (mounted) setLoadingRoles(false)
+      }
+    }
+
+    fetchRoles()
+
+    return () => { mounted = false }
+  }, [])
 
   const fetchUser = async () => {
     try {
@@ -290,12 +321,16 @@ const UsersEditForm = () => {
                     name="userRole"
                     value={formData.userRole}
                     onChange={handleInputChange}
+                    disabled={loadingRoles}
                   >
                     <option value="">Select Role</option>
-                    <option value="1">Super Admin</option>
-                    <option value="2">Admin</option>
-                    <option value="3">User</option>
-                    <option value="4">Moderator</option>
+                    {loadingRoles ? (
+                      <option value="">Loading roles...</option>
+                    ) : (
+                      roles.map(role => (
+                        <option key={role.id} value={role.id}>{role.name.charAt(0).toUpperCase() + role.name.slice(1)}</option>
+                      ))
+                    )}
                   </select>
                   {errors.userRole && <div className="invalid-feedback">{errors.userRole}</div>}
                 </div>
@@ -309,8 +344,6 @@ const UsersEditForm = () => {
                   >
                     <option value="0">Inactive</option>
                     <option value="1">Active</option>
-                    <option value="2">Suspended</option>
-                    <option value="3">Banned</option>
                   </select>
                 </div>
               </div>

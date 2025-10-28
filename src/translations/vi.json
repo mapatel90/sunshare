@@ -78,6 +78,7 @@
   },
   "common": {
     "save": "Lưu",
+    "user": "Người dùng",
     "cancel": "Hủy",
     "delete": "Xóa",
     "edit": "Sửa",
@@ -402,5 +403,24 @@
     "role": "Vai trò",
     "createdAt": "Ngày tạo",
     "updatedAt": "Ngày cập nhật"
+  }
+  ,
+  "usersView": {
+    "quickStats": "Thống kê nhanh",
+    "reviews": "Nhận xét",
+    "userInformation": "Thông tin người dùng",
+    "personalInformation": "Thông tin cá nhân",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "notProvided": "Chưa cung cấp",
+    "accountInformation": "Thông tin tài khoản",
+    "userId": "ID người dùng",
+    "role": "Vai trò",
+    "created": "Ngày tạo",
+    "addressInformation": "Thông tin địa chỉ",
+    "address1": "Địa chỉ 1",
+    "address2": "Địa chỉ 2",
+    "suspended": "Bị đình chỉ",
+    "banned": "Bị cấm"
   }
 }

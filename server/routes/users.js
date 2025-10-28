@@ -9,7 +9,9 @@ const router = express.Router();
 router.get('/', authenticateToken, async (req, res) => {
   try {
     const { page = 1, limit = 10, search, role, status } = req.query;
-    const offset = (page - 1) * limit;
+    const pageInt = parseInt(page) || 1;
+    const limitInt = parseInt(limit) || 10;
+    const offset = (pageInt - 1) * limitInt;
 
     // Build where clause
     const where = {};
@@ -20,12 +22,34 @@ router.get('/', authenticateToken, async (req, res) => {
         { email: { contains: search, mode: 'insensitive' } }
       ];
     }
+
+    // Support filtering by role id or role name
     if (role) {
-      where.userRole = role;
+      // numeric -> treat as role id on user.userRole
+      const roleAsInt = parseInt(role);
+      if (!isNaN(roleAsInt)) {
+        where.userRole = roleAsInt;
+      } else {
+        // non-numeric -> search roles by name and filter users by matching role ids
+        const matchedRoles = await prisma.role.findMany({
+          where: { name: { contains: role, mode: 'insensitive' } },
+          select: { id: true }
+        });
+        const roleIds = matchedRoles.map(r => r.id);
+        if (roleIds.length) {
+          where.userRole = { in: roleIds };
+        } else {
+          // no matching role names -> ensure empty result
+          where.userRole = -1;
+        }
+      }
     }
+
     if (status !== undefined) {
       where.status = parseInt(status);
     }
+
+    where.is_deleted = 0; // Exclude deleted users
 
     // Get users with pagination
     const [users, total] = await Promise.all([
@@ -49,19 +73,34 @@ router.get('/', authenticateToken, async (req, res) => {
           country: true
         },
         skip: parseInt(offset),
-        take: parseInt(limit),
+        take: parseInt(limitInt),
         orderBy: { id: 'asc' }
       }),
       prisma.user.count({ where })
     ]);
 
+    // Attach role name for each user (Role is a separate table and User currently stores role id in `userRole`)
+    const roleIds = [...new Set(users.map(u => u.userRole).filter(Boolean))];
+    let roles = [];
+    if (roleIds.length) {
+      roles = await prisma.role.findMany({
+        where: { id: { in: roleIds } },
+        select: { id: true, name: true }
+      });
+    }
+    const roleMap = Object.fromEntries(roles.map(r => [r.id, r.name]));
+    const usersWithRole = users.map(u => ({
+      ...u,
+      role: { id: u.userRole, name: roleMap[u.userRole] ?? null }
+    }));
+
     res.json({
       success: true,
       data: {
-        users,
+        users: usersWithRole,
         pagination: {
-          page: parseInt(page),
-          limit: parseInt(limit),
+          page: pageInt,
+          limit: limitInt,
           total,
           pages: Math.ceil(total / limit)
         }
@@ -175,6 +214,16 @@ router.post('/', authenticateToken, async (req, res) => {
 router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Attach role name for each user (Role is a separate table and User currently stores role id in `userRole`)
+    const roleIds = [parseInt(id)];
+    let roles = [];
+    if (roleIds.length) {
+      roles = await prisma.role.findMany({
+        where: { id: { in: roleIds } },
+        select: { id: true, name: true }
+      });
+    }
 
     const user = await prisma.user.findUnique({
       where: { id: parseInt(id) },
@@ -367,8 +416,9 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     }
 
     // Delete user
-    await prisma.user.delete({
-      where: { id: parseInt(id) }
+    await prisma.user.update({
+      where: { id: parseInt(id) },
+      data: { is_deleted: 1 }
     });
 
     res.json({

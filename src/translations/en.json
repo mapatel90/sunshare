@@ -78,6 +78,8 @@
   },
   "common": {
     "save": "Save",
+    "user": "User",
+    "email": "Email",
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
@@ -418,5 +420,24 @@
     "role": "Role",
     "createdAt": "Created At",
     "updatedAt": "Updated At"
+  }
+  ,
+  "usersView": {
+    "quickStats": "Quick Stats",
+    "reviews": "Reviews",
+    "userInformation": "User Information",
+    "personalInformation": "Personal Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "notProvided": "Not provided",
+    "accountInformation": "Account Information",
+    "userId": "User ID",
+    "role": "Role",
+    "created": "Created",
+    "addressInformation": "Address Information",
+    "address1": "Address 1",
+    "address2": "Address 2",
+    "suspended": "Suspended",
+    "banned": "Banned"
   }
 }

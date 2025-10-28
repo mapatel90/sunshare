@@ -7,7 +7,7 @@ const router = express.Router();
 // Get all roles
 router.get('/', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 10, search, status } = req.query;
+    const { page = 1, limit = 10, search, status,id } = req.query;
     const offset = (page - 1) * limit;
 
     // Build where clause
@@ -17,6 +17,9 @@ router.get('/', authenticateToken, async (req, res) => {
     }
     if (status !== undefined) {
       where.status = parseInt(status);
+    }
+    if (id !== undefined) {
+      where.id = parseInt(id);
     }
 
     // Get roles with pagination
@@ -56,6 +59,7 @@ router.get('/', authenticateToken, async (req, res) => {
 router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("id",id);
 
     const role = await prisma.role.findUnique({
       where: { id: parseInt(id) }
