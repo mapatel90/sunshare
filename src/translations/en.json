@@ -387,5 +387,21 @@
     "role": "Role",
     "createdAt": "Created At",
     "updatedAt": "Updated At"
+  },
+  "inverter": {
+    "inverter": "Inverter",
+    "addInverter": "Add Inverter",
+    "editInverter": "Edit Inverter",
+    "companyName": "Company Name",
+    "companyNamePlaceholder": "Company Name",
+    "inverterName": "Inverter Name",
+    "inverterNamePlaceholder": "Inverter Name",
+    "type": "Inverter Type",
+    "selectType": "Select Type",
+    "apiKey": "API Key",
+    "apiKeyPlaceholder": "API Key",
+    "secretKey": "Secret Key",
+    "secretKeyPlaceholder": "Secret Key"
   }
+  
 }

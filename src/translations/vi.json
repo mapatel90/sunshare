@@ -38,7 +38,8 @@
     "view": "Xem",
     "create": "Tạo",
     "edit": "Sửa",
-    "UserManagement": "Quản lý người dùng"
+    "UserManagement": "Quản lý người dùng",
+    "inverter": "biến tần"
   },
   "authentication": {
     "login": "Đăng nhập",
@@ -213,7 +214,8 @@
     "salesreport": "Báo cáo bán hàng",
     "leadsreport": "Báo cáo khách hàng tiềm năng",
     "projectreport": "Báo cáo dự án",
-    "timesheetsreport": "Báo cáo bảng thời gian"
+    "timesheetsreport": "Báo cáo bảng thời gian",
+    "inverter": "biến tần"
   },
   "dashboard": {
     "totalSales": "Tổng doanh số",
@@ -387,5 +389,20 @@
     "role": "Vai trò",
     "createdAt": "Ngày tạo",
     "updatedAt": "Ngày cập nhật"
+  },
+  "inverter": {
+    "inverter": "biến tần",
+    "addInverter": "Thêm bộ biến tần",
+    "editInverter": "Sửa bộ biến tần",
+    "companyName": "Tên công ty",
+    "companyNamePlaceholder": "Tên công ty",
+    "inverterName": "Tên bộ biến tần",
+    "inverterNamePlaceholder": "Tên bộ biến tần",
+    "type": "Loại bộ biến tần",
+    "selectType": "Chọn loại",
+    "apiKey": "Khóa API",
+    "apiKeyPlaceholder": "Khóa API",
+    "secretKey": "Khóa bí mật",
+    "secretKeyPlaceholder": "Khóa bí mật"
   }
 }

@@ -17,7 +17,7 @@ const layout = ({ children }) => {
             <main className="nxl-container apps-container">
                 <div className="nxl-content without-header nxl-full-content">
                     <div className='main-content d-flex'>
-                        <SettingSidebar />
+                        {/* <SettingSidebar /> */}
                         {children}
                     </div>
                 </div>
