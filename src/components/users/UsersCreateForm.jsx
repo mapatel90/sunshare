@@ -4,9 +4,11 @@ import { useRouter } from 'next/navigation'
 import { apiPost, apiGet } from '@/lib/api'
 import useLocationData from '@/hooks/useLocationData'
 import Swal from 'sweetalert2'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const UsersCreateForm = () => {
   const router = useRouter()
+  const { lang } = useLanguage()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     firstName: '',
@@ -15,7 +17,7 @@ const UsersCreateForm = () => {
     phoneNumber: '',
     password: '',
     confirmPassword: '',
-  userRole: '',
+    userRole: '',
     address1: '',
     address2: '',
     countryId: '',
@@ -28,10 +30,10 @@ const UsersCreateForm = () => {
   const [roles, setRoles] = useState([])
   const [loadingRoles, setLoadingRoles] = useState(false)
 
-  const params = {status: 1};   // e.g. 1
+  const params = { status: 1 };   // e.g. 1
 
-const queryString = new URLSearchParams(params).toString();
-  
+  const queryString = new URLSearchParams(params).toString();
+
   // Use location data hook
   const {
     countries,
@@ -165,7 +167,7 @@ const queryString = new URLSearchParams(params).toString();
         stateId: formData.stateId || null,
         cityId: formData.cityId || null
       }
-      
+
       // Remove confirmPassword from submit data
       delete submitData.confirmPassword
 
@@ -201,55 +203,55 @@ const queryString = new URLSearchParams(params).toString();
         <div className="col-md-6">
           <div className="card mb-4">
             <div className="card-header">
-              <h6 className="card-title mb-0">Personal Information</h6>
+              <h6 className="card-title mb-0">{lang('usersView.personalInformation')}</h6>
             </div>
             <div className="card-body">
               <div className="row">
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">First Name <span className="text-danger">*</span></label>
+                  <label className="form-label">{lang('usersView.firstName')} <span className="text-danger">*</span></label>
                   <input
                     type="text"
                     className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    placeholder="Enter first name"
+                    placeholder={lang('placeholders.enterfirstname')}
                   />
                   {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
                 </div>
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Last Name <span className="text-danger">*</span></label>
+                  <label className="form-label">{lang('usersView.lastName')} <span className="text-danger">*</span></label>
                   <input
                     type="text"
                     className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    placeholder="Enter last name"
+                    placeholder={lang('placeholders.enterlastname')}
                   />
                   {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
                 </div>
                 <div className="col-md-12 mb-3">
-                  <label className="form-label">Email Address <span className="text-danger">*</span></label>
+                  <label className="form-label">{lang('authentication.email')} <span className="text-danger">*</span></label>
                   <input
                     type="email"
                     className={`form-control ${errors.email ? 'is-invalid' : ''}`}
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="Enter email address"
+                    placeholder={lang('placeholders.enteremail')}
                   />
                   {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                 </div>
                 <div className="col-md-12 mb-3">
-                  <label className="form-label">Phone Number</label>
+                  <label className="form-label">{lang('usersView.phonenumber')}</label>
                   <input
                     type="tel"
                     className="form-control"
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
-                    placeholder="Enter phone number"
+                    placeholder={lang('placeholders.enterphonenumber')}
                   />
                 </div>
               </div>
@@ -261,36 +263,36 @@ const queryString = new URLSearchParams(params).toString();
         <div className="col-md-6">
           <div className="card mb-4">
             <div className="card-header">
-              <h6 className="card-title mb-0">Account Information</h6>
+              <h6 className="card-title mb-0">{lang('usersView.accountInformation')}</h6>
             </div>
             <div className="card-body">
               <div className="row">
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Password <span className="text-danger">*</span></label>
+                  <label className="form-label">{lang('authentication.password')} <span className="text-danger">*</span></label>
                   <input
                     type="password"
                     className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    placeholder="Enter password"
+                    placeholder={lang('placeholders.enterpassword')}
                   />
                   {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                 </div>
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Confirm Password <span className="text-danger">*</span></label>
+                  <label className="form-label">{lang('authentication.confirmPassword')} <span className="text-danger">*</span></label>
                   <input
                     type="password"
                     className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
-                    placeholder="Confirm password"
+                    placeholder={lang('placeholders.confirmPassword')}
                   />
                   {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
                 </div>
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">User Role <span className="text-danger">*</span></label>
+                  <label className="form-label">{lang('usersView.userRole')} <span className="text-danger">*</span></label>
                   <select
                     className={`form-select ${errors.userRole ? 'is-invalid' : ''}`}
                     name="userRole"
@@ -298,7 +300,7 @@ const queryString = new URLSearchParams(params).toString();
                     onChange={handleInputChange}
                     disabled={loadingRoles}
                   >
-                    <option value="">Select Role</option>
+                    <option value="">{lang('common.selectRole')}</option>
                     {loadingRoles ? (
                       <option value="">Loading roles...</option>
                     ) : (
@@ -310,15 +312,15 @@ const queryString = new URLSearchParams(params).toString();
                   {errors.userRole && <div className="invalid-feedback">{errors.userRole}</div>}
                 </div>
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Status</label>
+                  <label className="form-label">{lang('common.status')}</label>
                   <select
                     className="form-select"
                     name="status"
                     value={formData.status}
                     onChange={handleInputChange}
                   >
-                    <option value="1">Active</option>
-                    <option value="0">Inactive</option>
+                    <option value="1">{lang('common.active')}</option>
+                    <option value="0">{lang('common.inactive')}</option>
                   </select>
                 </div>
               </div>
@@ -330,41 +332,41 @@ const queryString = new URLSearchParams(params).toString();
         <div className="col-md-12">
           <div className="card mb-4">
             <div className="card-header">
-              <h6 className="card-title mb-0">Address Information</h6>
+              <h6 className="card-title mb-0">{lang('usersView.addressInformation')}</h6>
             </div>
             <div className="card-body">
               <div className="row">
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Address Line 1</label>
+                  <label className="form-label">{lang('usersView.address1')}</label>
                   <input
                     type="text"
                     className="form-control"
                     name="address1"
                     value={formData.address1}
                     onChange={handleInputChange}
-                    placeholder="Enter address line 1"
+                    placeholder={lang('placeholders.enteraddress1')}
                   />
                 </div>
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Address Line 2</label>
+                  <label className="form-label">{lang('usersView.address2')}</label>
                   <input
                     type="text"
                     className="form-control"
                     name="address2"
                     value={formData.address2}
                     onChange={handleInputChange}
-                    placeholder="Enter address line 2"
+                    placeholder={lang('placeholders.enteraddress2')}
                   />
                 </div>
                 <div className="col-md-3 mb-3">
-                  <label className="form-label">Country</label>
+                  <label className="form-label">{lang('common.country')}</label>
                   <select
                     className="form-select"
                     value={formData.countryId}
                     onChange={(e) => handleLocationChange('country', e.target.value)}
                     disabled={loadingCountries}
                   >
-                    <option value="">Select Country</option>
+                    <option value="">{lang('common.selectCountry')}</option>
                     {countries.map(country => (
                       <option key={country.id} value={country.id}>
                         {country.name}
@@ -373,14 +375,14 @@ const queryString = new URLSearchParams(params).toString();
                   </select>
                 </div>
                 <div className="col-md-3 mb-3">
-                  <label className="form-label">State</label>
+                  <label className="form-label">{lang('common.state')}</label>
                   <select
                     className="form-select"
                     value={formData.stateId}
                     onChange={(e) => handleLocationChange('state', e.target.value)}
                     disabled={loadingStates || !formData.countryId}
                   >
-                    <option value="">Select State</option>
+                    <option value="">{lang('common.selectState')}</option>
                     {states.map(state => (
                       <option key={state.id} value={state.id}>
                         {state.name}
@@ -389,14 +391,14 @@ const queryString = new URLSearchParams(params).toString();
                   </select>
                 </div>
                 <div className="col-md-3 mb-3">
-                  <label className="form-label">City</label>
+                  <label className="form-label">{lang('common.city')}</label>
                   <select
                     className="form-select"
                     value={formData.cityId}
                     onChange={(e) => handleLocationChange('city', e.target.value)}
                     disabled={loadingCities || !formData.stateId}
                   >
-                    <option value="">Select City</option>
+                    <option value="">{lang('common.selectCity')}</option>
                     {cities.map(city => (
                       <option key={city.id} value={city.id}>
                         {city.name}
@@ -405,14 +407,14 @@ const queryString = new URLSearchParams(params).toString();
                   </select>
                 </div>
                 <div className="col-md-3 mb-3">
-                  <label className="form-label">Zip Code</label>
+                  <label className="form-label">{lang('common.zip')}</label>
                   <input
                     type="text"
                     className="form-control"
                     name="zipcode"
                     value={formData.zipcode}
                     onChange={handleInputChange}
-                    placeholder="Enter zip code"
+                    placeholder={lang('placeholders.enterzipcode')}
                   />
                 </div>
               </div>
@@ -434,8 +436,8 @@ const queryString = new URLSearchParams(params).toString();
                   Creating...
                 </>
               ) : (
-                'Create User'
-              )}
+                lang('usersView.CreateUser')
+                )}
             </button>
             <button
               type="button"
@@ -443,7 +445,7 @@ const queryString = new URLSearchParams(params).toString();
               onClick={() => router.push('/admin/users/list')}
               disabled={loading}
             >
-              Cancel
+              {lang('common.cancel')}
             </button>
           </div>
         </div>

@@ -139,7 +139,11 @@
     "country": "Country",
     "state": "State",
     "city": "City",
-    "zip": "Zip Code"
+    "zip": "Zip Code",
+    "selectRole": "Select Role",
+    "selectCountry": "Select Country",
+    "selectState": "Select State",
+    "selectCity": "Select City"
   },
   "messages": {
     "success": "Operation completed successfully",
@@ -187,6 +191,9 @@
     "projectscreate": "Projects Create",
     "widgets": "Widgets",
     "lists": "Lists",
+    "list": "List",
+    "create": "Create",
+    "view": "View",
     "tables": "Tables",
     "charts": "Charts",
     "statistics": "Statistics",
@@ -406,7 +413,17 @@
     "your_company_state": "Select your company's state/province",
     "your_company_city": "Select your company's city",
     "your_company_zip": "Zip Code [Ex: 11756]",
-    "your_company_phone": "Phone Number [Ex: 987-6985-9658-654]"
+    "your_company_phone": "Phone Number [Ex: 987-6985-9658-654]",
+    "enterfirstname": "Enter first name",
+    "enterlastname": "Enter last name",
+    "enteremail": "Enter email",
+    "enterusername": "Enter username",
+    "enterpassword": "Enter password",
+    "confirmPassword": "Confirm password",
+    "enteraddress1": "Enter address line 1",
+    "enteraddress2": "Enter address line 2",
+    "enterzipcode": "Enter zip code",
+    "enterphonenumber": "Enter phone number"
   },
   "roles": {
     "rolesManagement": "Roles Management",
@@ -420,9 +437,12 @@
     "role": "Role",
     "createdAt": "Created At",
     "updatedAt": "Updated At"
-  }
-  ,
+  },
   "usersView": {
+    "CreateUser": "Create User",
+    "backToUser": "Back to Users",
+    "ViewUser": "View User",
+    "EditUser": "Edit User",
     "quickStats": "Quick Stats",
     "reviews": "Reviews",
     "userInformation": "User Information",
@@ -438,6 +458,8 @@
     "address1": "Address 1",
     "address2": "Address 2",
     "suspended": "Suspended",
-    "banned": "Banned"
+    "banned": "Banned",
+    "phonenumber": "Phone Number",
+    "userRole": "User Role"
   }
 }
