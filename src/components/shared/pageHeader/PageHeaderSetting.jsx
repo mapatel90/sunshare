@@ -3,11 +3,19 @@ import React, { useContext } from 'react'
 import { FiAlignLeft, FiSave } from 'react-icons/fi'
 import topTost from '@/utils/topTost'
 import { SettingSidebarContext } from '@/contentApi/settingSideBarProvider'
+import { useLanguage } from '@/contexts/LanguageContext'
 
-const PageHeaderSetting = () => {
+const PageHeaderSetting = ({ onSave, isSubmitting = false, showSaveButton = true }) => {
+    const { lang } = useLanguage()
     const x = useContext(SettingSidebarContext)
-    const handleClick = () => {
-        topTost()
+    
+    const handleClick = (e) => {
+        e.preventDefault()
+        if (onSave) {
+            onSave()
+        } else {
+            topTost()
+        }
     };
 
     return (
@@ -19,11 +27,27 @@ const PageHeaderSetting = () => {
             </div>
             <div className="page-header-right ms-auto">
                 <div className="d-flex align-items-center gap-3 page-header-right-items-wrapper">
-                    <a href="#" className="text-danger">Cancel</a>
-                    <a href="#" className="btn btn-primary" onClick={handleClick}>
-                        <FiSave size={16} className='me-2' />
-                        <span>Save Changes</span>
-                    </a>
+                    {/* <a href="#" className="text-danger">Cancel</a> */}
+                    {showSaveButton && (
+                        <button 
+                            type="button" 
+                            className="btn btn-primary" 
+                            onClick={handleClick}
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    Saving...
+                                </>
+                            ) : (
+                                <>
+                                    <FiSave size={16} className='me-2' />
+                                    <span>{lang('common.saveChanges')}</span>
+                                </>
+                            )}
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

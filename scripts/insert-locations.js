@@ -16,7 +16,7 @@ async function main() {
     // console.log(`🎉 Total locations: ${stats.countries + stats.states + stats.cities}`);
     
     // Show some sample data
-    console.log('\n📍 Sample data verification:');
+    // console.log('\n📍 Sample data verification:');
     
     const sampleCountries = await prisma.country.findMany({
       take: 3,
@@ -33,16 +33,16 @@ async function main() {
     });
     
     sampleCountries.forEach(country => {
-      console.log(`🏳️ ${country.name} (${country.code})`);
+      // console.log(`🏳️ ${country.name} (${country.code})`);
       country.states.forEach(state => {
-        console.log(`  🏛️ ${state.name} (${state.code || 'N/A'})`);
+        // console.log(`  🏛️ ${state.name} (${state.code || 'N/A'})`);
         state.cities.forEach(city => {
-          console.log(`    🏙️ ${city.name}`);
+          // console.log(`    🏙️ ${city.name}`);
         });
       });
     });
     
-    console.log('\n✨ Location data insertion completed successfully!');
+    // console.log('\n✨ Location data insertion completed successfully!');
   } catch (error) {
     console.error('❌ Error:', error);
     process.exit(1);

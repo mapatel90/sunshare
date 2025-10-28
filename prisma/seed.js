@@ -9,9 +9,9 @@ async function main() {
 
   // Create default roles
   const roles = [
-    { id: 1, name: "superadmin", status: 1 },
-    { id: 2, name: "staffadmin", status: 1 },
-    { id: 3, name: "Offtaker", status: 1 },
+    { id: 1, name: 'superadmin', status: 1 },
+    { id: 2, name: 'staffadmin', status: 1 },
+    { id: 3, name: 'offtaker', status: 1 },
   ];
 
   console.log("📝 Creating roles...");
@@ -64,12 +64,13 @@ async function main() {
   });
 
   await prisma.user.upsert({
-    where: { email: "admin@sunshare.com" },
+    where: { username: 'admin' },
     update: {},
     create: {
-      firstName: "System",
-      lastName: "Administrator",
-      email: "admin@sunshare.com",
+      firstName: 'System',
+      lastName: 'Administrator',
+      username: 'admin',
+      email: 'admin@sunshare.com',
       password: adminPassword,
       userRole: 1,
       phoneNumber: "+1234567890",
@@ -81,13 +82,16 @@ async function main() {
       status: 1, // Active
     },
   });
-  console.log("✅ Admin user created: admin@sunshare.com (password: admin123)");
+  console.log('✅ Admin user created: admin (password: admin123)');
+
+
 
   const sampleUsers = [
     {
-      firstName: "John",
-      lastName: "Manager",
-      email: "manager@sunshare.com",
+      firstName: 'John',
+      lastName: 'Manager',
+      username: 'johnmanager',
+      email: 'manager@sunshare.com',
       userRole: 2,
       phoneNumber: "+1234567891",
       countryId: indiaCountry?.id,
@@ -97,9 +101,10 @@ async function main() {
       zipcode: "400001",
     },
     {
-      firstName: "Test",
-      lastName: "User",
-      email: "wrapcode.info@gmail.com",
+      firstName: 'Test',
+      lastName: 'User',
+      username: 'testuser',
+      email: 'wrapcode.info@gmail.com',
       userRole: 3,
       phoneNumber: "+1234567892",
       countryId: usaCountry?.id,
@@ -109,9 +114,10 @@ async function main() {
       zipcode: "90210",
     },
     {
-      firstName: "Nguyen",
-      lastName: "Van Minh",
-      email: "vietnam.user@sunshare.com",
+      firstName: 'Nguyen',
+      lastName: 'Van Minh',
+      username: 'vietnamuser',
+      email: 'vietnam.user@sunshare.com',
       userRole: 3,
       phoneNumber: "+84901234567",
       countryId: vietnamCountry?.id,
@@ -132,7 +138,8 @@ async function main() {
         ? testPassword
         : defaultPassword;
     await prisma.user.upsert({
-      where: { email: userData.email },
+      // Prisma schema requires a unique field in `where`. Use `username` which is unique.
+      where: { username: userData.username },
       update: {},
       create: {
         ...userData,

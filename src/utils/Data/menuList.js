@@ -71,32 +71,32 @@ export const menuList = [
     //         }
     //     ]
     // },
-    // {
-    //     id: 7,
-    //     name: "projects",
-    //     path: "#",
-    //     icon: 'feather-briefcase',
-    //     dropdownMenu: [
-    //         {
-    //             id: 1,
-    //             name: "projects",
-    //             path: "/admin/projects/list",
-    //             subdropdownMenu: false
-    //         },
-    //         {
-    //             id: 2,
-    //             name: "projectsview",
-    //             path: "/admin/projects/view",
-    //             subdropdownMenu: false
-    //         },
-    //         {
-    //             id: 3,
-    //             name: "projectscreate",
-    //             path: "/admin/projects/create",
-    //             subdropdownMenu: false
-    //         }
-    //     ]
-    // },
+    {
+        id: 7,
+        name: "projects",
+        path: "#",
+        icon: 'feather-briefcase',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "projects",
+                path: "/admin/projects/list",
+                subdropdownMenu: false
+            },
+            {
+                id: 2,
+                name: "projectsview",
+                path: "/admin/projects/view",
+                subdropdownMenu: false
+            },
+            {
+                id: 3,
+                name: "projectscreate",
+                path: "/admin/projects/create",
+                subdropdownMenu: false
+            }
+        ]
+    },
     {
         id: 8,
         name: "UserManagement",

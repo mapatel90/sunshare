@@ -11,7 +11,6 @@ const subscriptionsList = ["Plan", "Billings", "Referrals", "Payments", "Stateme
 const ProfileModal = () => {
     const { user, logout } = useAuth()
     const { lang } = useLanguage()
-    console.log("user",user);   
     const handleLogout = (e) => {
         e.preventDefault()
         logout()

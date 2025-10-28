@@ -7,7 +7,7 @@ const router = express.Router();
 // Get all roles
 router.get('/', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 10, search, status } = req.query;
+    const { page = 1, limit = 10, search, status,id } = req.query;
     const offset = (page - 1) * limit;
 
     // Build where clause
@@ -18,6 +18,9 @@ router.get('/', authenticateToken, async (req, res) => {
     if (status !== undefined) {
       where.status = parseInt(status);
     }
+    if (id !== undefined) {
+      where.id = parseInt(id);
+    }
 
     // Get roles with pagination
     const [roles, total] = await Promise.all([
@@ -25,7 +28,7 @@ router.get('/', authenticateToken, async (req, res) => {
         where,
         skip: parseInt(offset),
         take: parseInt(limit),
-        orderBy: { createdAt: 'asc' }
+        orderBy: { id: 'asc' }
       }),
       prisma.role.count({ where })
     ]);
@@ -214,32 +217,6 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 
   } catch (error) {
     console.error('Delete role error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error'
-    });
-  }
-});
-
-// Get active roles (for dropdowns)
-router.get('/active/list', async (req, res) => {
-  try {
-    const activeRoles = await prisma.role.findMany({
-      where: { status: 1 },
-      select: {
-        id: true,
-        name: true
-      },
-      orderBy: { name: 'asc' }
-    });
-
-    res.json({
-      success: true,
-      data: activeRoles
-    });
-
-  } catch (error) {
-    console.error('Get active roles error:', error);
     res.status(500).json({
       success: false,
       message: 'Internal server error'

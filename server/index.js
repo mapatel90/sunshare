@@ -11,8 +11,12 @@ import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import roleRoutes from './routes/roles.js';
 import locationRoutes from './routes/locations.js';
+<<<<<<< HEAD
 import inverterTypeRoutes from './routes/inverterType.js';
 import inverterRoutes from './routes/inverter.js';
+=======
+import settingsRoutes from './routes/settings.js';
+>>>>>>> 0efa458b57bb463ef53efc8d73a82995ec205a92
 
 // Load environment variables
 const __filename = fileURLToPath(import.meta.url);
@@ -45,9 +49,9 @@ app.get('/health', (req, res) => {
 
 // Debug middleware
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path}`);
-  console.log('Headers:', req.headers);
-  console.log('Body:', req.body);
+  // console.log(`${req.method} ${req.path}`);
+  // console.log('Headers:', req.headers);
+  // console.log('Body:', req.body);
   next();
 });
 
@@ -56,8 +60,12 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/locations', locationRoutes);
+<<<<<<< HEAD
 app.use('/api/inverterTypes', inverterTypeRoutes);
 app.use('/api/inverters', inverterRoutes);
+=======
+app.use('/api/settings', settingsRoutes);
+>>>>>>> 0efa458b57bb463ef53efc8d73a82995ec205a92
 
 // 404 handler
 app.use((req, res) => {

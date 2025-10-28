@@ -1,15 +1,17 @@
 import React from 'react'
 
-const InputTopLabel = ({ 
+const SelectTopLabel = ({ 
     label, 
     info, 
-    type = "text", 
-    placeholder, 
+    placeholder = "Select an option", 
     isRequired, 
     isOptional, 
     className = "mb-5",
     value,
     onChange,
+    options = [],
+    loading = false,
+    disabled = false,
     ...props 
 }) => {
     return (
@@ -19,17 +21,23 @@ const InputTopLabel = ({
                 {isRequired ? <span className="text-danger">*</span> : ""}
                 {isOptional ? <span className="fw-normal text-muted text-capitalize"> (Optional)</span> : ""}
             </label>
-            <input 
-                type={type} 
+            <select 
                 className="form-control" 
-                placeholder={placeholder}
                 value={value || ''}
                 onChange={onChange}
+                disabled={disabled || loading}
                 {...props}
-            />
+            >
+                <option value="">{loading ? "Loading..." : placeholder}</option>
+                {options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </select>
             <small className="form-text text-muted">{info}</small>
         </div>
     )
 }
 
-export default InputTopLabel
+export default SelectTopLabel

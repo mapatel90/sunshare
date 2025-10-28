@@ -5,27 +5,28 @@ import { apiGet } from '@/lib/api'
 import { FiMail, FiPhone, FiMapPin, FiCalendar, FiEdit3, FiUser, FiShield, FiActivity } from 'react-icons/fi'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
+import { useLanguage } from '@/contexts/LanguageContext'
 
-// Role mapping
+// Role mapping (labels referenced by key + fallback so translations can be used)
 const roleMapping = {
-  1: { label: 'Super Admin', color: 'danger', icon: <FiShield /> },
-  2: { label: 'Admin', color: 'warning', icon: <FiUser /> },
-  3: { label: 'User', color: 'primary', icon: <FiUser /> },
-  4: { label: 'Moderator', color: 'info', icon: <FiUser /> }
+  1: { labelKey: 'roles.superAdmin', fallback: 'Super Admin', color: 'danger', icon: <FiShield /> },
+  2: { labelKey: 'roles.admin', fallback: 'Admin', color: 'warning', icon: <FiUser /> },
+  3: { labelKey: 'roles.user', fallback: 'User', color: 'primary', icon: <FiUser /> },
+  4: { labelKey: 'roles.moderator', fallback: 'Moderator', color: 'info', icon: <FiUser /> }
 }
 
-// Status mapping
+// Status mapping (use translation keys with fallbacks)
 const statusMapping = {
-  0: { label: 'Inactive', color: 'danger' },
-  1: { label: 'Active', color: 'success' },
-  2: { label: 'Suspended', color: 'warning' },
-  3: { label: 'Banned', color: 'dark' }
+  0: { labelKey: 'common.inactive', fallback: 'Inactive', color: 'danger' },
+  1: { labelKey: 'common.active', fallback: 'Active', color: 'success' },
+  2: { labelKey: 'usersView.suspended', fallback: 'Suspended', color: 'warning' },
+  3: { labelKey: 'usersView.banned', fallback: 'Banned', color: 'dark' }
 }
 
-const LoadingSpinner = () => (
+const LoadingSpinner = ({ label = 'Loading...' }) => (
   <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
     <div className="spinner-border text-primary" role="status">
-      <span className="visually-hidden">Loading...</span>
+      <span className="visually-hidden">{label}</span>
     </div>
   </div>
 )
@@ -34,8 +35,10 @@ const UsersViewDetails = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const userId = searchParams.get('id')
-  
+  const { lang } = useLanguage()
+
   const [user, setUser] = useState(null)
+  const [userRole, setUserRole] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -46,11 +49,18 @@ const UsersViewDetails = () => {
     }
   }, [userId])
 
+  // When user fetched, fetch role if available
+  useEffect(() => {
+    if (user && (user.userRole || user.role?.id)) {
+      fetchUserRole()
+    }
+  }, [user])
+
   const fetchUser = async () => {
     try {
       setLoading(true)
       const response = await apiGet(`/api/users/${userId}`)
-      
+
       if (response.success) {
         setUser(response.data)
       }
@@ -68,23 +78,35 @@ const UsersViewDetails = () => {
     }
   }
 
+
+  const fetchUserRole = async () => {
+    try {
+      const response = await apiGet(`/api/roles/${user.userRole}`)
+      if (response.success) {
+        setUserRole(response.data)
+      }
+    } catch (error) {
+      console.error('Error fetching user role:', error)
+    }
+    return null
+  }
+
   if (loading) {
-    return <LoadingSpinner />
+    return <LoadingSpinner label={lang('common.loading', 'Loading...')} />
   }
 
   if (!user) {
     return (
       <div className="text-center py-5">
-        <h4>User not found</h4>
+        <h4>{lang('messages.dataNotFound', 'User not found')}</h4>
         <Link href="/admin/users/list" className="btn btn-primary mt-3">
-          Back to Users
+          {`${lang('common.back', 'Back')} ${lang('navigation.users', 'Users')}`}
         </Link>
       </div>
     )
   }
-
-  const role = roleMapping[user.userRole] || { label: 'Unknown', color: 'secondary', icon: <FiUser /> }
-  const status = statusMapping[user.status] || { label: 'Unknown', color: 'secondary' }
+  const role = userRole?.name
+  const status = statusMapping[user.status] || { labelKey: 'misc.unknown', fallback: 'Unknown', color: 'secondary' }
   const fullName = `${user.firstName} ${user.lastName}`
   const initials = `${user.firstName?.charAt(0) || ''}${user.lastName?.charAt(0) || ''}`
 
@@ -103,15 +125,13 @@ const UsersViewDetails = () => {
                 <p className="fs-12 fw-normal text-muted mb-3">{user.email}</p>
                 <div className="d-flex align-items-center justify-content-center gap-3 mb-4">
                   <div className="d-flex align-items-center gap-1">
-                    {role.icon}
-                    <span className={`badge bg-soft-${role.color} text-${role.color}`}>
-                      {role.label}
-                    </span>
+                    <FiUser size={14} />
+                    {userRole?.name}
                   </div>
                   <div className="d-flex align-items-center gap-1">
                     <FiActivity size={14} />
                     <span className={`badge bg-soft-${status.color} text-${status.color}`}>
-                      {status.label}
+                      {lang(status.labelKey || 'misc.unknown', status.fallback || 'Unknown')}
                     </span>
                   </div>
                 </div>
@@ -121,50 +141,8 @@ const UsersViewDetails = () => {
                     className="btn btn-primary btn-sm"
                   >
                     <FiEdit3 size={14} className="me-1" />
-                    Edit User
+                    {`${lang('common.edit', 'Edit')} ${lang('common.user', 'User')}`}
                   </Link>
-                  <a
-                    href={`mailto:${user.email}`}
-                    className="btn btn-light btn-sm"
-                  >
-                    <FiMail size={14} className="me-1" />
-                    Send Email
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="card stretch stretch-full">
-          <div className="card-header">
-            <h6 className="card-title">Quick Stats</h6>
-          </div>
-          <div className="card-body">
-            <div className="row g-3">
-              <div className="col-6">
-                <div className="p-3 border rounded text-center">
-                  <h4 className="fs-18 fw-bold text-dark mb-1">0</h4>
-                  <p className="fs-12 text-muted mb-0">Projects</p>
-                </div>
-              </div>
-              <div className="col-6">
-                <div className="p-3 border rounded text-center">
-                  <h4 className="fs-18 fw-bold text-dark mb-1">0</h4>
-                  <p className="fs-12 text-muted mb-0">Tasks</p>
-                </div>
-              </div>
-              <div className="col-6">
-                <div className="p-3 border rounded text-center">
-                  <h4 className="fs-18 fw-bold text-dark mb-1">0</h4>
-                  <p className="fs-12 text-muted mb-0">Comments</p>
-                </div>
-              </div>
-              <div className="col-6">
-                <div className="p-3 border rounded text-center">
-                  <h4 className="fs-18 fw-bold text-dark mb-1">0</h4>
-                  <p className="fs-12 text-muted mb-0">Reviews</p>
                 </div>
               </div>
             </div>
@@ -176,25 +154,25 @@ const UsersViewDetails = () => {
       <div className="col-xxl-8 col-xl-7">
         <div className="card stretch stretch-full">
           <div className="card-header">
-            <h6 className="card-title">User Information</h6>
+            <h6 className="card-title">{lang('usersView.userInformation', 'User Information')}</h6>
           </div>
           <div className="card-body">
             <div className="row g-4">
               {/* Personal Information */}
               <div className="col-lg-6">
                 <div className="border rounded p-3">
-                  <h6 className="fw-bold mb-3">Personal Information</h6>
+                  <h6 className="fw-bold mb-3">{lang('usersView.personalInformation', 'Personal Information')}</h6>
                   <div className="vstack gap-2">
                     <div className="hstack justify-content-between">
-                      <span className="text-muted">First Name:</span>
+                      <span className="text-muted">{lang('usersView.firstName', 'First Name')}:</span>
                       <span className="fw-semibold">{user.firstName}</span>
                     </div>
                     <div className="hstack justify-content-between">
-                      <span className="text-muted">Last Name:</span>
+                      <span className="text-muted">{lang('usersView.lastName', 'Last Name')}:</span>
                       <span className="fw-semibold">{user.lastName}</span>
                     </div>
                     <div className="hstack justify-content-between">
-                      <span className="text-muted">Email:</span>
+                      <span className="text-muted">{lang('common.email', 'Email')}:</span>
                       <span className="fw-semibold">
                         <a href={`mailto:${user.email}`} className="text-decoration-none">
                           {user.email}
@@ -202,14 +180,14 @@ const UsersViewDetails = () => {
                       </span>
                     </div>
                     <div className="hstack justify-content-between">
-                      <span className="text-muted">Phone:</span>
+                      <span className="text-muted">{lang('common.phone', 'Phone')}:</span>
                       <span className="fw-semibold">
                         {user.phoneNumber ? (
                           <a href={`tel:${user.phoneNumber}`} className="text-decoration-none">
                             {user.phoneNumber}
                           </a>
                         ) : (
-                          <span className="text-muted">Not provided</span>
+                          <span className="text-muted">{lang('usersView.notProvided', 'Not provided')}</span>
                         )}
                       </span>
                     </div>
@@ -220,26 +198,27 @@ const UsersViewDetails = () => {
               {/* Account Information */}
               <div className="col-lg-6">
                 <div className="border rounded p-3">
-                  <h6 className="fw-bold mb-3">Account Information</h6>
+                  <h6 className="fw-bold mb-3">{lang('usersView.accountInformation', 'Account Information')}</h6>
                   <div className="vstack gap-2">
                     <div className="hstack justify-content-between">
-                      <span className="text-muted">User ID:</span>
-                      <span className="fw-semibold">#{user.id}</span>
+                      <span className="text-muted">{lang('usersView.username', 'Username')}:</span>
+                      <span className="fw-semibold">{user.username}</span>
                     </div>
                     <div className="hstack justify-content-between">
-                      <span className="text-muted">Role:</span>
-                      <span className={`badge bg-soft-${role.color} text-${role.color}`}>
-                        {role.label}
+                      <span className="text-muted">{lang('usersView.role', 'Role')}:</span>
+                      <span>
+                        {/* {lang(role.labelKey, role.fallback)} */}
+                        {userRole?.name}
                       </span>
                     </div>
                     <div className="hstack justify-content-between">
-                      <span className="text-muted">Status:</span>
+                      <span className="text-muted">{lang('common.status', 'Status')}:</span>
                       <span className={`badge bg-soft-${status.color} text-${status.color}`}>
-                        {status.label}
+                        {lang(status.labelKey, status.fallback)}
                       </span>
                     </div>
                     <div className="hstack justify-content-between">
-                      <span className="text-muted">Created:</span>
+                      <span className="text-muted">{lang('usersView.created', 'Created')}:</span>
                       <span className="fw-semibold">
                         {new Date(user.createdAt).toLocaleDateString()}
                       </span>
@@ -250,57 +229,76 @@ const UsersViewDetails = () => {
 
               {/* Address Information */}
               {(user.address1 || user.city || user.state || user.country) && (
+                console.log("test", user),
                 <div className="col-lg-12">
-                  <div className="border rounded p-3">
-                    <h6 className="fw-bold mb-3">
-                      <FiMapPin className="me-2" />
-                      Address Information
+                  <div className="border rounded p-3 bg-white shadow-sm">
+                    <h6 className="fw-bold mb-3 d-flex align-items-center">
+                      <FiMapPin className="me-2 text-primary" />
+                      {lang('usersView.addressInformation', 'Address Information')}
                     </h6>
-                    <div className="row g-3">
+
+                    <div className="row gy-2 gx-4">
                       {user.address1 && (
                         <div className="col-md-6">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">Address 1:</span>
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('usersView.address1', 'Address 1')}
+                            </span>
                             <span className="fw-semibold">{user.address1}</span>
                           </div>
                         </div>
                       )}
+
                       {user.address2 && (
                         <div className="col-md-6">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">Address 2:</span>
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('usersView.address2', 'Address 2')}
+                            </span>
                             <span className="fw-semibold">{user.address2}</span>
                           </div>
                         </div>
                       )}
+
                       {user.city && (
-                        <div className="col-md-3">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">City:</span>
+                        <div className="col-md-3 col-sm-6">
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('common.city', 'City')}
+                            </span>
                             <span className="fw-semibold">{user.city.name}</span>
                           </div>
                         </div>
                       )}
+
                       {user.state && (
-                        <div className="col-md-3">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">State:</span>
+                        <div className="col-md-3 col-sm-6">
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('common.state', 'State')}
+                            </span>
                             <span className="fw-semibold">{user.state.name}</span>
                           </div>
                         </div>
                       )}
+
                       {user.country && (
-                        <div className="col-md-3">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">Country:</span>
+                        <div className="col-md-3 col-sm-6">
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('common.country', 'Country')}
+                            </span>
                             <span className="fw-semibold">{user.country.name}</span>
                           </div>
                         </div>
                       )}
+
                       {user.zipcode && (
-                        <div className="col-md-3">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">Zip Code:</span>
+                        <div className="col-md-3 col-sm-6">
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('common.zip', 'Zip Code')}
+                            </span>
                             <span className="fw-semibold">{user.zipcode}</span>
                           </div>
                         </div>
@@ -308,31 +306,9 @@ const UsersViewDetails = () => {
                     </div>
                   </div>
                 </div>
-              )}
 
-              {/* Timeline */}
-              <div className="col-lg-12">
-                <div className="border rounded p-3">
-                  <h6 className="fw-bold mb-3">
-                    <FiCalendar className="me-2" />
-                    Timeline
-                  </h6>
-                  <div className="vstack gap-2">
-                    <div className="hstack justify-content-between">
-                      <span className="text-muted">Account Created:</span>
-                      <span className="fw-semibold">
-                        {new Date(user.createdAt).toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="hstack justify-content-between">
-                      <span className="text-muted">Last Updated:</span>
-                      <span className="fw-semibold">
-                        {new Date(user.updatedAt).toLocaleString()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
+              )}
             </div>
           </div>
         </div>

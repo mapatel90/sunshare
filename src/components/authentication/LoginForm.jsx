@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useLanguage } from '@/contexts/LanguageContext'
 
 const LoginForm = ({ registerPath, resetPath }) => {
-    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
@@ -19,7 +19,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
         setLoading(true)
         setError('')
 
-        const result = await login(email, password)
+    const result = await login(username, password)
         
         if (!result.success) {
             setError(result.message)
@@ -43,11 +43,11 @@ const LoginForm = ({ registerPath, resetPath }) => {
             <form onSubmit={handleSubmit} className="w-100 mt-4 pt-2">
                 <div className="mb-4">
                     <input 
-                        type="email" 
+                        type="text" 
                         className="form-control" 
-                        placeholder={lang('authentication.email')} 
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder={lang('authentication.username')}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         required 
                     />
                 </div>

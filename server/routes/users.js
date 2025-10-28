@@ -9,7 +9,9 @@ const router = express.Router();
 router.get('/', authenticateToken, async (req, res) => {
   try {
     const { page = 1, limit = 10, search, role, status } = req.query;
-    const offset = (page - 1) * limit;
+    const pageInt = parseInt(page) || 1;
+    const limitInt = parseInt(limit) || 10;
+    const offset = (pageInt - 1) * limitInt;
 
     // Build where clause
     const where = {};
@@ -20,12 +22,34 @@ router.get('/', authenticateToken, async (req, res) => {
         { email: { contains: search, mode: 'insensitive' } }
       ];
     }
+
+    // Support filtering by role id or role name
     if (role) {
-      where.userRole = role;
+      // numeric -> treat as role id on user.userRole
+      const roleAsInt = parseInt(role);
+      if (!isNaN(roleAsInt)) {
+        where.userRole = roleAsInt;
+      } else {
+        // non-numeric -> search roles by name and filter users by matching role ids
+        const matchedRoles = await prisma.role.findMany({
+          where: { name: { contains: role, mode: 'insensitive' } },
+          select: { id: true }
+        });
+        const roleIds = matchedRoles.map(r => r.id);
+        if (roleIds.length) {
+          where.userRole = { in: roleIds };
+        } else {
+          // no matching role names -> ensure empty result
+          where.userRole = -1;
+        }
+      }
     }
+
     if (status !== undefined) {
       where.status = parseInt(status);
     }
+
+    where.is_deleted = 0; // Exclude deleted users
 
     // Get users with pagination
     const [users, total] = await Promise.all([
@@ -43,24 +67,40 @@ router.get('/', authenticateToken, async (req, res) => {
         //   updatedAt: true
         // },
         include: {
+          // role: true,
           city: true,
           state: true,
           country: true
         },
         skip: parseInt(offset),
-        take: parseInt(limit),
+        take: parseInt(limitInt),
         orderBy: { id: 'asc' }
       }),
       prisma.user.count({ where })
     ]);
 
+    // Attach role name for each user (Role is a separate table and User currently stores role id in `userRole`)
+    const roleIds = [...new Set(users.map(u => u.userRole).filter(Boolean))];
+    let roles = [];
+    if (roleIds.length) {
+      roles = await prisma.role.findMany({
+        where: { id: { in: roleIds } },
+        select: { id: true, name: true }
+      });
+    }
+    const roleMap = Object.fromEntries(roles.map(r => [r.id, r.name]));
+    const usersWithRole = users.map(u => ({
+      ...u,
+      role: { id: u.userRole, name: roleMap[u.userRole] ?? null }
+    }));
+
     res.json({
       success: true,
       data: {
-        users,
+        users: usersWithRole,
         pagination: {
-          page: parseInt(page),
-          limit: parseInt(limit),
+          page: pageInt,
+          limit: limitInt,
           total,
           pages: Math.ceil(total / limit)
         }
@@ -80,6 +120,7 @@ router.get('/', authenticateToken, async (req, res) => {
 router.post('/', authenticateToken, async (req, res) => {
   try {
     const {
+      username,
       firstName,
       lastName,
       email,
@@ -96,15 +137,22 @@ router.post('/', authenticateToken, async (req, res) => {
     } = req.body;
 
     // Validate required fields
-    if (!firstName || !lastName || !email || !password) {
+    if (!username || !firstName || !lastName || !email || !password) {
       return res.status(400).json({
         success: false,
         message: 'First name, last name, email, and password are required'
       });
     }
 
+    // Check if username already exists
+    const existingByUsername = await prisma.user.findUnique({ where: { username } });
+    if (existingByUsername) {
+      return res.status(409).json({ success: false, message: 'Username already in use' });
+    }
+
     // Check if email already exists
-    const existingUser = await prisma.user.findUnique({
+    // email is not a unique field in the schema, use findFirst instead of findUnique
+    const existingUser = await prisma.user.findFirst({
       where: { email }
     });
 
@@ -122,12 +170,14 @@ router.post('/', authenticateToken, async (req, res) => {
     // Create user
     const newUser = await prisma.user.create({
       data: {
+        username,
         firstName,
         lastName,
         email,
         phoneNumber,
         password: hashedPassword,
-        userRole: userRole || 3,
+        // ensure userRole is saved as integer
+        userRole: userRole ? parseInt(userRole) : 3,
         address1,
         address2,
         cityId: cityId ? parseInt(cityId) : null,
@@ -138,6 +188,7 @@ router.post('/', authenticateToken, async (req, res) => {
       },
       select: {
         id: true,
+        username: true,
         firstName: true,
         lastName: true,
         email: true,
@@ -169,10 +220,52 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
+// Check username availability (no auth required)
+router.get('/check-username', async (req, res) => {
+  try {
+    const { username, excludeId } = req.query;
+    if (!username) {
+      return res.status(400).json({ success: false, message: 'Username query parameter is required' });
+    }
+
+    const where = {
+      username
+    };
+
+    // If excludeId provided, ensure we don't count that user
+    if (excludeId) {
+      const exists = await prisma.user.findFirst({
+        where: {
+          username,
+          NOT: { id: parseInt(excludeId) }
+        }
+      });
+      return res.json({ success: true, data: { exists: !!exists } });
+    }
+
+    const found = await prisma.user.findUnique({ where: { username } });
+    return res.json({ success: true, data: { exists: !!found } });
+  } catch (error) {
+    console.error('Check username error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
 // Get user by ID
 router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Attach role name for each user (Role is a separate table and User currently stores role id in `userRole`)
+    const parsedId = parseInt(id);
+    const roleIds = Number.isInteger(parsedId) ? [parsedId] : [];
+    let roles = [];
+    if (roleIds.length) {
+      roles = await prisma.role.findMany({
+        where: { id: { in: roleIds } },
+        select: { id: true, name: true }
+      });
+    }
 
     const user = await prisma.user.findUnique({
       where: { id: parseInt(id) },
@@ -180,6 +273,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
         id: true,
         firstName: true,
         lastName: true,
+        username: true,
         email: true,
         phoneNumber: true,
         userRole: true,
@@ -234,6 +328,8 @@ router.get('/:id', authenticateToken, async (req, res) => {
   }
 });
 
+// (duplicate check-username route removed; single handler earlier in file is used)
+
 // Update user
 router.put('/:id', authenticateToken, async (req, res) => {
   try {
@@ -242,6 +338,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
       firstName,
       lastName,
       email,
+      username,
       phoneNumber,
       userRole,
       address1,
@@ -267,7 +364,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
 
     // Check if email is being changed and if it's already taken
     if (email && email !== existingUser.email) {
-      const emailExists = await prisma.user.findUnique({
+      // email is not unique in schema, use findFirst
+      const emailExists = await prisma.user.findFirst({
         where: { email }
       });
 
@@ -285,6 +383,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
       data: {
         ...(firstName && { firstName }),
         ...(lastName && { lastName }),
+        ...(username && { username }),
         ...(email && { email }),
         ...(phoneNumber !== undefined && { phoneNumber }),
         ...(userRole && { userRole: parseInt(userRole) }),
@@ -300,6 +399,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
         id: true,
         firstName: true,
         lastName: true,
+        username: true,
         email: true,
         phoneNumber: true,
         userRole: true,
@@ -365,8 +465,9 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     }
 
     // Delete user
-    await prisma.user.delete({
-      where: { id: parseInt(id) }
+    await prisma.user.update({
+      where: { id: parseInt(id) },
+      data: { is_deleted: 1 }
     });
 
     res.json({
