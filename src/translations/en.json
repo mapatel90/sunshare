@@ -440,6 +440,7 @@
   },
   "usersView": {
     "CreateUser": "Create User",
+    "username": "Username",
     "backToUser": "Back to Users",
     "ViewUser": "View User",
     "EditUser": "Edit User",

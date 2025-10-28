@@ -424,6 +424,7 @@
   ,
   "usersView": {
     "CreateUser": "Tạo người dùng",
+    "username": "Tên người dùng",
     "backToUser": "Quay lại người dùng",
     "ViewUser": "Xem người dùng",
     "EditUser": "Chỉnh sửa người dùng",

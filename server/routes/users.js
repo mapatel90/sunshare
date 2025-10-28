@@ -120,6 +120,7 @@ router.get('/', authenticateToken, async (req, res) => {
 router.post('/', authenticateToken, async (req, res) => {
   try {
     const {
+      username,
       firstName,
       lastName,
       email,
@@ -136,15 +137,22 @@ router.post('/', authenticateToken, async (req, res) => {
     } = req.body;
 
     // Validate required fields
-    if (!firstName || !lastName || !email || !password) {
+    if (!username || !firstName || !lastName || !email || !password) {
       return res.status(400).json({
         success: false,
         message: 'First name, last name, email, and password are required'
       });
     }
 
+    // Check if username already exists
+    const existingByUsername = await prisma.user.findUnique({ where: { username } });
+    if (existingByUsername) {
+      return res.status(409).json({ success: false, message: 'Username already in use' });
+    }
+
     // Check if email already exists
-    const existingUser = await prisma.user.findUnique({
+    // email is not a unique field in the schema, use findFirst instead of findUnique
+    const existingUser = await prisma.user.findFirst({
       where: { email }
     });
 
@@ -162,6 +170,7 @@ router.post('/', authenticateToken, async (req, res) => {
     // Create user
     const newUser = await prisma.user.create({
       data: {
+        username,
         firstName,
         lastName,
         email,
@@ -179,6 +188,7 @@ router.post('/', authenticateToken, async (req, res) => {
       },
       select: {
         id: true,
+        username: true,
         firstName: true,
         lastName: true,
         email: true,
@@ -210,13 +220,45 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
+// Check username availability (no auth required)
+router.get('/check-username', async (req, res) => {
+  try {
+    const { username, excludeId } = req.query;
+    if (!username) {
+      return res.status(400).json({ success: false, message: 'Username query parameter is required' });
+    }
+
+    const where = {
+      username
+    };
+
+    // If excludeId provided, ensure we don't count that user
+    if (excludeId) {
+      const exists = await prisma.user.findFirst({
+        where: {
+          username,
+          NOT: { id: parseInt(excludeId) }
+        }
+      });
+      return res.json({ success: true, data: { exists: !!exists } });
+    }
+
+    const found = await prisma.user.findUnique({ where: { username } });
+    return res.json({ success: true, data: { exists: !!found } });
+  } catch (error) {
+    console.error('Check username error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
 // Get user by ID
 router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
 
     // Attach role name for each user (Role is a separate table and User currently stores role id in `userRole`)
-    const roleIds = [parseInt(id)];
+    const parsedId = parseInt(id);
+    const roleIds = Number.isInteger(parsedId) ? [parsedId] : [];
     let roles = [];
     if (roleIds.length) {
       roles = await prisma.role.findMany({
@@ -285,6 +327,8 @@ router.get('/:id', authenticateToken, async (req, res) => {
   }
 });
 
+// (duplicate check-username route removed; single handler earlier in file is used)
+
 // Update user
 router.put('/:id', authenticateToken, async (req, res) => {
   try {
@@ -318,7 +362,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
 
     // Check if email is being changed and if it's already taken
     if (email && email !== existingUser.email) {
-      const emailExists = await prisma.user.findUnique({
+      // email is not unique in schema, use findFirst
+      const emailExists = await prisma.user.findFirst({
         where: { email }
       });
 
