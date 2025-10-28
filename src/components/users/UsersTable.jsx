@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { apiGet, apiDelete } from '@/lib/api'
 import { useRouter } from 'next/navigation'
 import Swal from 'sweetalert2'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 // Role mapping
 const roleMapping = {
@@ -19,9 +20,7 @@ const roleMapping = {
 // Status mapping
 const statusMapping = {
   0: { label: 'Inactive', color: 'danger' },
-  1: { label: 'Active', color: 'success' },
-  2: { label: 'Suspended', color: 'warning' },
-  3: { label: 'Banned', color: 'dark' }
+  1: { label: 'Active', color: 'success' }
 }
 
 const LoadingSpinner = () => (
@@ -33,6 +32,7 @@ const LoadingSpinner = () => (
 )
 
 const UsersTable = () => {
+  const { lang } = useLanguage();
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [pagination, setPagination] = useState({
@@ -147,43 +147,24 @@ const UsersTable = () => {
   }
 
   const columns = [
-    {
-      accessorKey: 'id',
-      header: ({ table }) => {
-        const checkboxRef = React.useRef(null)
+    // {
+    //   accessorKey: 'id',
+    //   header: ({ table }) => {
+    //     const checkboxRef = React.useRef(null)
 
-        useEffect(() => {
-          if (checkboxRef.current) {
-            checkboxRef.current.indeterminate = table.getIsSomeRowsSelected()
-          }
-        }, [table.getIsSomeRowsSelected()])
-
-        return (
-          <input
-            type="checkbox"
-            className="custom-table-checkbox"
-            ref={checkboxRef}
-            checked={table.getIsAllRowsSelected()}
-            onChange={table.getToggleAllRowsSelectedHandler()}
-          />
-        )
-      },
-      cell: ({ row }) => (
-        <input
-          type="checkbox"
-          className="custom-table-checkbox"
-          checked={row.getIsSelected()}
-          disabled={!row.getCanSelect()}
-          onChange={row.getToggleSelectedHandler()}
-        />
-      ),
-      meta: {
-        headerClassName: 'width-30'
-      }
-    },
+    //     useEffect(() => {
+    //       if (checkboxRef.current) {
+    //         checkboxRef.current.indeterminate = table.getIsSomeRowsSelected()
+    //       }
+    //     }, [table.getIsSomeRowsSelected()])
+    //   },
+    //   meta: {
+    //     headerClassName: 'width-30'
+    //   }
+    // },
     {
       accessorKey: 'user',
-      header: () => 'User',
+      header: () => lang("common.user"),
       cell: ({ row }) => {
         const user = row.original
         const fullName = `${user.firstName} ${user.lastName}` || 'N/A'
@@ -204,7 +185,7 @@ const UsersTable = () => {
     },
     {
       accessorKey: 'email',
-      header: () => 'Email',
+      header: () => lang("authentication.email"),
       cell: ({ row }) => (
         <a href={`mailto:${row.original.email}`} className="text-decoration-none">
           <FiMail size={14} className="me-2" />
@@ -214,7 +195,7 @@ const UsersTable = () => {
     },
     {
       accessorKey: 'phoneNumber',
-      header: () => 'Phone',
+      header: () => lang("common.phone"),
       cell: ({ row }) => (
         row.original.phoneNumber ? (
           <a href={`tel:${row.original.phoneNumber}`} className="text-decoration-none">
@@ -228,19 +209,19 @@ const UsersTable = () => {
     },
     {
       accessorKey: 'userRole',
-      header: () => 'Role',
+      header: () => lang("roles.role"),
       cell: ({ row }) => {
-        const role = roleMapping[row.original.userRole] || { label: 'Unknown', color: 'secondary' }
+        const role = roleMapping[row.original.role.name.charAt(0).toUpperCase() + row.original.role.name.slice(1)] || { label: 'Unknown', color: 'secondary' }
         return (
-          <span className={`badge bg-soft-${role.color} text-${role.color}`}>
-            {role.label}
+          <span className='text-truncate-1-line fw-bold'>
+            {row.original.role.name.charAt(0).toUpperCase() + row.original.role.name.slice(1)}
           </span>
         )
       }
     },
     {
       accessorKey: 'status',
-      header: () => 'Status',
+      header: () => lang("common.status"),
       cell: ({ row }) => {
         const status = statusMapping[row.original.status] || { label: 'Unknown', color: 'secondary' }
         return (
@@ -265,23 +246,18 @@ const UsersTable = () => {
     // },
     {
       accessorKey: 'actions',
-      header: () => 'Actions',
+      header: () => lang("table.actions"),
       cell: ({ row }) => {
         const user = row.original
         const actions = [
           {
-            label: 'View',
-            icon: <FiEye />,
-            onClick: () => router.push(`/admin/users/view?id=${user.id}`)
-          },
-          {
-            label: 'Edit',
+            label: lang("common.edit"),
             icon: <FiEdit3 />,
             onClick: () => router.push(`/admin/users/edit?id=${user.id}`)
           },
           { type: 'divider' },
           {
-            label: 'Delete',
+            label: lang("common.delete"),
             icon: <FiTrash2 />,
             className: 'text-danger',
             onClick: () => handleDeleteUser(user.id, `${user.firstName} ${user.lastName}`)

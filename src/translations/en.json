@@ -78,6 +78,8 @@
   },
   "common": {
     "save": "Save",
+    "user": "User",
+    "email": "Email",
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
@@ -131,7 +133,13 @@
     "location": "Location",
     "details": "Details",
     "category": "Category",
-    "priority": "Priority"
+    "priority": "Priority",
+    "address": "Address",
+    "phone": "Phone",
+    "country": "Country",
+    "state": "State",
+    "city": "City",
+    "zip": "Zip Code"
   },
   "messages": {
     "success": "Operation completed successfully",
@@ -375,6 +383,31 @@
     "timeline": "Timeline",
     "overview": "Overview"
   },
+  "settings": {
+    "generalSettings": "General Settings",
+    "siteName": "Name",
+    "siteLogo": "Site Logo",
+    "siteFavicon": "Site Favicon",
+    "contactEmail": "Contact Email",
+    "contactPhone": "Contact Phone",
+    "address": "Address",
+    "timezone": "Timezone",
+    "language": "Language",
+    "dateFormat": "Date Format",
+    "timeFormat": "Time Format",
+    "currency": "Currency",
+    "saveSettings": "Save Settings",
+    "settingsSaved": "Settings saved successfully"
+  },
+  "placeholders": {
+    "your_company_name": "Your company name [Ex: Theme Ocean]",
+    "your_company_address": "Your company address [Ex: 708 Heavner Court]",
+    "your_company_country": "Select your company's country",
+    "your_company_state": "Select your company's state/province",
+    "your_company_city": "Select your company's city",
+    "your_company_zip": "Zip Code [Ex: 11756]",
+    "your_company_phone": "Phone Number [Ex: 987-6985-9658-654]"
+  },
   "roles": {
     "rolesManagement": "Roles Management",
     "addRole": "Add Role",
@@ -387,5 +420,24 @@
     "role": "Role",
     "createdAt": "Created At",
     "updatedAt": "Updated At"
+  }
+  ,
+  "usersView": {
+    "quickStats": "Quick Stats",
+    "reviews": "Reviews",
+    "userInformation": "User Information",
+    "personalInformation": "Personal Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "notProvided": "Not provided",
+    "accountInformation": "Account Information",
+    "userId": "User ID",
+    "role": "Role",
+    "created": "Created",
+    "addressInformation": "Address Information",
+    "address1": "Address 1",
+    "address2": "Address 2",
+    "suspended": "Suspended",
+    "banned": "Banned"
   }
 }

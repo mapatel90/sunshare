@@ -15,7 +15,7 @@ const UsersCreateForm = () => {
     phoneNumber: '',
     password: '',
     confirmPassword: '',
-    userRole: '3',
+  userRole: '',
     address1: '',
     address2: '',
     countryId: '',
@@ -25,6 +25,12 @@ const UsersCreateForm = () => {
     status: '1'
   })
   const [errors, setErrors] = useState({})
+  const [roles, setRoles] = useState([])
+  const [loadingRoles, setLoadingRoles] = useState(false)
+
+  const params = {status: 1};   // e.g. 1
+
+const queryString = new URLSearchParams(params).toString();
   
   // Use location data hook
   const {
@@ -37,6 +43,32 @@ const UsersCreateForm = () => {
     handleCountryChange,
     handleStateChange
   } = useLocationData()
+
+  // Load active roles for the User Role dropdown
+  useEffect(() => {
+    let mounted = true
+    const fetchRoles = async () => {
+      setLoadingRoles(true)
+      try {
+        const res = await apiGet(`/api/roles?${queryString}`)
+        if (!mounted) return
+        if (res && res.success && Array.isArray(res.data.roles)) {
+          setRoles(res.data.roles)
+        } else if (Array.isArray(res)) {
+          // fallback in case api helper returns array directly
+          setRoles(res)
+        }
+      } catch (err) {
+        console.error('Error loading roles:', err)
+      } finally {
+        if (mounted) setLoadingRoles(false)
+      }
+    }
+
+    fetchRoles()
+
+    return () => { mounted = false }
+  }, [])
 
   // Validation rules
   const validateForm = () => {
@@ -264,12 +296,16 @@ const UsersCreateForm = () => {
                     name="userRole"
                     value={formData.userRole}
                     onChange={handleInputChange}
+                    disabled={loadingRoles}
                   >
                     <option value="">Select Role</option>
-                    <option value="1">Super Admin</option>
-                    <option value="2">Admin</option>
-                    <option value="3">User</option>
-                    <option value="4">Moderator</option>
+                    {loadingRoles ? (
+                      <option value="">Loading roles...</option>
+                    ) : (
+                      roles.map(role => (
+                        <option key={role.id} value={role.id}>{role.name.charAt(0).toUpperCase() + role.name.slice(1)}</option>
+                      ))
+                    )}
                   </select>
                   {errors.userRole && <div className="invalid-feedback">{errors.userRole}</div>}
                 </div>
@@ -281,10 +317,8 @@ const UsersCreateForm = () => {
                     value={formData.status}
                     onChange={handleInputChange}
                   >
-                    <option value="0">Inactive</option>
                     <option value="1">Active</option>
-                    <option value="2">Suspended</option>
-                    <option value="3">Banned</option>
+                    <option value="0">Inactive</option>
                   </select>
                 </div>
               </div>

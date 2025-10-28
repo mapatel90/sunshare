@@ -473,7 +473,7 @@ const locationData = {
 };
 
 async function insertLocationData() {
-  console.log('🌍 Starting comprehensive location data insertion...');
+  // console.log('🌍 Starting comprehensive location data insertion...');
   
   try {
     const insertedData = {
@@ -483,7 +483,7 @@ async function insertLocationData() {
     };
 
     for (const [countryName, countryInfo] of Object.entries(locationData)) {
-      console.log(`\n📍 Processing ${countryName}...`);
+      // console.log(`\n📍 Processing ${countryName}...`);
       
       // Insert or update country
       const country = await prisma.country.upsert({
@@ -496,7 +496,7 @@ async function insertLocationData() {
         }
       });
       insertedData.countries++;
-      console.log(`✅ Country: ${countryName} (${countryInfo.code})`);
+      // console.log(`✅ Country: ${countryName} (${countryInfo.code})`);
 
       // Process states
       for (const [stateName, stateInfo] of Object.entries(countryInfo.states)) {
@@ -516,11 +516,11 @@ async function insertLocationData() {
           }
         });
         insertedData.states++;
-        console.log(`  ✅ State: ${stateName} (${stateInfo.code || 'N/A'})`);
+        // console.log(`  ✅ State: ${stateName} (${stateInfo.code || 'N/A'})`);
 
         // Process cities in batches for better performance
         const cities = stateInfo.cities;
-        console.log(`    🏙️ Processing ${cities.length} cities...`);
+        // console.log(`    🏙️ Processing ${cities.length} cities...`);
         
         for (const cityName of cities) {
           await prisma.city.upsert({
@@ -539,16 +539,16 @@ async function insertLocationData() {
           });
           insertedData.cities++;
         }
-        console.log(`    ✅ Added ${cities.length} cities to ${stateName}`);
+        // console.log(`    ✅ Added ${cities.length} cities to ${stateName}`);
       }
     }
 
-    console.log('\n🎉 Location data insertion completed!');
-    console.log(`📊 Summary:`);
-    console.log(`   Countries: ${insertedData.countries}`);
-    console.log(`   States/Provinces: ${insertedData.states}`);
-    console.log(`   Cities: ${insertedData.cities}`);
-    console.log(`   Total locations: ${insertedData.countries + insertedData.states + insertedData.cities}`);
+    // console.log('\n🎉 Location data insertion completed!');
+    // console.log(`📊 Summary:`);
+    // console.log(`   Countries: ${insertedData.countries}`);
+    // console.log(`   States/Provinces: ${insertedData.states}`);
+    // console.log(`   Cities: ${insertedData.cities}`);
+    // console.log(`   Total locations: ${insertedData.countries + insertedData.states + insertedData.cities}`);
 
     return insertedData;
   } catch (error) {

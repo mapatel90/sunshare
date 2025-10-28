@@ -78,6 +78,7 @@
   },
   "common": {
     "save": "Lưu",
+    "user": "Người dùng",
     "cancel": "Hủy",
     "delete": "Xóa",
     "edit": "Sửa",
@@ -131,7 +132,13 @@
     "location": "Địa điểm",
     "details": "Chi tiết",
     "category": "Danh mục",
-    "priority": "Độ ưu tiên"
+    "priority": "Độ ưu tiên",
+    "address": "Địa chỉ",
+    "phone": "Điện thoại",
+    "country": "Quốc gia",
+    "state": "Tiểu bang",
+    "city": "Thành phố",
+    "zip": "Mã zip"
   },
   "messages": {
     "success": "Thao tác thành công",
@@ -375,6 +382,15 @@
     "timeline": "Thời gian",
     "overview": "Tổng quan"
   },
+  "placeholders": {
+    "your_company_name": "Tên công ty của bạn [Ví dụ: Theme Ocean]",
+    "your_company_address": "Địa chỉ công ty của bạn [Ví dụ: 708 Heavner Court]",
+    "your_company_country": "Chọn quốc gia của công ty bạn",
+    "your_company_state": "Chọn tiểu bang/tỉnh của công ty bạn",
+    "your_company_city": "Chọn thành phố của công ty bạn",
+    "your_company_zip": "Mã zip của công ty bạn [Ví dụ: 11756]",
+    "your_company_phone": "Số điện thoại của công ty bạn [Ví dụ: 987-6985-9658-654]"
+  },
   "roles": {
     "rolesManagement": "Quản lý vai trò",
     "addRole": "Thêm vai trò",
@@ -387,5 +403,24 @@
     "role": "Vai trò",
     "createdAt": "Ngày tạo",
     "updatedAt": "Ngày cập nhật"
+  }
+  ,
+  "usersView": {
+    "quickStats": "Thống kê nhanh",
+    "reviews": "Nhận xét",
+    "userInformation": "Thông tin người dùng",
+    "personalInformation": "Thông tin cá nhân",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "notProvided": "Chưa cung cấp",
+    "accountInformation": "Thông tin tài khoản",
+    "userId": "ID người dùng",
+    "role": "Vai trò",
+    "created": "Ngày tạo",
+    "addressInformation": "Thông tin địa chỉ",
+    "address1": "Địa chỉ 1",
+    "address2": "Địa chỉ 2",
+    "suspended": "Bị đình chỉ",
+    "banned": "Bị cấm"
   }
 }

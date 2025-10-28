@@ -5,7 +5,7 @@ import { FiArrowLeft } from 'react-icons/fi'
 const UsersEditHeader = () => {
   return (
     <div className="page-header">
-      <div className="page-header-left d-flex align-items-center">
+      {/* <div className="page-header-left d-flex align-items-center">
         <div className="page-header-title">
           <h5 className="m-b-10">Edit User</h5>
         </div>
@@ -14,7 +14,7 @@ const UsersEditHeader = () => {
           <li className="breadcrumb-item"><Link href="/admin/users/list">Users</Link></li>
           <li className="breadcrumb-item">Edit</li>
         </ul>
-      </div>
+      </div> */}
       <div className="page-header-right ms-auto">
         <div className="page-header-right-items">
           <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
