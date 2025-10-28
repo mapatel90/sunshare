@@ -569,6 +569,22 @@ html {
 			}
 		}
 
+		/* <---------------! native <select> elements !---------------> */
+		select,
+		.form-select,
+		select.form-control {
+			color: $white !important;
+			background-color: $dark-theme-color-darker !important;
+			border-color: $dark-theme-color-border !important;
+		}
+
+		/* Dropdown list options (browser support varies) */
+		select option,
+		select optgroup {
+			color: $white;
+			background-color: $dark-theme-color-darker;
+		}
+
 		.basic-multi-select {
 
 			.select__control {

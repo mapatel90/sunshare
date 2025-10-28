@@ -1,391 +1,311 @@
-import React, { useState, useEffect } from 'react';
-import { FiAlertTriangle, FiSave } from 'react-icons/fi';
-import axios from 'axios';
-import { apiPost, apiGet } from '@/lib/api'
+import React, { useState, useEffect } from 'react'
+import { FiSave } from 'react-icons/fi'
+import { useRouter } from 'next/navigation'
+import { apiGet, apiPost } from '@/lib/api'
+import useLocationData from '@/hooks/useLocationData'
+import useOfftakerData from '@/hooks/useOfftakerData'
+import Swal from 'sweetalert2'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const TabProjectType = ({ setFormData, formData, error, setError }) => {
-    const [countries, setCountries] = useState([]);
-    const [states, setStates] = useState([]);
-    const [cities, setCities] = useState([]);
-    const [offtakers, setOfftakers] = useState([]);
-    const [loading, setLoading] = useState({
-        countries: false,
-        states: false,
-        cities: false,
-        offtakers: false
-    });
+    const router = useRouter()
+    const { lang } = useLanguage()
+    // Location data via shared hook (same behavior as UsersCreateForm)
+    const {
+        countries,
+        states,
+        cities,
+        loadingCountries,
+        loadingStates,
+        loadingCities,
+        handleCountryChange,
+        handleStateChange
+    } = useLocationData()
+    const { offtakers, loadingOfftakers, fetchOfftakerById } = useOfftakerData()
+    const [loading, setLoading] = useState({ form: false })
 
-    // Fetch countries on component mount
-    useEffect(() => {
-        const fetchCountries = async () => {
-            setLoading(prev => ({ ...prev, countries: true }));
-            try {
-                // Replace with your actual API endpoint
-                const response = await apiGet('/api/countries');
-                setCountries(response.data);
-            } catch (error) {
-                console.error('Error fetching countries:', error);
-            } finally {
-                setLoading(prev => ({ ...prev, countries: false }));
-            }
-        };
+    // Offtakers are loaded by hook on mount
 
-        const fetchOfftakers = async () => {
-            setLoading(prev => ({ ...prev, offtakers: true }));
-            try {
-                // Replace with your actual API endpoint to get offtakers (users with role_id = 3)
-                const response = await apiGet('/api/users/offtakers');
-                setOfftakers(response.data);
-            } catch (error) {
-                console.error('Error fetching offtakers:', error);
-            } finally {
-                setLoading(prev => ({ ...prev, offtakers: false }));
-            }
-        };
-
-        fetchCountries();
-        fetchOfftakers();
-    }, []);
-
-    // Fetch states when country changes
-    useEffect(() => {
-        const fetchStates = async () => {
-            if (formData.country) {
-                setLoading(prev => ({ ...prev, states: true }));
-                try {
-                    // Replace with your actual API endpoint
-                    const response = await apiGet(`/api/states?country_id=${formData.country}`);
-                    setStates(response.data);
-                } catch (error) {
-                    console.error('Error fetching states:', error);
-                } finally {
-                    setLoading(prev => ({ ...prev, states: false }));
-                }
-            }
-        };
-
-        fetchStates();
-    }, [formData.country]);
-
-    // Fetch cities when state changes
-    useEffect(() => {
-        const fetchCities = async () => {
-            if (formData.state) {
-                setLoading(prev => ({ ...prev, cities: true }));
-                try {
-                    // Replace with your actual API endpoint
-                    const response = await apiGet(`/api/cities?state_id=${formData.state}`);
-                    setCities(response.data);
-                } catch (error) {
-                    console.error('Error fetching cities:', error);
-                } finally {
-                    setLoading(prev => ({ ...prev, cities: false }));
-                }
-            }
-        };
-
-        fetchCities();
-    }, [formData.state]);
-
+    // ✅ Handle all input fields
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+        const { name, value } = e.target
+        setFormData(prev => ({ ...prev, [name]: value }))
+    }
 
+    // ✅ Handle country/state/city dropdown changes (same pattern as UsersCreateForm)
+    const handleLocationChange = (type, value) => {
+        if (type === 'country') {
+            setFormData(prev => ({
+                ...prev,
+                countryId: value,
+                stateId: '',
+                cityId: ''
+            }))
+            handleCountryChange(value)
+        } else if (type === 'state') {
+            setFormData(prev => ({
+                ...prev,
+                stateId: value,
+                cityId: ''
+            }))
+            handleStateChange(value)
+        } else if (type === 'city') {
+            setFormData(prev => ({
+                ...prev,
+                cityId: value
+            }))
+        }
+    }
+
+    // ✅ When Offtaker changes, auto-fill address
     const handleOfftakerChange = async (e) => {
-        const offtakerId = e.target.value;
-        setFormData(prev => ({
-            ...prev,
-            offtaker: offtakerId
-        }));
+        const offtakerId = e.target.value
+        setFormData(prev => ({ ...prev, offtaker: offtakerId }))
 
         if (offtakerId) {
             try {
-                // Fetch offtaker details
-                const response = await apiGet(`/api/users/${offtakerId}`);
-                const offtakerData = response.data;
-
-                // Update form with offtaker's address details
+                const offtaker = await fetchOfftakerById(offtakerId)
                 setFormData(prev => ({
                     ...prev,
-                    address1: offtakerData.address1 || '',
-                    address2: offtakerData.address2 || '',
-                    city: offtakerData.city_id || '',
-                    state: offtakerData.state_id || '',
-                    country: offtakerData.country_id || '',
-                    zipcode: offtakerData.zipcode || ''
-                }));
-
-                // If state changes, it will trigger the cities fetch automatically
-            } catch (error) {
-                console.error('Error fetching offtaker details:', error);
+                    address1: offtaker?.address1 || '',
+                    address2: offtaker?.address2 || '',
+                    cityId: offtaker?.cityId || '',
+                    stateId: offtaker?.stateId || '',
+                    countryId: offtaker?.countryId || '',
+                    zipcode: offtaker?.zipcode || ''
+                }))
+                // Trigger dependent dropdown data
+                if (offtaker?.countryId) {
+                    handleCountryChange(offtaker.countryId)
+                }
+                if (offtaker?.stateId) {
+                    handleStateChange(offtaker.stateId)
+                }
+            } catch (err) {
+                console.error('Error fetching offtaker details:', err)
+                setError(err?.message || 'Failed to load offtaker')
             }
         }
-    };
+    }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add your form submission logic here
-        console.log('Form submitted:', formData);
-        // You can add validation and API call to save the project
-    };
+    // ✅ Handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setLoading(prev => ({ ...prev, form: true }))
+
+        try {
+            Swal.fire({
+                icon: 'success',
+                title: 'Saved!',
+                text: 'Project details saved successfully',
+                timer: 2000,
+                showConfirmButton: false
+            })
+        } finally {
+            setLoading(prev => ({ ...prev, form: false }))
+        }
+    }
 
     return (
-        <section className="step-body mt-4 body current">
-            <form id="project-form" onSubmit={handleSubmit}>
-                <div className="row">
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="projectName" className="form-label">Project Name *</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="projectName"
-                            name="projectName"
-                            value={formData.projectName || ''}
-                            onChange={handleInputChange}
-                            required
-                        />
+        <form id="project-form" onSubmit={handleSubmit}>
+            <div className="row">
+                {/* Project Information */}
+                <div className="col-md-12">
+                    <div className="card mb-4">
+                        <div className="card-header">
+                            <h6 className="card-title mb-0">{lang('projects.projectInformation', 'Project Information')}</h6>
+                        </div>
+                        <div className="card-body">
+                            <div className="row">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">
+                                        {lang('projects.projectName', 'Project Name')} <span className="text-danger">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${error.project_name ? 'is-invalid' : ''}`}
+                                        name="project_name"
+                                        value={formData.project_name}
+                                        onChange={handleInputChange}
+                                        placeholder={lang('projects.projectNamePlaceholder', 'Enter project name')}
+                                    />
+                                    {error.project_name && (
+                                        <div className="invalid-feedback">{error.project_name}</div>
+                                    )}
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">
+                                        {lang('projects.projectType', 'Project Type')} <span className="text-danger">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${error.project_type ? 'is-invalid' : ''}`}
+                                        name="project_type"
+                                        value={formData.project_type}
+                                        onChange={handleInputChange}
+                                        placeholder={lang('projects.projectTypePlaceholder', 'Enter project type')}
+                                    />
+                                    {error.project_type && (
+                                        <div className="invalid-feedback">{error.project_type}</div>
+                                    )}
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">
+                                        {lang('projects.selectOfftaker', 'Select Offtaker')} <span className="text-danger">*</span>
+                                    </label>
+                                    <select
+                                        className={`form-control ${error.offtaker ? 'is-invalid' : ''}`}
+                                        name="offtaker"
+                                        value={formData.offtaker}
+                                        onChange={handleOfftakerChange}
+                                        disabled={loadingOfftakers}
+                                    >
+                                        <option value="">{lang('projects.selectOfftaker', 'Select Offtaker')}</option>
+                                        {offtakers.map(offtaker => (
+                                            <option key={offtaker.id} value={offtaker.id}>
+                                                {offtaker.firstName} {offtaker.lastName}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {error.offtaker && (
+                                        <div className="invalid-feedback">{error.offtaker}</div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="projectType" className="form-label">Project Type *</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="projectType"
-                            name="projectType"
-                            value={formData.projectType || ''}
-                            onChange={handleInputChange}
-                            required
-                        />
+                {/* Address Information */}
+                <div className="col-md-12">
+                    <div className="card mb-4">
+                        <div className="card-header">
+                            <h6 className="card-title mb-0">{lang('projects.addressInformation', 'Address Information')}</h6>
+                        </div>
+                        <div className="card-body">
+                            <div className="row">
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">{lang('projects.addressLine1', 'Address Line 1')}</label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${error.address1 ? 'is-invalid' : ''}`}
+                                        name="address1"
+                                        value={formData.address1}
+                                        onChange={handleInputChange}
+                                        placeholder={lang('projects.addressLine1Placeholder', 'Enter address line 1')}
+                                    />
+                                </div>
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label">{lang('projects.addressLine2', 'Address Line 2')}</label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${error.address2 ? 'is-invalid' : ''}`}
+                                        name="address2"
+                                        value={formData.address2}
+                                        onChange={handleInputChange}
+                                        placeholder={lang('projects.addressLine2Placeholder', 'Enter address line 2')}
+                                    />
+                                </div>
+
+                                {/* Country */}
+                                <div className="col-md-3 mb-3">
+                                    <label className="form-label">{lang('projects.country', 'Country')}</label>
+                                    <select
+                                        className={`form-select ${error.countryId ? 'is-invalid' : ''}`}
+                                        value={formData.countryId}
+                                        onChange={(e) => handleLocationChange('country', e.target.value)}
+                                        disabled={loadingCountries}
+                                    >
+                                        <option value="">{lang('projects.selectCountry', 'Select Country')}</option>
+                                        {countries.map(country => (
+                                            <option key={country.id} value={country.id}>
+                                                {country.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* State */}
+                                <div className="col-md-3 mb-3">
+                                    <label className="form-label">{lang('projects.state', 'State')}</label>
+                                    <select
+                                        className={`form-select ${error.stateId ? 'is-invalid' : ''}`}
+                                        value={formData.stateId}
+                                        onChange={(e) => handleLocationChange('state', e.target.value)}
+                                        disabled={loadingStates || !formData.countryId}
+                                    >
+                                        <option value="">{lang('projects.selectState', 'Select State')}</option>
+                                        {states.map(state => (
+                                            <option key={state.id} value={state.id}>
+                                                {state.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* City */}
+                                <div className="col-md-3 mb-3">
+                                    <label className="form-label">{lang('projects.city', 'City')}</label>
+                                    <select
+                                        className={`form-select ${error.cityId ? 'is-invalid' : ''}`}
+                                        value={formData.cityId}
+                                        onChange={(e) => handleLocationChange('city', e.target.value)}
+                                        disabled={loadingCities || !formData.stateId}
+                                    >
+                                        <option value="">{lang('projects.selectCity', 'Select City')}</option>
+                                        {cities.map(city => (
+                                            <option key={city.id} value={city.id}>
+                                                {city.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Zip */}
+                                <div className="col-md-3 mb-3">
+                                    <label className="form-label">{lang('projects.zipcode', 'Zip Code')}</label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${error.zipcode ? 'is-invalid' : ''}`}
+                                        name="zipcode"
+                                        value={formData.zipcode}
+                                        onChange={handleInputChange}
+                                        placeholder={lang('projects.zipcodePlaceholder', 'Enter zip code')}
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <div className="col-md-12 mb-3">
-                        <label htmlFor="offtaker" className="form-label">Offtaker *</label>
-                        <select
-                            className="form-select"
-                            id="offtaker"
-                            name="offtaker"
-                            value={formData.offtaker || ''}
-                            onChange={handleOfftakerChange}
-                            required
+                {/* Buttons */}
+                <div className="col-md-12">
+                    <div className="d-flex gap-2">
+                        <button type="submit" className="btn btn-primary" disabled={loading.form}>
+                            {loading.form ? (
+                                <>
+                                    <span className="spinner-border spinner-border-sm me-2" role="status" />
+                                    {lang('common.saving', 'Saving')}...
+                                </>
+                            ) : (
+                                <>
+                                    <FiSave className="me-2" /> {lang('projects.saveProject', 'Save Project')}
+                                </>
+                            )}
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-light"
+                            onClick={() => router.push('/projects/list')}
+                            disabled={loading.form}
                         >
-                            <option value="">Select Offtaker</option>
-                            {offtakers.map(offtaker => (
-                                <option key={offtaker.id} value={offtaker.id}>
-                                    {offtaker.name} ({offtaker.email})
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="col-md-12 mb-3">
-                        <label htmlFor="address1" className="form-label">Address 1 *</label>
-                        <textarea
-                            className="form-control"
-                            id="address1"
-                            name="address1"
-                            rows="2"
-                            value={formData.address1 || ''}
-                            onChange={handleInputChange}
-                            required
-                        ></textarea>
-                    </div>
-
-                    <div className="col-md-12 mb-3">
-                        <label htmlFor="address2" className="form-label">Address 2</label>
-                        <textarea
-                            className="form-control"
-                            id="address2"
-                            name="address2"
-                            rows="2"
-                            value={formData.address2 || ''}
-                            onChange={handleInputChange}
-                        ></textarea>
-                    </div>
-
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="country" className="form-label">Country *</label>
-                        <select
-                            className="form-select"
-                            id="country"
-                            name="country"
-                            value={formData.country || ''}
-                            onChange={handleInputChange}
-                            required
-                            disabled={loading.countries}
-                        >
-                            <option value="">Select Country</option>
-                            {countries.map(country => (
-                                <option key={country.id} value={country.id}>
-                                    {country.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="state" className="form-label">State *</label>
-                        <select
-                            className="form-select"
-                            id="state"
-                            name="state"
-                            value={formData.state || ''}
-                            onChange={handleInputChange}
-                            required
-                            disabled={!formData.country || loading.states}
-                        >
-                            <option value="">Select State</option>
-                            {states.map(state => (
-                                <option key={state.id} value={state.id}>
-                                    {state.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="city" className="form-label">City *</label>
-                        <select
-                            className="form-select"
-                            id="city"
-                            name="city"
-                            value={formData.city || ''}
-                            onChange={handleInputChange}
-                            required
-                            disabled={!formData.state || loading.cities}
-                        >
-                            <option value="">Select City</option>
-                            {cities.map(city => (
-                                <option key={city.id} value={city.id}>
-                                    {city.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="col-md-6 mb-3">
-                        <label htmlFor="zipcode" className="form-label">Zipcode *</label>
-                        <input
-                            type="number"
-                            className="form-control"
-                            id="zipcode"
-                            name="zipcode"
-                            value={formData.zipcode || ''}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </div>
-
-                    <div className="col-md-3 mb-3">
-                        <label htmlFor="investorProfit" className="form-label">Investor Profit (%) *</label>
-                        <input
-                            type="number"
-                            className="form-control"
-                            id="investorProfit"
-                            name="investorProfit"
-                            value={formData.investorProfit || ''}
-                            onChange={handleInputChange}
-                            step="0.01"
-                            min="0"
-                            max="100"
-                            required
-                        />
-                    </div>
-
-                    <div className="col-md-3 mb-3">
-                        <label htmlFor="weshareProfit" className="form-label">Weshare Profit (%) *</label>
-                        <input
-                            type="number"
-                            className="form-control"
-                            id="weshareProfit"
-                            name="weshareProfit"
-                            value={formData.weshareProfit || ''}
-                            onChange={handleInputChange}
-                            step="0.01"
-                            min="0"
-                            max="100"
-                            required
-                        />
-                    </div>
-
-                    <div className="col-md-3 mb-3">
-                        <label htmlFor="status" className="form-label">Status *</label>
-                        <select
-                            className="form-select"
-                            id="status"
-                            name="status"
-                            value={formData.status || 'active'}
-                            onChange={handleInputChange}
-                            required
-                        >
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-                    </div>
-
-                    <div className="col-12 text-end mt-4">
-                        <button type="submit" className="btn btn-primary">
-                            <FiSave className="me-2" /> Save Project
+                            {lang('common.cancel', 'Cancel')}
                         </button>
                     </div>
                 </div>
-            </form>
-        </section>
-    );
-};
-
-export default TabProjectType;
-export const ProjectTypeCard = ({ icon, title, description, id, isRequired, name, setFormData, formData, setError }) => {
-    const handleOnChange = (e) => {
-        const name = e.target.name
-        const id = e.target.id
-        let updatedType = { ...formData };
-
-        if (name === "project-type") {
-            updatedType = { ...updatedType, projectType: id };
-            setError(false)
-        }
-        if (name === "project-manage") {
-            updatedType = { ...updatedType, projectManage: id };
-            setError(false)
-        }
-        if (name === "budget-spend") {
-            updatedType = { ...updatedType, budgetsSpend: id };
-            setError(false)
-        }
-        setFormData({ ...formData, ...updatedType });
-    }
-
-    const { projectType, projectManage, budgetsSpend } = formData
-    return (
-        <>
-
-            <label className="w-100" htmlFor={id}>
-                <input
-                    className="card-input-element"
-                    type="radio"
-                    name={name}
-                    id={id}
-                    required={isRequired}
-                    onClick={(e) => handleOnChange(e)}
-                    defaultChecked={projectType === id || projectManage === id || budgetsSpend === id ? true : false}
-                />
-                <span className="card card-body d-flex flex-row justify-content-between align-items-center ">
-                    <span className="hstack gap-3">
-                        <span className="avatar-text">
-                            {React.cloneElement(getIcon(icon), { size: "16", strokeWidth: "1.6" })}
-                        </span>
-                        <span>
-                            <span className="d-block fs-13 fw-bold text-dark">{title}</span>
-                            <span className="d-block text-muted mb-0" dangerouslySetInnerHTML={{ __html: description }} />
-                        </span>
-                    </span>
-                </span>
-            </label>
-        </>
+            </div>
+        </form>
     )
 }
+
+export default TabProjectType

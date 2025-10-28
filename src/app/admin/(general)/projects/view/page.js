@@ -1,8 +1,8 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
-import ProjectViewHeader from '@/components/projectsView/ProjectViewHeader'
-import ProjectViewTabItems from '@/components/projectsView/ProjectViewTabItems'
-import TabProjectOverview from '@/components/projectsView/TabProjectOverview'
+import ProjectViewHeader from '@/components/projectsCreate/ProjectViewHeader'
+import ProjectViewTabItems from '@/components/projectsCreate/ProjectViewTabItems'
+import TabProjectOverview from '@/components/projectsCreate/TabProjectOverview'
 import LeadsEmptyCard from '@/components/leadsViewCreate/LeadsEmptyCard'
 
 const page = () => {

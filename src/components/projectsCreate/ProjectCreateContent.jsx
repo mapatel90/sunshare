@@ -2,21 +2,31 @@
 import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
 import TabProjectType from './TabProjectType'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const TabProjectDetails = dynamic(() => import('./TabProjectDetails'), { ssr: false })
 
-// Only keep the two tabs
-const steps = [
-    { name: "Project Basic", required: true }
-];
-
 const ProjectCreateContent = () => {
+    const { lang } = useLanguage()
     const [currentStep, setCurrentStep] = useState(0);
     const [error, setError] = useState(false);
+
+    const steps = [
+        { name: lang('projects.projectBasic', 'Project Basic'), required: true }
+    ];
 
     const [formData, setFormData] = useState({
         projectType: "",
         projectManage: "",
+        project_name: '',
+        project_type: '',
+        offtaker: '',
+        address1: '',
+        address2: '',
+        countryId: '',
+        stateId: '',
+        cityId: '',
+        zipcode: ''
     });
 
     const validateFields = () => {
@@ -55,9 +65,9 @@ const ProjectCreateContent = () => {
         <div className="col-lg-12">
             <div className="card border-top-0">
                 <div className="card-body p-0 wizard" id="project-create-steps">
-                    {/* Tabs */}
+                    {/* Compact nav tabs */}
                     <div className="steps clearfix">
-                        <ul role="tablist">
+                        <ul role="tablist" className="custom-steps" style={{ width: '20%' }}>
                             {steps.map((step, index) => (
                                 <li
                                     key={index}
@@ -71,7 +81,7 @@ const ProjectCreateContent = () => {
                     </div>
 
                     {/* Tab content */}
-                    <div className="content clearfix">
+                    <div className="main-content">
                         {currentStep === 0 && (
                             <TabProjectType
                                 setFormData={setFormData}
