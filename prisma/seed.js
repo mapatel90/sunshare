@@ -11,7 +11,7 @@ async function main() {
   const roles = [
     { id: 1, name: 'superadmin', status: 1 },
     { id: 2, name: 'staffadmin', status: 1 },
-    { id: 3, name: 'Offtaker', status: 1 },
+    { id: 3, name: 'offtaker', status: 1 },
   ];
 
   console.log('📝 Creating roles...');
@@ -58,11 +58,12 @@ async function main() {
   });
 
   await prisma.user.upsert({
-    where: { email: 'admin@sunshare.com' },
+    where: { username: 'admin' },
     update: {},
     create: {
       firstName: 'System',
       lastName: 'Administrator',
+      username: 'admin',
       email: 'admin@sunshare.com',
       password: adminPassword,
       userRole: 1,
@@ -75,7 +76,7 @@ async function main() {
       status: 1 // Active
     }
   });
-  console.log('✅ Admin user created: admin@sunshare.com (password: admin123)');
+  console.log('✅ Admin user created: admin (password: admin123)');
 
 
 
@@ -83,6 +84,7 @@ async function main() {
     {
       firstName: 'John',
       lastName: 'Manager',
+      username: 'johnmanager',
       email: 'manager@sunshare.com',
       userRole: 2,
       phoneNumber: '+1234567891',
@@ -95,6 +97,7 @@ async function main() {
     {
       firstName: 'Test',
       lastName: 'User',
+      username: 'testuser',
       email: 'wrapcode.info@gmail.com',
       userRole: 3,
       phoneNumber: '+1234567892',
@@ -107,6 +110,7 @@ async function main() {
     {
       firstName: 'Nguyen',
       lastName: 'Van Minh',
+      username: 'vietnamuser',
       email: 'vietnam.user@sunshare.com',
       userRole: 3,
       phoneNumber: '+84901234567',
@@ -125,7 +129,8 @@ async function main() {
   for (const userData of sampleUsers) {
     const password = userData.email === 'wrapcode.info@gmail.com' ? testPassword : defaultPassword;
     await prisma.user.upsert({
-      where: { email: userData.email },
+      // Prisma schema requires a unique field in `where`. Use `username` which is unique.
+      where: { username: userData.username },
       update: {},
       create: {
         ...userData,

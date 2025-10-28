@@ -1,8 +1,12 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import { FiArrowLeft } from 'react-icons/fi'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const UsersViewHeader = () => {
+  const { lang } = useLanguage()
   return (
     <div className="page-header">
       {/* <div className="page-header-left d-flex align-items-center">
@@ -20,7 +24,7 @@ const UsersViewHeader = () => {
           <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
             <Link href="/admin/users/list" className="btn btn-light">
               <FiArrowLeft size={16} className="me-2" />
-              Back to Users
+              {lang('usersView.backToUser')}
             </Link>
           </div>
         </div>

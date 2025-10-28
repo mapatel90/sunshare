@@ -65,14 +65,14 @@ export default function AuthProvider({ children }) {
     }
   }
 
-  const login = async (email, password) => {
+  const login = async (username, password) => {
     try {
-      console.log('🔄 Attempting login for:', email)
+      console.log('🔄 Attempting login for username:', username)
 
       // Use API helper for login (without auth token)
       const data = await apiPost(
         '/api/auth/login',
-        { email, password },
+        { username, password },
         { includeAuth: false }
       )
 
@@ -123,13 +123,13 @@ export default function AuthProvider({ children }) {
   const logout = () => {
     // Clear storage
     localStorage.removeItem('accessToken')
-    
+
     // Clear cookie
     document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-    
+
     // Clear user
     setUser(null)
-    
+
     // Redirect to login
     router.push('/login')
   }

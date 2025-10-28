@@ -138,7 +138,11 @@
     "country": "Quốc gia",
     "state": "Tiểu bang",
     "city": "Thành phố",
-    "zip": "Mã zip"
+    "zip": "Mã zip",
+    "selectRole": "Chọn vai trò",
+    "selectCountry": "Chọn quốc gia",
+    "selectState": "Chọn tiểu bang",
+    "selectCity": "Chọn thành phố"
   },
   "messages": {
     "success": "Thao tác thành công",
@@ -186,6 +190,9 @@
     "projectscreate": "Tạo dự án",
     "widgets": "Tiện ích",
     "lists": "Danh sách",
+    "list": "Danh sách",
+    "create": "Tạo",
+    "view": "Xem",
     "tables": "Bảng",
     "charts": "Biểu đồ",
     "statistics": "Thống kê",
@@ -412,7 +419,17 @@
     "your_company_state": "Chọn tiểu bang/tỉnh của công ty bạn",
     "your_company_city": "Chọn thành phố của công ty bạn",
     "your_company_zip": "Mã zip của công ty bạn [Ví dụ: 11756]",
-    "your_company_phone": "Số điện thoại của công ty bạn [Ví dụ: 987-6985-9658-654]"
+    "your_company_phone": "Số điện thoại của công ty bạn [Ví dụ: 987-6985-9658-654]",
+    "enterfirstname": "Nhập tên",
+    "enterlastname": "Nhập họ",
+    "enteremail": "Nhập email",
+    "enterusername": "Nhập tên người dùng",
+    "enterpassword": "Nhập mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "enteraddress1": "Nhập địa chỉ dòng 1",
+    "enteraddress2": "Nhập địa chỉ dòng 2",
+    "enterzipcode": "Nhập mã zip",
+    "enterphonenumber": "Nhập số điện thoại"
   },
   "roles": {
     "rolesManagement": "Quản lý vai trò",
@@ -429,6 +446,11 @@
   }
   ,
   "usersView": {
+    "CreateUser": "Tạo người dùng",
+    "username": "Tên người dùng",
+    "backToUser": "Quay lại người dùng",
+    "ViewUser": "Xem người dùng",
+    "EditUser": "Chỉnh sửa người dùng",
     "quickStats": "Thống kê nhanh",
     "reviews": "Nhận xét",
     "userInformation": "Thông tin người dùng",
@@ -444,6 +466,8 @@
     "address1": "Địa chỉ 1",
     "address2": "Địa chỉ 2",
     "suspended": "Bị đình chỉ",
-    "banned": "Bị cấm"
+    "banned": "Bị cấm",
+    "phonenumber": "Số điện thoại",
+    "userRole": "Vai trò người dùng"
   }
 }
