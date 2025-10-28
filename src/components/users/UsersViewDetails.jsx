@@ -201,8 +201,8 @@ const UsersViewDetails = () => {
                   <h6 className="fw-bold mb-3">{lang('usersView.accountInformation', 'Account Information')}</h6>
                   <div className="vstack gap-2">
                     <div className="hstack justify-content-between">
-                      <span className="text-muted">{lang('usersView.userId', 'User ID')}:</span>
-                      <span className="fw-semibold">#{user.id}</span>
+                      <span className="text-muted">{lang('usersView.username', 'Username')}:</span>
+                      <span className="fw-semibold">{user.username}</span>
                     </div>
                     <div className="hstack justify-content-between">
                       <span className="text-muted">{lang('usersView.role', 'Role')}:</span>
@@ -229,57 +229,76 @@ const UsersViewDetails = () => {
 
               {/* Address Information */}
               {(user.address1 || user.city || user.state || user.country) && (
+                console.log("test", user),
                 <div className="col-lg-12">
-                  <div className="border rounded p-3">
-                    <h6 className="fw-bold mb-3">
-                      <FiMapPin className="me-2" />
+                  <div className="border rounded p-3 bg-white shadow-sm">
+                    <h6 className="fw-bold mb-3 d-flex align-items-center">
+                      <FiMapPin className="me-2 text-primary" />
                       {lang('usersView.addressInformation', 'Address Information')}
                     </h6>
-                    <div className="row g-2">
+
+                    <div className="row gy-2 gx-4">
                       {user.address1 && (
                         <div className="col-md-6">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">{lang('usersView.address1', 'Address 1')}:</span>
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('usersView.address1', 'Address 1')}
+                            </span>
                             <span className="fw-semibold">{user.address1}</span>
                           </div>
                         </div>
                       )}
+
                       {user.address2 && (
                         <div className="col-md-6">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">{lang('usersView.address2', 'Address 2')}:</span>
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('usersView.address2', 'Address 2')}
+                            </span>
                             <span className="fw-semibold">{user.address2}</span>
                           </div>
                         </div>
                       )}
+
                       {user.city && (
-                        <div className="col-md-3">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">{lang('common.city', 'City')}:</span>
+                        <div className="col-md-3 col-sm-6">
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('common.city', 'City')}
+                            </span>
                             <span className="fw-semibold">{user.city.name}</span>
                           </div>
                         </div>
                       )}
+
                       {user.state && (
-                        <div className="col-md-3">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">{lang('common.state', 'State')}:</span>
+                        <div className="col-md-3 col-sm-6">
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('common.state', 'State')}
+                            </span>
                             <span className="fw-semibold">{user.state.name}</span>
                           </div>
                         </div>
                       )}
+
                       {user.country && (
-                        <div className="col-md-3">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">{lang('common.country', 'Country')}:</span>
+                        <div className="col-md-3 col-sm-6">
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('common.country', 'Country')}
+                            </span>
                             <span className="fw-semibold">{user.country.name}</span>
                           </div>
                         </div>
                       )}
+
                       {user.zipcode && (
-                        <div className="col-md-3">
-                          <div className="hstack justify-content-between">
-                            <span className="text-muted">{lang('common.zip', 'Zip Code')}:</span>
+                        <div className="col-md-3 col-sm-6">
+                          <div>
+                            <span className="text-muted d-block small">
+                              {lang('common.zip', 'Zip Code')}
+                            </span>
                             <span className="fw-semibold">{user.zipcode}</span>
                           </div>
                         </div>
@@ -287,6 +306,8 @@ const UsersViewDetails = () => {
                     </div>
                   </div>
                 </div>
+
+
               )}
             </div>
           </div>

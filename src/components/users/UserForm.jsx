@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { apiGet } from '@/lib/api'
 import useLocationData from '@/hooks/useLocationData'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -28,14 +28,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
         status: '1'
     })
 
-    useEffect(() => {
-        if (initialData && Object.keys(initialData).length) {
-            // avoid merging roles into formData (roles should be passed via roles prop)
-            const data = { ...initialData }
-            if (data.roles) delete data.roles
-            setFormData(prev => ({ ...prev, ...data }))
-        }
-    }, [initialData])
+    
 
     const {
         countries,
@@ -47,6 +40,40 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
         handleCountryChange,
         handleStateChange
     } = useLocationData()
+
+    const initializedLocationRef = useRef(false)
+
+    useEffect(() => {
+        // Run once when initialData first becomes available. We avoid
+        // including handler functions in deps because they are recreated
+        // each render by the hook, which caused repeated API calls.
+        if (!initializedLocationRef.current && initialData && Object.keys(initialData).length) {
+            initializedLocationRef.current = true
+
+            // avoid merging roles into formData (roles should be passed via roles prop)
+            const data = { ...initialData }
+            if (data.roles) delete data.roles
+            setFormData(prev => ({ ...prev, ...data }))
+
+            // When editing, if the user already has country/state set we must
+            // load the dependent lists so the selected options are visible.
+            if (data.countryId) {
+                try {
+                    handleCountryChange(data.countryId)
+                } catch (err) {
+                    // gracefully ignore if handler is not available
+                    console.error('handleCountryChange error:', err)
+                }
+            }
+            if (data.stateId) {
+                try {
+                    handleStateChange(data.stateId)
+                } catch (err) {
+                    console.error('handleStateChange error:', err)
+                }
+            }
+        }
+    }, [initialData])
 
     const validateForm = () => {
         const newErrors = {}
