@@ -59,7 +59,6 @@ router.get('/', authenticateToken, async (req, res) => {
 router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id",id);
 
     const role = await prisma.role.findUnique({
       where: { id: parseInt(id) }

@@ -32,17 +32,17 @@ const useLocationData = () => {
   // Fetch states by country ID
   const fetchStates = async (countryId) => {
     try {
-      console.log('🏛️ Fetching states for country ID:', countryId)
+      // console.log('🏛️ Fetching states for country ID:', countryId)
       setLoadingStates(true)
       setError(null)
       const response = await apiGet(`/api/locations/countries/${countryId}/states`)
       
-      console.log('🏛️ States API response:', response)
+      // console.log('🏛️ States API response:', response)
       if (response.success) {
-        console.log('✅ States loaded:', response.data.length)
+        // console.log('✅ States loaded:', response.data.length)
         setStates(response.data)
       } else {
-        console.log('❌ States API failed:', response.message)
+        // console.log('❌ States API failed:', response.message)
       }
     } catch (err) {
       console.error('❌ Error fetching states:', err)

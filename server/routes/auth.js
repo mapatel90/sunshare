@@ -95,8 +95,8 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     // Debug logging
-    console.log('Request headers:', req.headers);
-    console.log('Request body:', req.body);
+    // console.log('Request headers:', req.headers);
+    // console.log('Request body:', req.body);
     
     // Check if body exists
     if (!req.body) {

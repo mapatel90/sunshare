@@ -44,9 +44,9 @@ app.get('/health', (req, res) => {
 
 // Debug middleware
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path}`);
-  console.log('Headers:', req.headers);
-  console.log('Body:', req.body);
+  // console.log(`${req.method} ${req.path}`);
+  // console.log('Headers:', req.headers);
+  // console.log('Body:', req.body);
   next();
 });
 

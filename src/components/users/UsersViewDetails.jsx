@@ -39,7 +39,6 @@ const UsersViewDetails = () => {
 
   const [user, setUser] = useState(null)
   const [userRole, setUserRole] = useState(null)
-  console.log(userRole);
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -56,7 +55,6 @@ const UsersViewDetails = () => {
       fetchUserRole()
     }
   }, [user])
-  console.log('yash',userRole?.name);
 
   const fetchUser = async () => {
     try {
@@ -108,7 +106,6 @@ const UsersViewDetails = () => {
     )
   }
   const role = userRole?.name
-  console.log("yash",role);
   const status = statusMapping[user.status] || { labelKey: 'misc.unknown', fallback: 'Unknown', color: 'secondary' }
   const fullName = `${user.firstName} ${user.lastName}`
   const initials = `${user.firstName?.charAt(0) || ''}${user.lastName?.charAt(0) || ''}`
