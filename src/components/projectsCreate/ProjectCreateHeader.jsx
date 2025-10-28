@@ -17,54 +17,6 @@ const ProjectCreateHeader = () => {
                             <label className="custom-control-label c-pointer" htmlFor="checkType">Type</label>
                         </div>
                     </div>
-                    <div className="dropdown-item">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="checkDetails" defaultChecked="checked" />
-                            <label className="custom-control-label c-pointer" htmlFor="checkDetails">Details</label>
-                        </div>
-                    </div>
-                    <div className="dropdown-item">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="checkSettings" defaultChecked="checked" />
-                            <label className="custom-control-label c-pointer" htmlFor="checkSettings">Settings</label>
-                        </div>
-                    </div>
-                    <div className="dropdown-item">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="checkBudjets" defaultChecked="checked" />
-                            <label className="custom-control-label c-pointer" htmlFor="checkBudjets">Budjets</label>
-                        </div>
-                    </div>
-                    <div className="dropdown-item">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="checkAssigned" defaultChecked="checked" />
-                            <label className="custom-control-label c-pointer" htmlFor="checkAssigned">Assigned</label>
-                        </div>
-                    </div>
-                    <div className="dropdown-item">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="checkTarget" defaultChecked="checked" />
-                            <label className="custom-control-label c-pointer" htmlFor="checkTarget">Target</label>
-                        </div>
-                    </div>
-                    <div className="dropdown-item">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="checkAttachement" defaultChecked="checked" />
-                            <label className="custom-control-label c-pointer" htmlFor="checkAttachement">Attachement</label>
-                        </div>
-                    </div>
-                    <div className="dropdown-item">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="checkCompleted" defaultChecked="checked" />
-                            <label className="custom-control-label c-pointer" htmlFor="checkCompleted">Completed</label>
-                        </div>
-                    </div>
-                    <div className="dropdown-item">
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="checkRecommendation" defaultChecked="checked" />
-                            <label className="custom-control-label c-pointer" htmlFor="checkRecommendation">Recommendation</label>
-                        </div>
-                    </div>
                     <div className="dropdown-divider" />
                     <a href="#" className="dropdown-item">
                         <FiPlus className='me-3' />

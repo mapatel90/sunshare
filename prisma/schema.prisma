@@ -44,6 +44,7 @@ model User {
   city        City?     @relation("UserCity", fields: [cityId], references: [id])
   state       State?    @relation("UserState", fields: [stateId], references: [id])
   country     Country?  @relation("UserCountry", fields: [countryId], references: [id])
+  projects    Project[]
 
   @@map("users")
 }
@@ -70,6 +71,7 @@ model Country {
   // Relations
   states    State[]
   users     User[]   @relation("UserCountry")
+  projects  Project[]
   
   @@map("countries")
 }
@@ -87,6 +89,7 @@ model State {
   country   Country  @relation(fields: [countryId], references: [id], onDelete: Cascade)
   cities    City[]
   users     User[]   @relation("UserState")
+  projects  Project[]
   
   @@unique([name, countryId])
   @@map("states")
@@ -103,7 +106,34 @@ model City {
   // Relations
   state     State    @relation(fields: [stateId], references: [id], onDelete: Cascade)
   users     User[]   @relation("UserCity")
+  projects  Project[]
   
   @@unique([name, stateId])
   @@map("cities")
+}
+
+model Project {
+  id               Int       @id @default(autoincrement())
+  offtaker_id      Int
+  project_name     String    @db.VarChar(255)
+  project_type     String    @db.VarChar(255)
+  address1         String?   @map("address_1") @db.VarChar(255)
+  address2         String?   @map("address_2") @db.VarChar(255)
+  cityId           Int?      @map("city_id")
+  stateId          Int?      @map("state_id")
+  countryId        Int?      @map("country_id")
+  zipcode          String?   @db.VarChar(20)
+  investor_profit  String    @db.VarChar(255)
+  weshare_profit   String    @db.VarChar(255)
+  status           Int       @default(0)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  city             City?     @relation(fields: [cityId], references: [id])
+  state            State?    @relation(fields: [stateId], references: [id])
+  country          Country?  @relation(fields: [countryId], references: [id])
+  offtaker         User      @relation(fields: [offtaker_id], references: [id])
+
+  @@map("projects")
 }
