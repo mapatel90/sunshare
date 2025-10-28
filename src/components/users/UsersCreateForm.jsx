@@ -11,6 +11,7 @@ const UsersCreateForm = () => {
   const { lang } = useLanguage()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
+    username: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -27,6 +28,7 @@ const UsersCreateForm = () => {
     status: '1'
   })
   const [errors, setErrors] = useState({})
+  const [usernameChecking, setUsernameChecking] = useState(false)
   const [roles, setRoles] = useState([])
   const [loadingRoles, setLoadingRoles] = useState(false)
 
@@ -76,6 +78,14 @@ const UsersCreateForm = () => {
   const validateForm = () => {
     const newErrors = {}
 
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required'
+    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
+      newErrors.username = 'Username can only contain letters, numbers and underscores'
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters long'
+    }
+
     if (!formData.firstName.trim()) {
       newErrors.firstName = 'First name is required'
     }
@@ -108,6 +118,29 @@ const UsersCreateForm = () => {
     return Object.keys(newErrors).length === 0
   }
 
+  // Check username uniqueness (best-effort). If API endpoint missing, treat as unique.
+  const checkUsernameUnique = async (username) => {
+    if (!username) return true
+    setUsernameChecking(true)
+    try {
+      const res = await apiGet(`/api/users/check-username?username=${encodeURIComponent(username)}`)
+      // expected response: { success: true, data: { exists: true/false } }
+      if (res && res.success && res.data && typeof res.data.exists !== 'undefined') {
+        return !res.data.exists
+      }
+      // fallback shapes
+      if (res && typeof res.exists !== 'undefined') {
+        return !res.exists
+      }
+    } catch (err) {
+      // if endpoint not present or any error, don't block creation - just log
+      console.error('Username uniqueness check failed:', err)
+    } finally {
+      setUsernameChecking(false)
+    }
+    return true
+  }
+
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -122,6 +155,14 @@ const UsersCreateForm = () => {
         ...prev,
         [name]: ''
       }))
+    }
+  }
+
+  const handleUsernameBlur = async () => {
+    if (!formData.username) return
+    const isUnique = await checkUsernameUnique(formData.username)
+    if (!isUnique) {
+      setErrors(prev => ({ ...prev, username: 'Username is already taken' }))
     }
   }
 
@@ -155,6 +196,13 @@ const UsersCreateForm = () => {
     e.preventDefault()
 
     if (!validateForm()) {
+      return
+    }
+
+    // Final uniqueness check before submit
+    const unique = await checkUsernameUnique(formData.username)
+    if (!unique) {
+      setErrors(prev => ({ ...prev, username: 'Username is already taken' }))
       return
     }
 
@@ -230,6 +278,21 @@ const UsersCreateForm = () => {
                     placeholder={lang('placeholders.enterlastname')}
                   />
                   {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
+                </div>
+                <div className="col-md-12 mb-3">
+                  <label className="form-label">{lang("authentication.username")} <span className="text-danger">*</span></label>
+                  <input
+                    type="text"
+                    className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                    name="username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    onBlur={handleUsernameBlur}
+                    placeholder={lang('placeholders.enterusername')}
+                    autoComplete="off"
+                  />
+                  {usernameChecking && <div className="form-text">Checking availability...</div>}
+                  {errors.username && <div className="invalid-feedback">{errors.username}</div>}
                 </div>
                 <div className="col-md-12 mb-3">
                   <label className="form-label">{lang('authentication.email')} <span className="text-danger">*</span></label>
@@ -437,7 +500,7 @@ const UsersCreateForm = () => {
                 </>
               ) : (
                 lang('usersView.CreateUser')
-                )}
+              )}
             </button>
             <button
               type="button"

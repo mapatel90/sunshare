@@ -4,15 +4,18 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { apiGet, apiPut } from '@/lib/api'
 import useLocationData from '@/hooks/useLocationData'
 import Swal from 'sweetalert2'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const UsersEditForm = () => {
   const router = useRouter()
+  const { lang } = useLanguage()
   const searchParams = useSearchParams()
   const userId = searchParams.get('id')
   
   const [loading, setLoading] = useState(false)
   const [loadingUser, setLoadingUser] = useState(true)
   const [formData, setFormData] = useState({
+    username: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -27,6 +30,8 @@ const UsersEditForm = () => {
     status: ''
   })
   const [errors, setErrors] = useState({})
+  const [originalUsername, setOriginalUsername] = useState('')
+  const [usernameChecking, setUsernameChecking] = useState(false)
   const [roles, setRoles] = useState([])
   const [loadingRoles, setLoadingRoles] = useState(false)
   
@@ -85,7 +90,9 @@ const UsersEditForm = () => {
       
       if (response.success) {
         const user = response.data
+        console.log("user::", user)
         setFormData({
+          username: user.username || '',
           firstName: user.firstName || '',
           lastName: user.lastName || '',
           email: user.email || '',
@@ -99,6 +106,8 @@ const UsersEditForm = () => {
           zipcode: user.zipcode || '',
           status: user.status?.toString() || ''
         })
+
+        setOriginalUsername(user.username || '')
 
         // Load location data if user has location info
         if (user.countryId) {
@@ -125,6 +134,14 @@ const UsersEditForm = () => {
   // Validation rules
   const validateForm = () => {
     const newErrors = {}
+
+    if (!formData.username || !formData.username.trim()) {
+      newErrors.username = 'Username is required'
+    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
+      newErrors.username = 'Username can only contain letters, numbers and underscores'
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters long'
+    }
 
     if (!formData.firstName.trim()) {
       newErrors.firstName = 'First name is required'
@@ -162,6 +179,35 @@ const UsersEditForm = () => {
         ...prev,
         [name]: ''
       }))
+    }
+  }
+
+  const checkUsernameUnique = async (username) => {
+    if (!username) return true
+    // if username unchanged for this user, it's fine
+    if (username === originalUsername) return true
+    setUsernameChecking(true)
+    try {
+      const res = await apiGet(`/api/users/check-username?username=${encodeURIComponent(username)}&excludeId=${encodeURIComponent(userId)}`)
+      if (res && res.success && res.data && typeof res.data.exists !== 'undefined') {
+        return !res.data.exists
+      }
+      if (res && typeof res.exists !== 'undefined') {
+        return !res.exists
+      }
+    } catch (err) {
+      console.error('Username uniqueness check failed:', err)
+    } finally {
+      setUsernameChecking(false)
+    }
+    return true
+  }
+
+  const handleUsernameBlur = async () => {
+    if (!formData.username) return
+    const isUnique = await checkUsernameUnique(formData.username)
+    if (!isUnique) {
+      setErrors(prev => ({ ...prev, username: 'Username is already taken' }))
     }
   }
 
@@ -208,6 +254,14 @@ const UsersEditForm = () => {
         cityId: formData.cityId || null
       }
 
+      // Final uniqueness check before submit
+      const unique = await checkUsernameUnique(formData.username)
+      if (!unique) {
+        setErrors(prev => ({ ...prev, username: 'Username is already taken' }))
+        setLoading(false)
+        return
+      }
+
       const response = await apiPut(`/api/users/${userId}`, submitData)
 
       if (response.success) {
@@ -250,24 +304,39 @@ const UsersEditForm = () => {
         <div className="col-md-6">
           <div className="card mb-4">
             <div className="card-header">
-              <h6 className="card-title mb-0">Personal Information</h6>
+              <h6 className="card-title mb-0">{lang("usersView.personalInformation")}</h6>
             </div>
             <div className="card-body">
               <div className="row">
+                <div className="col-md-12 mb-3">
+                  <label className="form-label">{lang("authentication.username")} <span className="text-danger">*</span></label>
+                  <input
+                    type="text"
+                    className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                    name="username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    onBlur={handleUsernameBlur}
+                    placeholder={lang("authentication.enterUsername")}
+                    autoComplete="off"
+                  />
+                  {usernameChecking && <div className="form-text">Checking availability...</div>}
+                  {errors.username && <div className="invalid-feedback">{errors.username}</div>}
+                </div>
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">First Name <span className="text-danger">*</span></label>
+                  <label className="form-label">{lang('usersView.firstName')} <span className="text-danger">*</span></label>
                   <input
                     type="text"
                     className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    placeholder="Enter first name"
+                    placeholder={lang('placeholders.enterfirstname')}
                   />
                   {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
                 </div>
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Last Name <span className="text-danger">*</span></label>
+                  <label className="form-label">{lang('usersView.lastName')} <span className="text-danger">*</span></label>
                   <input
                     type="text"
                     className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}

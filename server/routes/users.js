@@ -227,41 +227,41 @@ router.get('/:id', authenticateToken, async (req, res) => {
 
     const user = await prisma.user.findUnique({
       where: { id: parseInt(id) },
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        phoneNumber: true,
-        userRole: true,
-        address1: true,
-        address2: true,
-        cityId: true,
-        stateId: true,
-        countryId: true,
-        zipcode: true,
-        status: true,
-        createdAt: true,
-        updatedAt: true,
-        city: {
-          select: {
-            id: true,
-            name: true
-          }
-        },
-        state: {
-          select: {
-            id: true,
-            name: true
-          }
-        },
-        country: {
-          select: {
-            id: true,
-            name: true
-          }
-        }
-      }
+      // select: {
+      //   id: true,
+      //   firstName: true,
+      //   lastName: true,
+      //   email: true,
+      //   phoneNumber: true,
+      //   userRole: true,
+      //   address1: true,
+      //   address2: true,
+      //   cityId: true,
+      //   stateId: true,
+      //   countryId: true,
+      //   zipcode: true,
+      //   status: true,
+      //   createdAt: true,
+      //   updatedAt: true,
+      //   city: {
+      //     select: {
+      //       id: true,
+      //       name: true
+      //     }
+      //   },
+      //   state: {
+      //     select: {
+      //       id: true,
+      //       name: true
+      //     }
+      //   },
+      //   country: {
+      //     select: {
+      //       id: true,
+      //       name: true
+      //     }
+      //   }
+      // }
     });
 
     if (!user) {

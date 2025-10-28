@@ -184,6 +184,16 @@ const UsersTable = () => {
       }
     },
     {
+      accessorKey: 'username',
+      header: () => lang("authentication.username"),
+      cell: ({ row }) => (
+        <a href={`mailto:${row.original.username}`} className="text-decoration-none">
+          {/* <FiMail size={14} className="me-2" /> */}
+          {row.original.username}
+        </a>
+      )
+    },
+    {
       accessorKey: 'email',
       header: () => lang("authentication.email"),
       cell: ({ row }) => (

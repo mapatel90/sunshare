@@ -81,7 +81,7 @@ export default function AuthProvider({ children }) {
       if (data.success) {
         // Backend returns user with firstName, lastName structure
         const userName = `${data.data.user.firstName} ${data.data.user.lastName}`
-  console.log('✅ Login successful for user:', userName)
+        console.log('✅ Login successful for user:', userName)
 
         // Store token (backend returns 'token', not 'accessToken')
         localStorage.setItem('accessToken', data.data.token)
@@ -106,7 +106,7 @@ export default function AuthProvider({ children }) {
         // Redirect to dashboard
         router.push('/admin/dashboards/analytics')
 
-  return { success: true, message: data.message }
+        return { success: true, message: data.message }
       } else {
         console.log('❌ Login failed:', data.message)
         return { success: false, message: data.message }
@@ -123,13 +123,13 @@ export default function AuthProvider({ children }) {
   const logout = () => {
     // Clear storage
     localStorage.removeItem('accessToken')
-    
+
     // Clear cookie
     document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-    
+
     // Clear user
     setUser(null)
-    
+
     // Redirect to login
     router.push('/login')
   }
