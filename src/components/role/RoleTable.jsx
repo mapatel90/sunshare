@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import { apiGet, apiPost, apiPut, apiDelete } from "@/lib/api";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { FiTrash2, FiEdit3, FiPlus } from "react-icons/fi";
@@ -11,12 +12,57 @@ const RoleTable = () => {
   const [loading, setLoading] = useState(true);
 
   // Modal States
-  const [openModal, setOpenModal] = useState(false);
   const [modalMode, setModalMode] = useState("add");
   const [roleName, setRoleName] = useState("");
   const [status, setStatus] = useState("");
   const [editingRole, setEditingRole] = useState(null);
   const [error, setError] = useState("");
+
+  // Modal helpers (Bootstrap-aware with fallback)
+  const showModal = (id) => {
+    const modalEl = typeof document !== 'undefined' && document.getElementById(id);
+    if (!modalEl) return;
+    try {
+      if (window.bootstrap?.Modal) {
+        const instance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+        instance.show();
+        return;
+      }
+    } catch {}
+    modalEl.classList.add('show');
+    modalEl.style.display = 'block';
+    modalEl.style.zIndex = '1055';
+    modalEl.removeAttribute('aria-hidden');
+    modalEl.setAttribute('aria-modal', 'true');
+    modalEl.setAttribute('role', 'dialog');
+    document.body.classList.add('modal-open');
+    if (!document.querySelector('.modal-backdrop')) {
+      const backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop fade show';
+      backdrop.style.zIndex = '1050';
+      document.body.appendChild(backdrop);
+    }
+  };
+
+  const hideModal = (id) => {
+    const modalEl = typeof document !== 'undefined' && document.getElementById(id);
+    if (!modalEl) return;
+    try {
+      if (window.bootstrap?.Modal) {
+        const instance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+        instance.hide();
+        return;
+      }
+    } catch {}
+    modalEl.classList.remove('show');
+    modalEl.style.display = 'none';
+    modalEl.style.zIndex = '';
+    modalEl.setAttribute('aria-hidden', 'true');
+    modalEl.removeAttribute('aria-modal');
+    document.body.classList.remove('modal-open');
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.remove();
+  };
 
   /** ✅ Fetch all roles */
   const fetchRoles = async () => {
@@ -40,7 +86,7 @@ const RoleTable = () => {
     setStatus("");
     setEditingRole(null);
     setError("");
-    setOpenModal(true);
+    showModal('roleCrudModal');
   };
 
   /** ✅ Open Edit Modal */
@@ -50,12 +96,12 @@ const RoleTable = () => {
     setRoleName(role.name);
     setStatus(role.status.toString());
     setError("");
-    setOpenModal(true);
+    showModal('roleCrudModal');
   };
 
   /** ✅ Close Modal */
   const handleClose = () => {
-    setOpenModal(false);
+    hideModal('roleCrudModal');
     setRoleName("");
     setStatus("");
     setEditingRole(null);
@@ -213,84 +259,28 @@ const RoleTable = () => {
   }
 
   /** ✅ Render */
-  return (
-    <>
-      {/* Add Role Button */}
-      <div className="d-flex justify-content-end mb-3">
-        <button className="btn btn-primary" onClick={handleAdd}>
-          <FiPlus size={16} className="me-2" />
-          {lang("roles.addRole")}
-        </button>
-      </div>
-
-      {/* Table */}
-      <Table data={rolesData} columns={columns} />
-
-      {/* ✅ Modal */}
-      {openModal && (
-        <div
-          className="modal-overlay"
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            background: "rgba(0,0,0,0.4)",
-            backdropFilter: "blur(3px)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1050,
-          }}
-        >
-          <div
-            className="modal-container"
-            style={{
-              background: "#fff",
-              borderRadius: "16px",
-              width: "100%",
-              maxWidth: "500px",
-              boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
-              overflow: "hidden",
-            }}
-          >
-            {/* Header */}
-            <div
-              style={{
-                padding: "16px 20px",
-                borderBottom: "1px solid #eee",
-                background: "#f8f9fa",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <h5 style={{ margin: 0, fontSize: "18px", fontWeight: 600 }}>
+  const modalJsx = (
+      <div className="modal fade" id="roleCrudModal" tabIndex="-1">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">
                 {modalMode === "add"
                   ? lang("roles.addRole")
                   : `${lang("common.edit")} ${lang("roles.role")}`}
               </h5>
               <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
                 onClick={handleClose}
-                style={{
-                  border: "none",
-                  background: "transparent",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
-              >
-                ✕
-              </button>
+              ></button>
             </div>
 
-            {/* Body */}
-            <div style={{ padding: "20px" }}>
+            <div className="modal-body">
               <div className="mb-3">
-                <label
-                  htmlFor="roleName"
-                  style={{ fontWeight: 500, marginBottom: 8 }}
-                >
+                <label htmlFor="roleName" className="form-label">
                   {lang("roles.role")}
                 </label>
                 <input
@@ -301,11 +291,11 @@ const RoleTable = () => {
                   onChange={(e) => setRoleName(e.target.value)}
                   className="form-control"
                 />
-                {error && <small style={{ color: "red" }}>{error}</small>}
+                {error ? <div className="invalid-feedback d-block">{error}</div> : null}
               </div>
 
               <div className="mb-3">
-                <label htmlFor="roleStatus" style={{ fontWeight: 500 }}>
+                <label htmlFor="roleStatus" className="form-label">
                   {lang("common.status")}
                 </label>
                 <select
@@ -321,32 +311,43 @@ const RoleTable = () => {
               </div>
             </div>
 
-            {/* Footer */}
-            <div
-              style={{
-                padding: "16px 20px",
-                borderTop: "1px solid #eee",
-                background: "#f8f9fa",
-                textAlign: "right",
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
+            <div className="modal-footer">
               <button
-                className="btn btn-secondary me-2"
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
                 onClick={handleClose}
               >
                 {lang("common.cancel")}
               </button>
-              <button className="btn btn-primary" onClick={handleSubmit}>
-                {modalMode === "add"
-                  ? lang("common.save")
-                  : lang("common.update")}
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleSubmit}
+              >
+                {modalMode === "add" ? lang("common.save") : lang("common.update")}
               </button>
             </div>
           </div>
         </div>
-      )}
+      </div>
+  );
+
+  return (
+    <>
+      {/* Add Role Button */}
+      <div className="d-flex justify-content-end mb-3">
+        <button className="btn btn-primary" onClick={handleAdd}>
+          <FiPlus size={16} className="me-2" />
+          {lang("roles.addRole")}
+        </button>
+      </div>
+
+      {/* Table */}
+      <Table data={rolesData} columns={columns} />
+
+      {/* ✅ Modal via Portal to avoid parent blur */}
+      {typeof document !== 'undefined' ? ReactDOM.createPortal(modalJsx, document.body) : null}
     </>
   );
 };

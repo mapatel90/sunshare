@@ -9,6 +9,7 @@ import NavigationManu from '@/components/shared/navigationMenu/NavigationMenu'
 import StorageDetails from '@/components/storage/StorageDetails'
 import useBootstrapUtils from '@/hooks/useBootstrapUtils'
 import dynamic from 'next/dynamic'
+import ProtectedRoute from '@/components/ProtectedRoute'
 const ComposeMailPopUp = dynamic(() => import('@/components/emails/ComposeMailPopup'), { ssr: false })
 const TasksDetails = dynamic(() => import('@/components/tasks/TasksDetails'), { ssr: false })
 const AddTask = dynamic(() => import('@/components/tasks/AddTask'), { ssr: false })
@@ -37,7 +38,7 @@ const ApplicationsLayout = ({ children }) => {
         }
     }
     return (
-        <>
+        <ProtectedRoute>
             <Header />
             <NavigationManu />
             <main className={`nxl-container apps-container ${getClassName(pathName)}`}>
@@ -55,7 +56,7 @@ const ApplicationsLayout = ({ children }) => {
             <AddsNote />
             <TasksDetails />
             <AddTask />
-        </>
+        </ProtectedRoute>
     )
 }
 

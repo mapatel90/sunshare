@@ -8,7 +8,7 @@ import dynamic from "next/dynamic";
 import useBootstrapUtils from "@/hooks/useBootstrapUtils";
 
 // const useBootstrapUtils = dynamic(() => import('@/hooks/useBootstrapUtils'), { ssr: false })
-const AddInverter = dynamic(() => import('@/components/inverter/AddInverter'), { ssr: false })
+// const AddInverter = dynamic(() => import('@/components/inverter/AddInverter'), { ssr: false })
 
 const layout = ({ children }) => {
     const pathName = usePathname()
@@ -24,7 +24,7 @@ const layout = ({ children }) => {
                 </div>
             </main>
             <SupportDetails />
-            <AddInverter />
+            {/* <AddInverter /> */}
         </ProtectedRoute>
     )
 }

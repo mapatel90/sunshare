@@ -3,6 +3,23 @@ import { useState, useEffect } from 'react';
 import { showSuccessToast, showErrorToast } from '@/utils/topTost';
 import { apiGet, apiPost } from '@/lib/api';
 
+// Module-level shared store so all hook instances stay in sync without a page refresh
+let sharedSettings = {};
+let sharedLoading = false;
+const subscribers = new Set();
+
+const notifySubscribers = () => {
+  subscribers.forEach((fn) => {
+    try { fn(sharedSettings); } catch {}
+  });
+};
+
+const setSharedSettings = (next) => {
+  sharedSettings = next || {};
+  try { if (typeof window !== 'undefined') localStorage.setItem('app_settings', JSON.stringify(sharedSettings)); } catch {}
+  notifySubscribers();
+};
+
 const useSettings = () => {
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
@@ -36,8 +53,10 @@ const useSettings = () => {
         throw new Error(data.message || 'Failed to fetch settings');
       }
 
-      setSettings(data.data || {});
-      return data.data;
+      const next = data.data || {};
+      setSettings(next);
+      setSharedSettings(next);
+      return next;
     } catch (err) {
       console.error('Error fetching settings:', err);
       setError(err.message);
@@ -68,8 +87,12 @@ const useSettings = () => {
         throw new Error(data.message || 'Failed to update settings');
       }
 
-      // Update local settings state
-      setSettings(prev => ({ ...prev, ...settingsData }));
+      // Update local and shared settings state and cache
+      setSettings(prev => {
+        const merged = { ...prev, ...settingsData };
+        setSharedSettings(merged);
+        return merged;
+      });
       
       showSuccessToast('Settings updated successfully!');
       return data.data;
@@ -100,8 +123,12 @@ const useSettings = () => {
         throw new Error(data.message || 'Failed to update setting');
       }
 
-      // Update local settings state
-      setSettings(prev => ({ ...prev, [key]: value }));
+      // Update local and shared settings state
+      setSettings(prev => {
+        const merged = { ...prev, [key]: value };
+        setSharedSettings(merged);
+        return merged;
+      });
       
       showSuccessToast('Setting updated successfully!');
       return data.data;
@@ -123,12 +150,55 @@ const useSettings = () => {
   // Load settings on component mount
   useEffect(() => {
     const token = getAuthToken();
+    // Seed from localStorage if available for immediate UI usage (e.g., logo)
+    try {
+      if (typeof window !== 'undefined') {
+        const cached = localStorage.getItem('app_settings');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          setSettings(parsed);
+          // Initialize shared store from cache if empty
+          if (!sharedSettings || Object.keys(sharedSettings).length === 0) {
+            sharedSettings = parsed;
+          }
+        }
+      }
+    } catch {}
+
+    // Subscribe to shared updates for instant cross-component sync
+    const onUpdate = (next) => setSettings(next);
+    subscribers.add(onUpdate);
+
     if (token) {
-      fetchSettings();
+      fetchSettings().then((serverSettings) => {
+        // Cache latest settings
+        try { if (typeof window !== 'undefined') localStorage.setItem('app_settings', JSON.stringify(serverSettings || {})); } catch {}
+      });
     } else {
       setLoading(false);
       setSettings({});
     }
+
+    return () => {
+      subscribers.delete(onUpdate);
+    };
+  }, []);
+
+  // Sync across tabs/components via storage events
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const onStorage = (e) => {
+      if (e.key === 'app_settings' && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          setSettings(prev => ({ ...prev, ...parsed }));
+          sharedSettings = parsed;
+          notifySubscribers();
+        } catch {}
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
   }, []);
 
   // Method to refresh settings (useful after login)

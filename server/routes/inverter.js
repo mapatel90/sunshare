@@ -68,7 +68,7 @@ router.get("/", authenticateToken, async (req, res) => {
         where,
         skip: parseInt(offset),
         take: parseInt(limit),
-        orderBy: { createdAt: "desc" },
+        orderBy: { createdAt: "asc" },
         include: {
           inverterType: {
             select: {
