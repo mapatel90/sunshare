@@ -71,6 +71,8 @@ const UsersEditForm = () => {
           firstName: user.firstName || '',
           lastName: user.lastName || '',
           email: user.email || '',
+          password: user.password || '',
+          confirmPassword: user.password || '',
           phoneNumber: user.phoneNumber || '',
           userRole: user.userRole?.toString() || '',
           address1: user.address1 || '',
@@ -132,7 +134,7 @@ const UsersEditForm = () => {
     <UserForm
       initialData={formData}
       roles={roles}
-      includePassword={false}
+      includePassword={true}
       excludeId={userId}
       onSubmit={handleUpdate}
     />
