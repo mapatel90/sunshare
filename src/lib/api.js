@@ -4,6 +4,7 @@
  */
 
 const API_BASE_URL = process.env.API_URL || 'http://localhost:5000';
+import { startLoading, stopLoading } from "@/contexts/LoadingStore";
 
 /**
  * Get authentication token from localStorage
@@ -79,18 +80,22 @@ const apiRequest = async (endpoint, options = {}) => {
     : `${API_BASE_URL}${endpoint}`;
 
   try {
+    const showLoader = options.showLoader !== false;
+    if (showLoader && typeof window !== 'undefined') startLoading();
     const response = await fetch(url, {
       ...options,
       headers: buildHeaders(options.headers, options.includeAuth !== false),
     });
-
-    return await handleResponse(response);
+    const data = await handleResponse(response);
+    return data;
   } catch (error) {
     // Network errors or other fetch failures
     if (!error.status) {
       error.message = 'Network error. Please check your connection.';
     }
     throw error;
+  } finally {
+    if (typeof window !== 'undefined') stopLoading();
   }
 };
 
