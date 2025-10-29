@@ -3,11 +3,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datetime/css/react-datetime.css";
-import NavigationProvider from "@/contentApi/navigationProvider";
-import SettingSideBarProvider from "@/contentApi/settingSideBarProvider";
-import ThemeCustomizer from "@/components/shared/ThemeCustomizer";
-import AuthProvider from "@/contexts/AuthContext";
-import { LanguageProvider } from "@/contexts/LanguageContext";
+import Providers from "./Providers";
 
 export const metadata = {
   title: "Sunshare | Dashboard",
@@ -18,16 +14,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <LanguageProvider>
-          <AuthProvider>
-            <SettingSideBarProvider>
-              <NavigationProvider>
-                {children}
-              </NavigationProvider>
-            </SettingSideBarProvider>
-            {/* <ThemeCustomizer /> */}
-          </AuthProvider>
-        </LanguageProvider>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

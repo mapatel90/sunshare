@@ -418,6 +418,7 @@
     "zipcode": "Zipcode",
     "zipcodeRequired": "Zipcode is required",
     "saveProject": "Save Project",
+    "updateProject": "Update Project",
     "projectupdatedsuccessfully": "Project updated successfully",
     "statusUpdated": "Status updated successfully",
     "deleted": "Project has been deleted successfully",
@@ -438,7 +439,11 @@
     "investorProfitRequired": "Investor profit is required",
     "weshareprofite": "Weshare profite",
     "weshareprofitePlaceholder": "Enter weshare profite",
-    "weshareprofiteRequired": "Weshare profite is required"
+    "weshareprofiteRequired": "Weshare profite is required",
+    "createproject": "Create Project",
+    "editproject": "Edit Project",
+    "viewproject": "View Project",
+    "projectlist": "Project List"
   },
   "settings": {
     "generalSettings": "General Settings",

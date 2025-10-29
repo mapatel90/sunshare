@@ -217,27 +217,26 @@ const ProjectEditContent = ({ projectId }) => {
                                     <option value="inactive">{lang('projects.inactive', 'Inactive')}</option>
                                 </select>
                             </div>
+                            {/* Actions inside Address Information */}
+                            <div className="col-12 mt-2 d-flex justify-content-end">
+                                <button type="submit" className="btn btn-primary" disabled={loading.form || loading.init}>
+                                    {loading.form ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" />
+                                            {lang('common.saving', 'Saving')}...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FiSave className="me-2" /> {lang('projects.updateProject', 'Update Project')}
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="d-flex gap-2">
-                    <button type="submit" className="btn btn-primary" disabled={loading.form || loading.init}>
-                        {loading.form ? (
-                            <>
-                                <span className="spinner-border spinner-border-sm me-2" role="status" />
-                                {lang('common.saving', 'Saving')}...
-                            </>
-                        ) : (
-                            <>
-                                <FiSave className="me-2" /> {lang('projects.saveProject', 'Save Project')}
-                            </>
-                        )}
-                    </button>
-                    <button type="button" className="btn btn-light" onClick={() => router.push('/admin/projects/list')} disabled={loading.form}>
-                        {lang('common.cancel', 'Cancel')}
-                    </button>
-                </div>
+                
             </form>
         </div>
     )

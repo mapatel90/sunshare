@@ -353,25 +353,22 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
                                     </select>
                                 </div>
                             </div>
+                            {/* Actions inside Address Information */}
+                            <div className="col-12 mt-2 d-flex justify-content-end">
+                                <button type="submit" className="btn btn-primary" disabled={loading.form}>
+                                    {loading.form ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" />
+                                            {lang('common.saving', 'Saving')}...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FiSave className="me-2" /> {lang('projects.saveProject', 'Save Project')}
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                {/* Buttons */}
-                <div className="col-md-12">
-                    <div className="d-flex gap-2 justify-content-end">
-                        <button type="submit" className="btn btn-primary" disabled={loading.form}>
-                            {loading.form ? (
-                                <>
-                                    <span className="spinner-border spinner-border-sm me-2" role="status" />
-                                    {lang('common.saving', 'Saving')}...
-                                </>
-                            ) : (
-                                <>
-                                    <FiSave className="me-2" /> {lang('projects.saveProject', 'Save Project')}
-                                </>
-                            )}
-                        </button>
                     </div>
                 </div>
             </div>
