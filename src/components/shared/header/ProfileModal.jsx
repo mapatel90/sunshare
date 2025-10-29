@@ -5,12 +5,14 @@ import React, { Fragment } from 'react'
 import { FiActivity, FiBell, FiChevronRight, FiDollarSign, FiLogOut, FiSettings, FiUser } from "react-icons/fi"
 import { useAuth } from '@/contexts/AuthContext'
 import { useLanguage } from '@/contexts/LanguageContext'
+import Link from 'next/link'
 
 const activePosition = ["Active", "Always", "Bussy", "Inactive", "Disabled", "Cutomization"]
 const subscriptionsList = ["Plan", "Billings", "Referrals", "Payments", "Statements", "Subscriptions"]
 const ProfileModal = () => {
     const { user, logout } = useAuth()
     const { lang } = useLanguage()
+    
     const handleLogout = (e) => {
         e.preventDefault()
         logout()
@@ -25,7 +27,8 @@ const ProfileModal = () => {
                     <div className="d-flex align-items-center">
                         <Image width={40} height={40} src={user?.avatar || "/images/avatar/1.png"} alt="user-image" className="img-fluid user-avtar" />
                         <div>
-                            <h6 className="text-dark mb-0">{user?.name || 'User'} <span className="badge bg-soft-success text-success ms-1">{user?.userRole?.toUpperCase() || 'USER'}</span></h6>
+                            {/* <h6 className="text-dark mb-0">{user?.name || 'User'} <span className="badge bg-soft-success text-success ms-1">{user?.userRole?.toUpperCase() || 'USER'}</span></h6> */}
+                            <h6 className="text-dark mb-0">{user?.name || 'User'}</h6>
                             <span className="fs-12 fw-medium text-muted">{user?.email || 'user@example.com'}</span>
                         </div>
                     </div>
@@ -105,12 +108,18 @@ const ProfileModal = () => {
                     <i><FiSettings /></i>
                     <span>Account Settings</span>
                 </a> */}
+                <Link href="/admin/users/changepassword" className="dropdown-item">
+                    <i><FiSettings /></i>
+                    <span>{lang('header.changepassword')}</span>
+                </Link>
                 <div className="dropdown-divider"></div>
                 <a href="#" className="dropdown-item" onClick={handleLogout}>
                     <i> <FiLogOut /></i>
                     <span>{lang('header.logout')}</span>
                 </a>
             </div>
+
+            {/* ChangePassword is now a separate page at /account/change-password */}
         </div>
     )
 }

@@ -44,9 +44,6 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
     const initializedLocationRef = useRef(false)
 
     useEffect(() => {
-        // Run once when initialData first becomes available. We avoid
-        // including handler functions in deps because they are recreated
-        // each render by the hook, which caused repeated API calls.
         if (!initializedLocationRef.current && initialData && Object.keys(initialData).length) {
             initializedLocationRef.current = true
 
@@ -75,6 +72,8 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
         }
     }, [initialData])
 
+    const isEditing = initialData && Object.keys(initialData).length > 0
+
     const validateForm = () => {
         const newErrors = {}
 
@@ -95,10 +94,22 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
             newErrors.email = 'Please enter a valid email address'
         }
 
+        // Password handling:
+        // - When creating (not editing) and includePassword is true, password is required
+        // - When editing and includePassword is true, password is optional; but if provided must meet rules
         if (includePassword) {
-            if (!formData.password) newErrors.password = 'Password is required'
-            else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters long'
-            if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match'
+            if (!isEditing) {
+                // creating: require password
+                if (!formData.password) newErrors.password = 'Password is required'
+                else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters long'
+                if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match'
+            } else {
+                // editing: only validate if password provided
+                if (formData.password) {
+                    if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters long'
+                    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match'
+                }
+            }
         }
 
         if (!formData.userRole) newErrors.userRole = 'User role is required'
@@ -170,6 +181,10 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
             }
             // remove confirmPassword if present
             delete submitData.confirmPassword
+            // If editing and password field left empty, don't send password (keep old password)
+            if (isEditing && (!formData.password || formData.password === '')) {
+                delete submitData.password
+            }
             await onSubmit(submitData)
         } finally {
             setLoading(false)
@@ -259,7 +274,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                     {includePassword && (
                                         <>
                                             <div className="col-md-3 mb-3">
-                                                <label className="form-label">{lang('authentication.password')} <span className="text-danger">*</span></label>
+                                                <label className="form-label">{lang('authentication.password')} {(!isEditing || formData.password) && <span className="text-danger">*</span>}</label>
                                                 <input
                                                     type="password"
                                                     className={`form-control ${errors.password ? 'is-invalid' : ''}`}
@@ -268,10 +283,11 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                                     onChange={handleInputChange}
                                                     placeholder={lang('placeholders.enterpassword')}
                                                 />
+                                                {console.log("formData.password",formData)}
                                                 {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                                             </div>
                                             <div className="col-md-3 mb-3">
-                                                <label className="form-label">{lang('authentication.confirmPassword')} <span className="text-danger">*</span></label>
+                                                <label className="form-label">{lang('authentication.confirmPassword')} {(!isEditing || formData.password) && <span className="text-danger">*</span>}</label>
                                                 <input
                                                     type="password"
                                                     className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
@@ -407,7 +423,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                                 {includePassword ? 'Creating...' : 'Saving...'}
                                             </>
                                         ) : (
-                                            includePassword ? lang('usersView.CreateUser') : 'Save'
+                                            !isEditing ? lang('usersView.CreateUser') : 'Save'
                                         )}
                                     </button>
                                 </div>

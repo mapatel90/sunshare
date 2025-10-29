@@ -11,7 +11,8 @@
     "languagesAvailable": "languages available",
     "darkMode": "Dark Mode",
     "lightMode": "Light Mode",
-    "fullScreen": "Full Screen"
+    "fullScreen": "Full Screen",
+    "changepassword": "Change Password"
   },
   "navigation": {
     "navigation": "Navigation",
@@ -48,7 +49,10 @@
     "verify": "Verify",
     "email": "Email",
     "password": "Password",
+    "newPassword": "New Password",
     "confirmPassword": "Confirm Password",
+    "confirmNewPassword": "Confirm New Password",
+    "currentPassword": "Current Password",
     "rememberMe": "Remember Me",
     "signIn": "Sign In",
     "signUp": "Sign Up",
@@ -152,7 +156,9 @@
     "info": "Information",
     "confirmDelete": "Are you sure you want to delete this item?",
     "dataNotFound": "Data not found",
-    "pleaseWait": "Please wait..."
+    "pleaseWait": "Please wait...",
+    "userCreated": "User created successfully",
+    "userUpdated": "User updated successfully"
   },
   "validation": {
     "required": "This field is required",
@@ -208,6 +214,7 @@
     "recaptcha": "reCAPTCHA",
     "rolesmanagement": "Roles Management",
     "users": "Users",
+  "changepassword": "Change Password",
     "usersview": "Users View",
     "userscreate": "Users Create",
     "usermanagement": "User Management",
@@ -472,6 +479,21 @@
     "createdAt": "Created At",
     "updatedAt": "Updated At"
   },
+  "inverter": {
+    "inverter": "Inverter",
+    "addInverter": "Add Inverter",
+    "editInverter": "Edit Inverter",
+    "companyName": "Company Name",
+    "companyNamePlaceholder": "Company Name",
+    "inverterName": "Inverter Name",
+    "inverterNamePlaceholder": "Inverter Name",
+    "type": "Inverter Type",
+    "selectType": "Select Type",
+    "apiKey": "API Key",
+    "apiKeyPlaceholder": "API Key",
+    "secretKey": "Secret Key",
+    "secretKeyPlaceholder": "Secret Key"
+  },
   "usersView": {
     "CreateUser": "Create User",
     "username": "Username",
@@ -497,4 +519,5 @@
     "phonenumber": "Phone Number",
     "userRole": "User Role"
   }
+  
 }
