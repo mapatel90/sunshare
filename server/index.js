@@ -12,6 +12,7 @@ import userRoutes from './routes/users.js';
 import roleRoutes from './routes/roles.js';
 import locationRoutes from './routes/locations.js';
 import settingsRoutes from './routes/settings.js';
+import projectsRouter from './routes/projects.js';
 
 // Load environment variables
 const __filename = fileURLToPath(import.meta.url);
@@ -56,6 +57,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/locations', locationRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/projects', projectsRouter);
 
 // 404 handler
 app.use((req, res) => {

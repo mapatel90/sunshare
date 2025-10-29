@@ -411,7 +411,18 @@
     "projectTypePlaceholder": "Enter project type",
     "addressLine1Placeholder": "Enter address line 1",
     "addressLine2Placeholder": "Enter address line 2",
-    "zipcodePlaceholder": "Enter zip code"    
+    "zipcodePlaceholder": "Enter zip code",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "projectcreatedsuccessfully": "Project created successfully",
+    "projectcreatedfailed": "Project created failed",
+    "investorProfit": "Investor Profit",
+    "investorProfitPlaceholder": "Enter investor profit",
+    "investorProfitRequired": "Investor profit is required",
+    "weshareprofite": "Weshare profite",
+    "weshareprofitePlaceholder": "Enter weshare profite",
+    "weshareprofiteRequired": "Weshare profite is required"
   },
   "settings": {
     "generalSettings": "General Settings",

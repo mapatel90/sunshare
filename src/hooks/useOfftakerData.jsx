@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { apiGet } from '@/lib/api'
+import { apiGet , apiPost } from '@/lib/api'
 
 const useOfftakerData = () => {
   const [offtakers, setOfftakers] = useState([])
@@ -11,12 +11,16 @@ const useOfftakerData = () => {
     try {
       setLoadingOfftakers(true)
       setError(null)
-      // Use users endpoint filtered by role name "Offtaker"
-      const response = await apiGet('/api/users?role=Offtaker&status=1&limit=1000')
+
+      const payload = { user_role: 3 }
+
+      const response = await apiPost('/api/users/GetUserByRole', payload)
+
       if (response.success) {
-        // API returns { data: { users, pagination } }
-        const list = response.data?.users ?? []
+        const list = response.data ?? []
         setOfftakers(list)
+      } else {
+        setOfftakers([])
       }
     } catch (err) {
       console.error('Error fetching offtakers:', err)
@@ -27,20 +31,20 @@ const useOfftakerData = () => {
     }
   }
 
-  const fetchOfftakerById = async (id) => {
-    try {
-      setError(null)
-      const response = await apiGet(`/api/users/${id}`)
-      if (response.success) {
-        return response.data
-      }
-      return null
-    } catch (err) {
-      console.error('Error fetching offtaker details:', err)
-      setError(err.message)
-      return null
-    }
-  }
+  // const fetchOfftakerById = async (id) => {
+  //   try {
+  //     setError(null)
+  //     const response = await apiGet(`/api/getOfftakers/${id}`)
+  //     if (response.success) {
+  //       return response.data
+  //     }
+  //     return null
+  //   } catch (err) {
+  //     console.error('Error fetching offtaker details:', err)
+  //     setError(err.message)
+  //     return null
+  //   }
+  // }
 
   useEffect(() => {
     fetchOfftakers()
@@ -51,10 +55,8 @@ const useOfftakerData = () => {
     loadingOfftakers,
     error,
     fetchOfftakers,
-    fetchOfftakerById,
+    // fetchOfftakerById,
   }
 }
 
 export default useOfftakerData
-
-

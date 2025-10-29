@@ -542,4 +542,54 @@ router.patch('/:id/password', authenticateToken, async (req, res) => {
   }
 });
 
+// Get users by role
+router.post('/GetUserByRole', authenticateToken, async (req, res) => {
+  try {
+    const { user_role } = req.body
+
+    if (!user_role) {
+      return res.status(400).json({
+        success: false,
+        message: 'user_role is required',
+      })
+    }
+
+    const users = await prisma.user.findMany({
+      where: { userRole: parseInt(user_role) },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        username: true,
+        email: true,
+        phoneNumber: true,
+        userRole: true,
+        address1: true,
+        address2: true,
+        cityId: true,
+        stateId: true,
+        countryId: true,
+        zipcode: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        city: { select: { id: true, name: true } },
+        state: { select: { id: true, name: true } },
+        country: { select: { id: true, name: true } },
+      },
+    })
+
+    res.json({
+      success: true,
+      data: users,
+    })
+  } catch (error) {
+    console.error('Get users by role error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    })
+  }
+})
+
 export default router;

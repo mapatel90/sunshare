@@ -410,7 +410,9 @@
     "projectTypePlaceholder": "Nhập loại dự án",
     "addressLine1Placeholder": "Nhập địa chỉ 1",
     "addressLine2Placeholder": "Nhập địa chỉ 2",
-    "zipcodePlaceholder": "Nhập mã zip"
+    "zipcodePlaceholder": "Nhập mã zip",
+    "projectcreatedsuccessfully": "Dự án đã được tạo thành công",
+    "projectcreatedfailed": "Dự án đã không được tạo thành công"
   },
   "placeholders": {
     "your_company_name": "Tên công ty của bạn [Ví dụ: Theme Ocean]",
