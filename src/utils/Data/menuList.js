@@ -143,8 +143,8 @@ export const menuList = [
             // },
             {
                 id: 5,
-                name: "Email",
-                path: "/admin/settings/email",
+                name: "SMTP",
+                path: "/admin/settings/smtp",
                 subdropdownMenu: false
             },
             // {
