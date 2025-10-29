@@ -5,6 +5,7 @@ import { apiPost, apiGet } from '@/lib/api'
 import Swal from 'sweetalert2'
 import { useLanguage } from '@/contexts/LanguageContext'
 import UserForm from './UserForm'
+import { showSuccessToast, showErrorToast } from '@/utils/topTost'
 
 const UsersCreateForm = () => {
   const router = useRouter()
@@ -79,14 +80,15 @@ const UsersCreateForm = () => {
       setLoading(true)
       const response = await apiPost('/api/users', submitData)
       if (response.success) {
-        await Swal.fire({ icon: 'success', title: 'Success!', text: 'User created successfully', timer: 1500, showConfirmButton: false })
+        showSuccessToast(lang('messages.userCreated') || 'User created successfully')
+        // await Swal.fire({ icon: 'success', title: 'Success!', text: 'User created successfully', timer: 1500, showConfirmButton: false })
         router.push('/admin/users/list')
       } else {
         throw new Error((response && response.message) || 'Failed to create user')
       }
     } catch (error) {
       console.error('Error creating user:', error)
-      await Swal.fire({ icon: 'error', title: 'Error', text: error.message || 'Failed to create user' })
+      showErrorToast(error.message || 'Failed to create user')
       throw error
     } finally {
       setLoading(false)

@@ -275,6 +275,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
         lastName: true,
         username: true,
         email: true,
+        password: true,
         phoneNumber: true,
         userRole: true,
         address1: true,
@@ -347,7 +348,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
       stateId,
       countryId,
       zipcode,
-      status
+      status,
+      password
     } = req.body;
 
     // Check if user exists
@@ -377,24 +379,34 @@ router.put('/:id', authenticateToken, async (req, res) => {
       }
     }
 
+    // Build update data
+    const updateData = {
+      ...(firstName && { firstName }),
+      ...(lastName && { lastName }),
+      ...(username && { username }),
+      ...(email && { email }),
+      ...(phoneNumber !== undefined && { phoneNumber }),
+      ...(userRole && { userRole: parseInt(userRole) }),
+      ...(address1 !== undefined && { address1 }),
+      ...(address2 !== undefined && { address2 }),
+      ...(cityId !== undefined && { cityId: cityId ? parseInt(cityId) : null }),
+      ...(stateId !== undefined && { stateId: stateId ? parseInt(stateId) : null }),
+      ...(countryId !== undefined && { countryId: countryId ? parseInt(countryId) : null }),
+      ...(zipcode !== undefined && { zipcode }),
+      ...(status !== undefined && { status: parseInt(status) })
+    }
+
+    // If password is provided (non-empty), hash it and include in update
+    if (password && typeof password === 'string' && password.trim() !== '') {
+      const saltRounds = 12
+      const hashed = await bcrypt.hash(password, saltRounds)
+      updateData.password = hashed
+    }
+
     // Update user
     const updatedUser = await prisma.user.update({
       where: { id: parseInt(id) },
-      data: {
-        ...(firstName && { firstName }),
-        ...(lastName && { lastName }),
-        ...(username && { username }),
-        ...(email && { email }),
-        ...(phoneNumber !== undefined && { phoneNumber }),
-        ...(userRole && { userRole: parseInt(userRole) }),
-        ...(address1 !== undefined && { address1 }),
-        ...(address2 !== undefined && { address2 }),
-        ...(cityId !== undefined && { cityId: cityId ? parseInt(cityId) : null }),
-        ...(stateId !== undefined && { stateId: stateId ? parseInt(stateId) : null }),
-        ...(countryId !== undefined && { countryId: countryId ? parseInt(countryId) : null }),
-        ...(zipcode !== undefined && { zipcode }),
-        ...(status !== undefined && { status: parseInt(status) })
-      },
+      data: updateData,
       select: {
         id: true,
         firstName: true,
