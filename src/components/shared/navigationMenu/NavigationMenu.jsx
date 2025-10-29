@@ -8,10 +8,12 @@ import { FiSunrise } from "react-icons/fi";
 import Menus from './Menus';
 import { NavigationContext } from '@/contentApi/navigationProvider';
 import { useLanguage } from '@/contexts/LanguageContext';
+import useSettings from '@/hooks/useSettings';
 
 const NavigationManu = () => {
     const { navigationOpen, setNavigationOpen } = useContext(NavigationContext)
     const { lang } = useLanguage()
+    const { settings } = useSettings()
     const pathName = usePathname()
     useEffect(() => {
         setNavigationOpen(false)
@@ -21,9 +23,9 @@ const NavigationManu = () => {
             <div className="navbar-wrapper">
                 <div className="m-header">
                     <Link href="/" className="b-brand">
-                        {/* <!-- ========   change your logo hear   ============ --> */}
-                        <Image width={140} height={30} src="/images/logo-full.png" alt="logo" className="logo logo-lg" />
-                        <Image width={140} height={30} src="/images/logo-abbr.png" alt="logo" className="logo logo-sm" />
+                        {/* <!-- ========   dynamic logo   ============ --> */}
+                        <Image width={140} height={30} src={settings?.site_image || "/images/logo-full.png"} alt="logo" className="logo logo-lg" />
+                        {/* <Image width={140} height={30} src={settings?.site_image || "/images/logo-abbr.png"} alt="logo" className="logo logo-sm" /> */}
                     </Link>
                 </div>
 

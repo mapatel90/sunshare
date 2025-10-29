@@ -1,13 +1,41 @@
 "use client";
 import React, { useState, memo, useEffect } from "react";
+import ReactDOM from "react-dom";
 import Table from "@/components/shared/table/Table";
-import { apiGet, apiDelete } from "@/lib/api";
+import SelectDropdown from "@/components/shared/SelectDropdown";
+import { apiGet, apiDelete, apiPost, apiPut } from "@/lib/api";
 import { FiEdit3, FiTrash2 } from "react-icons/fi";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const InverterTable = () => {
   const { lang } = useLanguage();
   const [invertersData, setInvertersData] = useState([]);
+  // Modal/Form state (moved from AddInverter)
+  const [typeOptions, setTypeOptions] = useState([]);
+  const [selectedType, setSelectedType] = useState(null);
+  const [loadingTypes, setLoadingTypes] = useState(false);
+  const [typesError, setTypesError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [pendingEdit, setPendingEdit] = useState(null);
+
+  const [companyName, setCompanyName] = useState("");
+  const [inverterName, setInverterName] = useState("");
+  const [apiKey, setApiKey] = useState("");
+  const [secretKey, setSecretKey] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [modalMode, setModalMode] = useState('add');
+
+  const resetForm = () => {
+    setCompanyName("");
+    setInverterName("");
+    setApiKey("");
+    setSecretKey("");
+    setSelectedType(null);
+    setEditingId(null);
+    setErrors({});
+    setPendingEdit(null);
+  };
 
   const fetchInverters = async () => {
     try {
@@ -43,6 +71,184 @@ const InverterTable = () => {
     window.addEventListener('inverter:saved', onSaved);
     return () => window.removeEventListener('inverter:saved', onSaved);
   }, []);
+
+  // Modal helpers (Bootstrap-aware with fallback)
+  const showModal = (id) => {
+    const modalEl = typeof document !== 'undefined' && document.getElementById(id);
+    if (!modalEl) return;
+    try {
+      if (window.bootstrap?.Modal) {
+        const instance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+        instance.show();
+        return;
+      }
+    } catch {}
+    modalEl.classList.add('show');
+    modalEl.style.display = 'block';
+    modalEl.style.zIndex = '1055';
+    modalEl.removeAttribute('aria-hidden');
+    modalEl.setAttribute('aria-modal', 'true');
+    modalEl.setAttribute('role', 'dialog');
+    document.body.classList.add('modal-open');
+    if (!document.querySelector('.modal-backdrop')) {
+      const backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop fade show';
+      backdrop.style.zIndex = '1050';
+      document.body.appendChild(backdrop);
+    }
+  };
+
+  const hideModal = (id) => {
+    const modalEl = typeof document !== 'undefined' && document.getElementById(id);
+    if (!modalEl) return;
+    try {
+      if (window.bootstrap?.Modal) {
+        const instance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+        instance.hide();
+        return;
+      }
+    } catch {}
+    modalEl.classList.remove('show');
+    modalEl.style.display = 'none';
+    modalEl.style.zIndex = '';
+    modalEl.setAttribute('aria-hidden', 'true');
+    modalEl.removeAttribute('aria-modal');
+    document.body.classList.remove('modal-open');
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.remove();
+  };
+
+  // Fetch inverter types
+  const fetchTypes = async () => {
+    try {
+      setLoadingTypes(true);
+      setTypesError("");
+      const res = await apiGet("/api/inverterTypes");
+      const items = Array.isArray(res?.data) ? res.data : [];
+      const mapped = items.map((it) => ({ label: it.type, value: String(it.id) }));
+      setTypeOptions([{ label: lang('inverter.selectType'), value: 'select type' }, ...mapped]);
+    } catch (e) {
+      setTypesError(e?.message || "Failed to load inverter types");
+    } finally {
+      setLoadingTypes(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTypes();
+  }, []);
+
+  // Ensure form resets when opening for Add via Bootstrap trigger and after close
+  useEffect(() => {
+    const modalEl = typeof document !== 'undefined' && document.getElementById('addNewInverter');
+    if (!modalEl) return;
+    const onShow = () => {
+      // If opening in add mode, clean slate
+      if (modalMode === 'add') {
+        resetForm();
+        setModalMode('add');
+      }
+    };
+    const onHidden = () => {
+      // Always reset after modal fully hidden
+      resetForm();
+      setModalMode('add');
+    };
+    modalEl.addEventListener('show.bs.modal', onShow);
+    modalEl.addEventListener('hidden.bs.modal', onHidden);
+    return () => {
+      modalEl.removeEventListener('show.bs.modal', onShow);
+      modalEl.removeEventListener('hidden.bs.modal', onHidden);
+    };
+  }, [modalMode]);
+
+  // Handle create/update
+  const handleAdd = async () => {
+    const requiredMsg = lang('validation.required');
+    const newErrors = {
+      companyName: !companyName ? requiredMsg : '',
+      inverterName: !inverterName ? requiredMsg : '',
+      selectedType: !selectedType?.value ? requiredMsg : '',
+      apiKey: !apiKey ? requiredMsg : '',
+      secretKey: !secretKey ? requiredMsg : '',
+    };
+    setErrors(newErrors);
+    if (Object.values(newErrors).some(Boolean)) return;
+    try {
+      setSubmitting(true);
+      const payload = {
+        companyName,
+        inverterName,
+        inverter_type_id: parseInt(selectedType.value),
+        apiKey,
+        secretKey,
+      };
+      const res = editingId
+        ? await apiPut(`/api/inverters/${editingId}`, payload)
+        : await apiPost('/api/inverters/', payload);
+
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('inverter:saved'));
+      }
+
+      hideModal('addNewInverter');
+      resetForm();
+      setModalMode('add');
+    } catch (e) {
+      // noop optional error UI
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Support edit mode via window event
+  useEffect(() => {
+    const openEdit = (e) => {
+      const item = e?.detail?.item;
+      if (!item) return;
+      setModalMode('edit');
+      setEditingId(item.id || null);
+      setCompanyName(item.companyName || "");
+      setInverterName(item.inverterName || "");
+      setApiKey(item.apiKey || "");
+      setSecretKey(item.secretKey || "");
+      setErrors({});
+      // Defer selecting type until options are available
+      setPendingEdit(item);
+      if (Array.isArray(typeOptions) && typeOptions.length > 0) {
+        if (item.inverter_type_id !== undefined && item.inverter_type_id !== null) {
+          const valueToOption = new Map(typeOptions.map(o => [o.value, o]));
+          const labelToOption = new Map(typeOptions.map(o => [o.label, o]));
+          const key = String(item.inverter_type_id);
+          const found = valueToOption.get(key) || labelToOption.get(item.inverter_type_id) || null;
+          setSelectedType(found);
+        } else {
+          setSelectedType(null);
+        }
+      } else {
+        setSelectedType(null);
+      }
+      showModal('addNewInverter');
+    };
+    window.addEventListener('inverter:open-edit', openEdit);
+    return () => window.removeEventListener('inverter:open-edit', openEdit);
+  }, [typeOptions]);
+
+  // When types finish loading, if an edit is pending, resolve the selected option
+  useEffect(() => {
+    if (!pendingEdit) return;
+    if (!Array.isArray(typeOptions) || typeOptions.length === 0) return;
+    const { inverter_type_id } = pendingEdit;
+    if (inverter_type_id === undefined || inverter_type_id === null) {
+      setSelectedType(null);
+      return;
+    }
+    const valueToOption = new Map(typeOptions.map(o => [o.value, o]));
+    const labelToOption = new Map(typeOptions.map(o => [o.label, o]));
+    const key = String(inverter_type_id);
+    const found = valueToOption.get(key) || labelToOption.get(inverter_type_id) || null;
+    setSelectedType(found);
+  }, [typeOptions, pendingEdit]);
 
   const columns = [
     { accessorKey: "id", header: () => "ID" },
@@ -87,9 +293,142 @@ const InverterTable = () => {
     },
   ];
 
+  // Modal JSX rendered via portal (avoids parent blur)
+  const modalJsx = (
+    <div className="modal fade" id="addNewInverter" tabIndex="-1">
+      <div className="modal-dialog modal-lg" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">{editingId ? lang('inverter.editInverter') : lang('inverter.addInverter')}</h5>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              onClick={() => hideModal('addNewInverter')}
+            ></button>
+          </div>
+
+          <div className="modal-body">
+            <div className="mb-4">
+              <label htmlFor="companyName" className="form-label">
+                {lang('inverter.companyName')}
+              </label>
+              <input
+                type="text"
+                id="companyName"
+                className={`form-control ${errors.companyName ? 'is-invalid' : ''}`}
+                placeholder={lang('inverter.companyNamePlaceholder')}
+                value={companyName}
+                onChange={(e) => { setCompanyName(e.target.value); if (errors.companyName) setErrors(prev => ({ ...prev, companyName: '' })); }}
+              />
+              {errors.companyName ? <div className="invalid-feedback d-block">{errors.companyName}</div> : null}
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="inverterName" className="form-label">
+                {lang('inverter.inverterName')}
+              </label>
+              <input
+                type="text"
+                id="inverterName"
+                className={`form-control ${errors.inverterName ? 'is-invalid' : ''}`}
+                placeholder={lang('inverter.inverterNamePlaceholder')}
+                value={inverterName}
+                onChange={(e) => { setInverterName(e.target.value); if (errors.inverterName) setErrors(prev => ({ ...prev, inverterName: '' })); }}
+              />
+              {errors.inverterName ? <div className="invalid-feedback d-block">{errors.inverterName}</div> : null}
+            </div>
+
+            <div className="form-group mb-4">
+              <label className="form-label">{lang('inverter.type')}</label>
+              {typesError ? (
+                <div className="text-danger small">{typesError}</div>
+              ) : (
+                <SelectDropdown
+                  options={typeOptions}
+                  defaultSelect={lang('inverter.selectType')}
+                  selectedOption={selectedType}
+                  onSelectOption={(option) => { setSelectedType(option); if (errors.selectedType) setErrors(prev => ({ ...prev, selectedType: '' })); }}
+                />
+              )}
+              {errors.selectedType ? (
+                <div className="invalid-feedback d-block">{errors.selectedType}</div>
+              ) : null}
+              {loadingTypes && (
+                <div className="text-muted small mt-1">Loading types...</div>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="apiKey" className="form-label">
+                {lang('inverter.apiKey')}
+              </label>
+              <input
+                type="text"
+                id="apiKey"
+                className={`form-control ${errors.apiKey ? 'is-invalid' : ''}`}
+                placeholder={lang('inverter.apiKeyPlaceholder')}
+                value={apiKey}
+                onChange={(e) => { setApiKey(e.target.value); if (errors.apiKey) setErrors(prev => ({ ...prev, apiKey: '' })); }}
+              />
+              {errors.apiKey ? <div className="invalid-feedback d-block">{errors.apiKey}</div> : null}
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="secretKey" className="form-label">
+                {lang('inverter.secretKey')}
+              </label>
+              <input
+                type="text"
+                id="secretKey"
+                className={`form-control ${errors.secretKey ? 'is-invalid' : ''}`}
+                placeholder={lang('inverter.secretKeyPlaceholder')}
+                value={secretKey}
+                onChange={(e) => { setSecretKey(e.target.value); if (errors.secretKey) setErrors(prev => ({ ...prev, secretKey: '' })); }}
+              />
+              {errors.secretKey ? <div className="invalid-feedback d-block">{errors.secretKey}</div> : null}
+            </div>
+          </div>
+
+          <div className="modal-footer">
+            <button
+              type="button"
+              className="btn btn-danger"
+              data-bs-dismiss="modal"
+              onClick={() => {
+                setCompanyName("");
+                setInverterName("");
+                setApiKey("");
+                setSecretKey("");
+                setSelectedType(null);
+                setEditingId(null);
+                setErrors({});
+                hideModal('addNewInverter');
+              }}
+            >
+              {lang('common.cancel')}
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleAdd}
+              disabled={submitting}
+            >
+              {submitting
+                ? (editingId ? lang('common.loading') : lang('common.loading'))
+                : (editingId ? lang('common.saveChanges') : lang('common.add'))}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <>
       <Table data={invertersData} columns={columns} />
+      {typeof document !== 'undefined' ? ReactDOM.createPortal(modalJsx, document.body) : null}
     </>
   );
 };

@@ -7,17 +7,24 @@ const SelectDropdown = ({ options, selectedOption, onSelectOption, className, de
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [openUpwards, setOpenUpwards] = useState(false);
-    const [localSelectedOption, setLocalSelectedOption] = useState();
+    const [localSelectedOption, setLocalSelectedOption] = useState(null);
     const ref = useRef()
 
     const dropdownRef = useRef(null);
 
-    useEffect(() => {
-        if (defaultSelect) {
-            const defaultOption = options?.find(option => option.value?.toLowerCase() === defaultSelect?.toLowerCase());
-            setLocalSelectedOption(defaultOption || null); // Set default if found
-        }
+    // Normalize options to always have { value, label }
+    const normalizedOptions = Array.isArray(options)
+        ? options.map((opt) => ({
+            value: opt.value ?? opt.key ?? opt.id,
+            label: opt.label ?? opt.name ?? String(opt.value ?? opt.key ?? opt.id ?? ''),
+            color: opt.color,
+            icon: opt.icon,
+            iconClassName: opt.iconClassName,
+            img: opt.img,
+        }))
+        : [];
 
+    useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setIsOpen(false);
@@ -28,13 +35,33 @@ const SelectDropdown = ({ options, selectedOption, onSelectOption, className, de
         return () => {
             document.removeEventListener('click', handleClickOutside);
         };
-    }, [defaultSelect, options]);
+    }, []);
+
+    // Keep local state in sync with selectedOption prop
+    useEffect(() => {
+        if (!selectedOption) {
+            setLocalSelectedOption(null);
+            return;
+        }
+        // If a primitive is passed, find matching option
+        if (typeof selectedOption !== 'object') {
+            const found = normalizedOptions.find(o => String(o.value) === String(selectedOption));
+            setLocalSelectedOption(found || null);
+            return;
+        }
+        // If an object is passed, match by value/label
+        const valueToFind = selectedOption.value ?? selectedOption.key ?? selectedOption.id;
+        const labelToFind = selectedOption.label ?? selectedOption.name;
+        const found = normalizedOptions.find(o => String(o.value) === String(valueToFind))
+            || normalizedOptions.find(o => String(o.label) === String(labelToFind));
+        setLocalSelectedOption(found || null);
+    }, [selectedOption, JSON.stringify(normalizedOptions)]);
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
 
-    const filteredOptions = options?.filter(option =>
-        option.label.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredOptions = normalizedOptions.filter(option =>
+        option.label?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     useEffect(() => {
@@ -64,7 +91,7 @@ const SelectDropdown = ({ options, selectedOption, onSelectOption, className, de
                     {localSelectedOption?.color ? <span className="status-dot" style={{ backgroundColor: localSelectedOption?.color }}></span> : ""}
                     {localSelectedOption?.icon ? <span className={`lh-1 fs-16 ${localSelectedOption.iconClassName}`}>{getIcon(localSelectedOption?.icon)} </span> : ""}
                     {localSelectedOption?.img ? <img src={localSelectedOption.img} className="avatar-image avatar-sm" /> : ""}
-                    {localSelectedOption?.label}
+                    {localSelectedOption?.label || defaultSelect}
                 </span>
                 <span className="arrow">{isOpen ? <FiChevronUp /> : <FiChevronDown />}</span>
             </div>
