@@ -5,13 +5,14 @@ import { apiGet, apiPut } from '@/lib/api'
 import Swal from 'sweetalert2'
 import { useLanguage } from '@/contexts/LanguageContext'
 import UserForm from './UserForm'
+import { showSuccessToast, showErrorToast } from '@/utils/topTost'
 
 const UsersEditForm = () => {
   const router = useRouter()
   const { lang } = useLanguage()
   const searchParams = useSearchParams()
   const userId = searchParams.get('id')
-  
+
   const [loading, setLoading] = useState(false)
   const [loadingUser, setLoadingUser] = useState(true)
   const [formData, setFormData] = useState({})
@@ -20,7 +21,7 @@ const UsersEditForm = () => {
   const [usernameChecking, setUsernameChecking] = useState(false)
   const [roles, setRoles] = useState([])
   const [loadingRoles, setLoadingRoles] = useState(false)
-  
+
   // roles and location handling will be provided by UserForm; fetch roles below and pass into initialData
 
   // Load user data
@@ -63,7 +64,7 @@ const UsersEditForm = () => {
     try {
       setLoadingUser(true)
       const response = await apiGet(`/api/users/${userId}`)
-      
+
       if (response.success) {
         const user = response.data
         setFormData({
@@ -106,14 +107,15 @@ const UsersEditForm = () => {
       setLoading(true)
       const response = await apiPut(`/api/users/${userId}`, submitData)
       if (response.success) {
-        await Swal.fire({ icon: 'success', title: 'Success!', text: 'User updated successfully', timer: 1500, showConfirmButton: false })
+        showSuccessToast(lang('messages.userUpdated') || 'User updated successfully')
+        // await Swal.fire({ icon: 'success', title: 'Success!', text: 'User updated successfully', timer: 1500, showConfirmButton: false })
         router.push('/admin/users/list')
       } else {
         throw new Error((response && response.message) || 'Failed to update user')
       }
     } catch (error) {
       console.error('Error updating user:', error)
-      await Swal.fire({ icon: 'error', title: 'Error', text: error.message || 'Failed to update user' })
+      showErrorToast(error.message || 'Failed to update user')
       throw error
     } finally {
       setLoading(false)

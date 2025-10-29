@@ -11,7 +11,8 @@
     "languagesAvailable": "ngôn ngữ có sẵn",
     "darkMode": "Chế độ tối",
     "lightMode": "Chế độ sáng",
-    "fullScreen": "Toàn màn hình"
+    "fullScreen": "Toàn màn hình",
+    "changepassword": "Đổi mật khẩu"
   },
   "navigation": {
     "navigation": "Điều hướng",
@@ -33,6 +34,7 @@
     "administration": "Quản trị",
     "roles": "Vai trò",
     "users": "Người dùng",
+  "changepassword": "Đổi mật khẩu",
     "settings": "Cài đặt",
     "list": "Danh sách",
     "view": "Xem",
@@ -49,7 +51,10 @@
     "verify": "Xác minh",
     "email": "Email",
     "password": "Mật khẩu",
+    "newPassword": "Mật khẩu mới",
     "confirmPassword": "Xác nhận mật khẩu",
+    "confirmNewPassword": "Xác nhận mật khẩu mới",
+    "currentPassword": "Mật khẩu hiện tại",
     "rememberMe": "Ghi nhớ đăng nhập",
     "signIn": "Đăng nhập",
     "signUp": "Đăng ký",
@@ -152,7 +157,9 @@
     "info": "Thông tin",
     "confirmDelete": "Bạn có chắc chắn muốn xóa mục này không?",
     "dataNotFound": "Không tìm thấy dữ liệu",
-    "pleaseWait": "Vui lòng đợi..."
+    "pleaseWait": "Vui lòng đợi...",
+    "userCreated": "Tạo người dùng thành công",
+    "userUpdated": "Cập nhật người dùng thành công"
   },
   "validation": {
     "required": "Trường này là bắt buộc",

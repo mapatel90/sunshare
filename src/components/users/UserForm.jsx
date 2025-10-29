@@ -423,7 +423,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                                 {includePassword ? 'Creating...' : 'Saving...'}
                                             </>
                                         ) : (
-                                            includePassword ? lang('usersView.CreateUser') : 'Save'
+                                            !isEditing ? lang('usersView.CreateUser') : 'Save'
                                         )}
                                     </button>
                                 </div>
