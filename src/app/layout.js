@@ -8,6 +8,7 @@ import SettingSideBarProvider from "@/contentApi/settingSideBarProvider";
 import ThemeCustomizer from "@/components/shared/ThemeCustomizer";
 import AuthProvider from "@/contexts/AuthContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import GlobalLoader from "@/components/shared/GlobalLoader";
 
 export const metadata = {
   title: "Sunshare | Dashboard",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
               </NavigationProvider>
             </SettingSideBarProvider>
             {/* <ThemeCustomizer /> */}
+            <GlobalLoader />
           </AuthProvider>
         </LanguageProvider>
       </body>
