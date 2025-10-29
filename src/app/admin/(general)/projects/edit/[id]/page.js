@@ -1,26 +1,27 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
-import ProjectCreateContent from '@/components/projectsCreate/ProjectCreateContent'
 import ProjectCreateHeader from '@/components/projectsCreate/ProjectCreateHeader'
+import ProjectEditContent from '@/components/projectsCreate/ProjectEditContent'
 import DynamicTitle from '@/components/common/DynamicTitle'
 
-export const metadata = { title: 'Sunshare | Create Project' }
+export const metadata = { title: 'Sunshare | Edit Project' }
 
-const page = () => {
+const page = ({ params }) => {
+  const { id } = params
   return (
     <>
-      <DynamicTitle titleKey="projects.createproject" />
+      <DynamicTitle titleKey="projects.editproject" />
       <PageHeader>
         <ProjectCreateHeader />
       </PageHeader>
       <div className='main-content'>
         <div className='row'>
-          <ProjectCreateContent />
+          <ProjectEditContent projectId={id} />
         </div>
       </div>
-
     </>
   )
 }
 
 export default page
+

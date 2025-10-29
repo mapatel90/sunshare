@@ -5,6 +5,7 @@ import { apiGet, apiPost } from '@/lib/api'
 import useLocationData from '@/hooks/useLocationData'
 import useOfftakerData from '@/hooks/useOfftakerData'
 import Swal from 'sweetalert2'
+import { showSuccessToast, showErrorToast } from '@/utils/topTost'
 import { useLanguage } from '@/contexts/LanguageContext'
 
 const TabProjectType = ({ setFormData, formData, error, setError }) => {
@@ -88,21 +89,58 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
         }
     }
 
-    // ✅ Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        setLoading(prev => ({ ...prev, form: true }))
+        e.preventDefault();
+
+        // Basic validation
+        const requiredFields = ['project_name', 'project_type', 'offtaker', 'countryId', 'stateId', 'cityId'];
+        const errors = {};
+
+        requiredFields.forEach(field => {
+            if (!formData[field]) {
+                errors[field] = lang('validation.required', 'Required');
+            }
+        });
+
+        if (Object.keys(errors).length > 0) {
+            setError(prev => ({ ...prev, ...errors }));
+            return;
+        }
+
+        setLoading(prev => ({ ...prev, form: true }));
 
         try {
-            Swal.fire({
-                icon: 'success',
-                title: 'Saved!',
-                text: 'Project details saved successfully',
-                timer: 2000,
-                showConfirmButton: false
-            })
+            // Prepare the project data for submission
+            const projectData = {
+                name: formData.project_name,
+                type: formData.project_type,
+                offtaker_id: Number(formData.offtaker),
+                address1: formData.address1 || '',
+                address2: formData.address2 || '',
+                country_id: Number(formData.countryId),
+                state_id: Number(formData.stateId),
+                city_id: Number(formData.cityId),
+                zipcode: formData.zipcode || '',
+                project_manage: formData.projectManage || 'Project Manager',
+                investor_profit: formData.investorProfit || '0',
+                weshare_profit: formData.weshareprofite || '0',
+                status: formData.status === 'active' ? 1 : 0
+            };
+
+            // Submit to API
+            const response = await apiPost('/api/projects/AddProject', projectData);
+
+            if (response.success) {
+                showSuccessToast(lang('projects.projectcreatedsuccessfully', 'Project created successfully'))
+                router.push('/admin/projects/list');
+            } else {
+                throw new Error(response.message || 'Failed to create project');
+            }
+        } catch (error) {
+            console.error('Error creating project:', error);
+            showErrorToast(error.message || 'Failed to create project')
         } finally {
-            setLoading(prev => ({ ...prev, form: false }))
+            setLoading(prev => ({ ...prev, form: false }));
         }
     }
 
@@ -273,34 +311,64 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
                                         placeholder={lang('projects.zipcodePlaceholder', 'Enter zip code')}
                                     />
                                 </div>
+
+                                {/* Investor Profit */}
+                                <div className="col-md-3 mb-3">
+                                    <label className="form-label">{lang('projects.investorProfit', 'Investor Profit')}</label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${error.investorProfit ? 'is-invalid' : ''}`}
+                                        name="investorProfit"
+                                        value={formData.investorProfit}
+                                        onChange={handleInputChange}
+                                        placeholder={lang('projects.investorProfitPlaceholder', 'Enter investor profit')}
+                                    />
+                                </div>
+
+                                {/* Weshare profite */}
+                                <div className="col-md-3 mb-3">
+                                    <label className="form-label">{lang('projects.weshareprofite', 'Weshare profite')}</label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${error.weshareprofite ? 'is-invalid' : ''}`}
+                                        name="weshareprofite"
+                                        value={formData.weshareprofite}
+                                        onChange={handleInputChange}
+                                        placeholder={lang('projects.weshareprofitePlaceholder', 'Enter weshare profite')}
+                                    />
+                                </div>
+
+                                {/* Status */}
+                                <div className="col-md-3 mb-3">
+                                    <label className="form-label">{lang('projects.status', 'Status')}</label>
+                                    <select
+                                        className={`form-select ${error.status ? 'is-invalid' : ''}`}
+                                        name="status"
+                                        value={formData.status}
+                                        onChange={handleInputChange}
+                                    >
+                                        <option value="">{lang('projects.selectStatus', 'Select Status')}</option>
+                                        <option value="active">{lang('projects.active', 'Active')}</option>
+                                        <option value="inactive">{lang('projects.inactive', 'Inactive')}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            {/* Actions inside Address Information */}
+                            <div className="col-12 mt-2 d-flex justify-content-end">
+                                <button type="submit" className="btn btn-primary" disabled={loading.form}>
+                                    {loading.form ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" />
+                                            {lang('common.saving', 'Saving')}...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FiSave className="me-2" /> {lang('projects.saveProject', 'Save Project')}
+                                        </>
+                                    )}
+                                </button>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                {/* Buttons */}
-                <div className="col-md-12">
-                    <div className="d-flex gap-2">
-                        <button type="submit" className="btn btn-primary" disabled={loading.form}>
-                            {loading.form ? (
-                                <>
-                                    <span className="spinner-border spinner-border-sm me-2" role="status" />
-                                    {lang('common.saving', 'Saving')}...
-                                </>
-                            ) : (
-                                <>
-                                    <FiSave className="me-2" /> {lang('projects.saveProject', 'Save Project')}
-                                </>
-                            )}
-                        </button>
-                        <button
-                            type="button"
-                            className="btn btn-light"
-                            onClick={() => router.push('/projects/list')}
-                            disabled={loading.form}
-                        >
-                            {lang('common.cancel', 'Cancel')}
-                        </button>
                     </div>
                 </div>
             </div>

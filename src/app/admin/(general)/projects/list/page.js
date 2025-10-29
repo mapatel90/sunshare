@@ -2,10 +2,14 @@ import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
 import ProjectsListHeader from '@/components/projectsCreate/ProjectsListHeader'
 import ProjectTable from '@/components/projectsCreate/ProjectTable'
+import DynamicTitle from '@/components/common/DynamicTitle'
+
+export const metadata = { title: 'Sunshare | Project List' }
 
 const page = () => {
     return (
         <>
+            <DynamicTitle titleKey="projects.projectlist" />
             <PageHeader>
                 <ProjectsListHeader />
             </PageHeader>

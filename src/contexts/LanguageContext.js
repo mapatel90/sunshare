@@ -92,7 +92,14 @@ export const LanguageProvider = ({ children }) => {
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
   if (!context) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
+    // Fallback if provider is not mounted (prevents runtime crashes)
+    return {
+      currentLanguage: 'en',
+      changeLanguage: () => {},
+      lang: (key, def = key) => def ?? key,
+      languages: LANGUAGES,
+      currentLanguageInfo: LANGUAGES['en']
+    };
   }
   return context;
 };

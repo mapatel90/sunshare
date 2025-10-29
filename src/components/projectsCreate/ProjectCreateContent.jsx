@@ -26,7 +26,8 @@ const ProjectCreateContent = () => {
         countryId: '',
         stateId: '',
         cityId: '',
-        zipcode: ''
+        zipcode: '',
+        status: 'active'
     });
 
     const validateFields = () => {
@@ -93,23 +94,7 @@ const ProjectCreateContent = () => {
                         {currentStep === 1 && <TabProjectDetails />}
                     </div>
 
-                    {/* Buttons */}
-                    <div className="actions clearfix">
-                        <ul>
-                            <li
-                                className={`${currentStep === 0 ? "disabled" : ""}`}
-                                onClick={handlePrev}
-                            >
-                                <a href="#">Previous</a>
-                            </li>
-                            <li
-                                className={`${currentStep === steps.length - 1 ? "disabled" : ""}`}
-                                onClick={handleNext}
-                            >
-                                <a href="#">Next</a>
-                            </li>
-                        </ul>
-                    </div>
+                    {/* Buttons removed as per requirement */}
                 </div>
             </div>
         </div>
