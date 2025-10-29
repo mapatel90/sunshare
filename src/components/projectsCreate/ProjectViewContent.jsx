@@ -66,6 +66,11 @@ const ProjectViewContent = ({ projectId }) => {
                         <div className="col-md-6"><Field label={lang('projects.addressLine1', 'Address Line 1')} value={project.address1} /></div>
                         <div className="col-md-6"><Field label={lang('projects.addressLine2', 'Address Line 2')} value={project.address2} /></div>
                     </div>
+                    <hr />
+                    <div className="row">
+                        <div className="col-md-6"><Field label={lang('common.createdAt', 'Created At')} value={project.createdAt ? new Date(project.createdAt).toLocaleString() : '-'} /></div>
+                        <div className="col-md-6"><Field label={lang('common.updatedAt', 'Updated At')} value={project.updatedAt ? new Date(project.updatedAt).toLocaleString() : '-'} /></div>
+                    </div>
                 </div>
             </div>
         </div>

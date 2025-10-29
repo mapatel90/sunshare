@@ -5,6 +5,7 @@ import { apiGet, apiPost } from '@/lib/api'
 import useLocationData from '@/hooks/useLocationData'
 import useOfftakerData from '@/hooks/useOfftakerData'
 import Swal from 'sweetalert2'
+import { showSuccessToast, showErrorToast } from '@/utils/topTost'
 import { useLanguage } from '@/contexts/LanguageContext'
 
 const TabProjectType = ({ setFormData, formData, error, setError }) => {
@@ -97,7 +98,7 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
 
         requiredFields.forEach(field => {
             if (!formData[field]) {
-                errors[field] = `${field.split(/(?=[A-Z])/).join(' ').toLowerCase()} is required`;
+                errors[field] = lang('validation.required', 'Required');
             }
         });
 
@@ -130,25 +131,14 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
             const response = await apiPost('/api/projects/AddProject', projectData);
 
             if (response.success) {
-                await Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: lang('projects.projectcreatedsuccessfully', 'Project created successfully'),
-                    timer: 1500,
-                    showConfirmButton: false
-                });
+                showSuccessToast(lang('projects.projectcreatedsuccessfully', 'Project created successfully'))
                 router.push('/admin/projects/list');
             } else {
                 throw new Error(response.message || 'Failed to create project');
             }
         } catch (error) {
             console.error('Error creating project:', error);
-            await Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: error.message || 'Failed to create project',
-                timer: 2000
-            });
+            showErrorToast(error.message || 'Failed to create project')
         } finally {
             setLoading(prev => ({ ...prev, form: false }));
         }
@@ -369,7 +359,7 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
 
                 {/* Buttons */}
                 <div className="col-md-12">
-                    <div className="d-flex gap-2">
+                    <div className="d-flex gap-2 justify-content-end">
                         <button type="submit" className="btn btn-primary" disabled={loading.form}>
                             {loading.form ? (
                                 <>
@@ -381,14 +371,6 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
                                     <FiSave className="me-2" /> {lang('projects.saveProject', 'Save Project')}
                                 </>
                             )}
-                        </button>
-                        <button
-                            type="button"
-                            className="btn btn-light"
-                            onClick={() => router.push('/projects/list')}
-                            disabled={loading.form}
-                        >
-                            {lang('common.cancel', 'Cancel')}
                         </button>
                     </div>
                 </div>

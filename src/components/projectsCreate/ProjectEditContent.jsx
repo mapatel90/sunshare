@@ -6,6 +6,7 @@ import { apiGet, apiPut } from '@/lib/api'
 import useLocationData from '@/hooks/useLocationData'
 import useOfftakerData from '@/hooks/useOfftakerData'
 import Swal from 'sweetalert2'
+import { showSuccessToast, showErrorToast } from '@/utils/topTost'
 import { useLanguage } from '@/contexts/LanguageContext'
 
 const ProjectEditContent = ({ projectId }) => {
@@ -67,7 +68,7 @@ const ProjectEditContent = ({ projectId }) => {
                 }
             } catch (e) {
                 console.error('Load project failed', e)
-                Swal.fire({ icon: 'error', title: 'Error', text: e.message || 'Failed to load project' })
+                showErrorToast(e.message || 'Failed to load project')
             } finally {
                 setLoading(prev => ({ ...prev, init: false }))
             }
@@ -97,7 +98,7 @@ const ProjectEditContent = ({ projectId }) => {
 
         const requiredFields = ['project_name', 'project_type', 'offtaker', 'countryId', 'stateId', 'cityId']
         const errors = {}
-        requiredFields.forEach(field => { if (!formData[field]) { errors[field] = 'Required' } })
+        requiredFields.forEach(field => { if (!formData[field]) { errors[field] = lang('validation.required', 'Required') } })
         if (Object.keys(errors).length) { setError(errors); return }
 
         setLoading(prev => ({ ...prev, form: true }))
@@ -118,14 +119,14 @@ const ProjectEditContent = ({ projectId }) => {
             }
             const res = await apiPut(`/api/projects/${projectId}`, payload)
             if (res.success) {
-                await Swal.fire({ icon: 'success', title: 'Updated!', text: 'Project updated successfully', timer: 1200, showConfirmButton: false })
+                showSuccessToast(lang('projects.projectupdatedsuccessfully', 'Project updated successfully'))
                 router.push('/admin/projects/list')
             } else {
                 throw new Error(res.message || 'Update failed')
             }
         } catch (e) {
             console.error('Update project failed', e)
-            Swal.fire({ icon: 'error', title: 'Error', text: e.message || 'Failed to update project' })
+            showErrorToast(e.message || 'Failed to update project')
         } finally {
             setLoading(prev => ({ ...prev, form: false }))
         }

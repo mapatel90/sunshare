@@ -5,6 +5,7 @@ import { FiEdit3, FiEye, FiMoreHorizontal, FiPrinter, FiTrash2 } from 'react-ico
 import Dropdown from '@/components/shared/Dropdown'
 import SelectDropdown from '@/components/shared/SelectDropdown'
 import Swal from 'sweetalert2'
+import { showSuccessToast, showErrorToast } from '@/utils/topTost'
 import { apiGet, apiPut, apiDelete } from '@/lib/api'
 import { useLanguage } from '@/contexts/LanguageContext'
 
@@ -62,17 +63,12 @@ const ProjectTable = () => {
     try {
       const res = await apiPut(`/api/projects/${id}/status`, { status: parseInt(statusValue) })
       if (res.success) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Updated!',
-          text: 'Status updated successfully',
-          timer: 1000,
-          showConfirmButton: false
-        })
+        showSuccessToast(lang('projects.statusUpdated', 'Status updated successfully'))
         fetchProjects()
       }
     } catch (err) {
       console.error('Status update error:', err)
+      showErrorToast(err.message || 'Failed to update status')
     }
   }
 
@@ -128,27 +124,26 @@ const ProjectTable = () => {
         const id = info.row.original.id
         const rowActions = [
           { label: 'Edit', icon: <FiEdit3 />, link: `/admin/projects/edit/${id}` },
-          { label: 'Print', icon: <FiPrinter /> },
           { type: 'divider' },
-          { label: 'Delete', icon: <FiTrash2 />, onClick: async () => {
+          { label: lang('common.delete', 'Delete'), icon: <FiTrash2 />, onClick: async () => {
               try {
                 const confirm = await Swal.fire({
                   icon: 'warning',
-                  title: 'Are you sure?',
-                  text: 'This action cannot be undone.',
+                  title: lang('common.areYouSure', 'Are you sure?'),
+                  text: lang('common.cannotBeUndone', 'This action cannot be undone.'),
                   showCancelButton: true,
                   confirmButtonColor: '#d33',
-                  confirmButtonText: 'Yes, delete it!'
+                  confirmButtonText: lang('common.yesDelete', 'Yes, delete it!')
                 })
                 if (confirm.isConfirmed) {
                   setLoading(true)
                   await apiDelete(`/api/projects/${id}`)
-                  await Swal.fire({ icon: 'success', title: 'Deleted!', timer: 1000, showConfirmButton: false })
+                  showSuccessToast(lang('projects.deleted', 'Project has been deleted successfully'))
                   fetchProjects()
                 }
               } catch (e) {
                 console.error('Delete project failed:', e)
-                Swal.fire({ icon: 'error', title: 'Error', text: e.message || 'Failed to delete project' })
+                showErrorToast(e.message || 'Failed to delete project')
               } finally {
                 setLoading(false)
               }
