@@ -14,6 +14,7 @@ import locationRoutes from './routes/locations.js';
 import inverterTypeRoutes from './routes/inverterType.js';
 import inverterRoutes from './routes/inverter.js';
 import settingsRoutes from './routes/settings.js';
+import projectsRouter from './routes/projects.js';
 
 // Load environment variables
 const __filename = fileURLToPath(import.meta.url);
@@ -60,6 +61,7 @@ app.use('/api/locations', locationRoutes);
 app.use('/api/inverterTypes', inverterTypeRoutes);
 app.use('/api/inverters', inverterRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/projects', projectsRouter);
 
 // 404 handler
 app.use((req, res) => {

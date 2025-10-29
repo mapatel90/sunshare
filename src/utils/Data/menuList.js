@@ -83,18 +83,7 @@ export const menuList = [
                 path: "/admin/projects/list",
                 subdropdownMenu: false
             },
-            {
-                id: 2,
-                name: "projectsview",
-                path: "/admin/projects/view",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "projectscreate",
-                path: "/admin/projects/create",
-                subdropdownMenu: false
-            }
+            
         ]
     },
     {

@@ -26,7 +26,8 @@ const ProjectCreateContent = () => {
         countryId: '',
         stateId: '',
         cityId: '',
-        zipcode: ''
+        zipcode: '',
+        status: 'active'
     });
 
     const validateFields = () => {
