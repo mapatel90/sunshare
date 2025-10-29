@@ -3,6 +3,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datetime/css/react-datetime.css";
+import Providers from "./Providers";
 import NavigationProvider from "@/contentApi/navigationProvider";
 import SettingSideBarProvider from "@/contentApi/settingSideBarProvider";
 import ThemeCustomizer from "@/components/shared/ThemeCustomizer";
@@ -19,6 +20,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <Providers>
+          {children}
+        </Providers>
         <LanguageProvider>
           <AuthProvider>
             <SettingSideBarProvider>

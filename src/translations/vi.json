@@ -419,6 +419,7 @@
     "zipcode": "Mã zip",
     "zipcodeRequired": "Mã zip là bắt buộc",
     "saveProject": "Lưu dự án",
+    "updateProject": "Cập nhật dự án",
     "cancel": "Hủy",
     "projectNamePlaceholder": "Nhập tên dự án",
     "projectTypePlaceholder": "Nhập loại dự án",
@@ -440,7 +441,11 @@
     "investorProfitRequired" : "Lợi nhuận đầu tư là bắt buộc",
     "weshareprofite" : "Lợi nhuận chia sẻ",
     "weshareprofitePlaceholder" : "Nhập lợi nhuận chia sẻ",
-    "weshareprofiteRequired" : "Lợi nhuận chia sẻ là bắt buộc"
+    "weshareprofiteRequired" : "Lợi nhuận chia sẻ là bắt buộc",
+    "createproject": "Tạo dự án",
+    "editproject": "Sửa dự án",
+    "viewproject": "Xem dự án",
+    "projectlist": "Danh sách dự án"
   },
   "placeholders": {
     "your_company_name": "Tên công ty của bạn [Ví dụ: Theme Ocean]",
