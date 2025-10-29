@@ -117,7 +117,7 @@ router.post('/', authenticateToken, async (req, res) => {
       }
     });
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: 'Role created successfully',
       data: newRole

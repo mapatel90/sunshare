@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticateToken } from '../middleware/auth.js';
+import nodemailer from 'nodemailer';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -182,6 +183,67 @@ router.delete('/:key', authenticateToken, async (req, res) => {
       message: 'Error deleting setting',
       error: error.message
     });
+  }
+});
+
+// Send test email using SMTP settings stored in DB
+router.post('/test-email', authenticateToken, async (req, res) => {
+  try {
+    console.log('Received test email request with body:', req.body);
+    const { to } = req.body;
+
+    if (!to) {
+      return res.status(400).json({ success: false, message: 'Recipient email (to) is required' });
+    }
+
+    // Fetch relevant SMTP settings (prefer smtp_* then legacy email_*)
+    const smtpKeys = [
+      'smtp_email',
+      'smtp_email_from_address',
+      'smtp_email_from_name',
+      'smtp_email_host',
+      'smtp_email_user',
+      'smtp_email_password',
+      'smtp_email_port',
+      'smtp_email_security_type',
+    ];
+
+    const settings = await prisma.setting.findMany({ where: { key: { in: smtpKeys } } });
+    // console.log('Fetched SMTP settings from DB:', settings);
+    const s = settings.reduce((acc, it) => { acc[it.key] = it.value; return acc; }, {});
+
+    const protocol = s['smtp_email'] || 'SSL';
+    const fromAddress = s['smtp_email_from_address'] || '';
+    const fromName = s['smtp_email_from_name'] || '';
+    const host = s['smtp_email_host'] || '';
+    const user = s['smtp_email_user'] || '';
+    const pass = s['smtp_email_password'] || '';
+    const portStr = s['smtp_email_port'] || '';
+
+    const port = Number(portStr);
+    const secure = Number(port) === 465 || (protocol || '').toUpperCase() === 'SSL';
+
+    if (!fromAddress || !host || !user || !pass || !port) {
+      return res.status(400).json({
+        success: false,
+        message: 'Incomplete SMTP configuration. Please fill all required SMTP fields before testing.',
+      });
+    }
+
+    const transporter = nodemailer.createTransport({ host, port, secure, auth: { user, pass } });
+    await transporter.verify();
+
+    const info = await transporter.sendMail({
+      from: fromName ? `${fromName} <${fromAddress}>` : fromAddress,
+      to,
+      subject: 'SMTP Test Email',
+      text: 'This is a test email to verify your SMTP settings.',
+    });
+
+    res.json({ success: true, message: 'Test email sent successfully', data: { messageId: info.messageId } });
+  } catch (error) {
+    console.error('Error sending test email:', error);
+    res.status(500).json({ success: false, message: 'Failed to send test email', error: error.message });
   }
 });
 
