@@ -7,6 +7,7 @@ import { apiGet, apiDelete, apiPost, apiPut } from "@/lib/api";
 import { FiEdit3, FiTrash2 } from "react-icons/fi";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { showSuccessToast } from "@/utils/topTost";
+import { createPortal } from "react-dom";
 
 const InverterTable = () => {
   const { lang } = useLanguage();
@@ -25,7 +26,8 @@ const InverterTable = () => {
   const [secretKey, setSecretKey] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [errors, setErrors] = useState({});
-  const [modalMode, setModalMode] = useState("add");
+  // Modal logic state:
+  const [modalMode, setModalMode] = useState(null);
 
   const resetForm = () => {
     setCompanyName("");
@@ -73,54 +75,6 @@ const InverterTable = () => {
     window.addEventListener("inverter:saved", onSaved);
     return () => window.removeEventListener("inverter:saved", onSaved);
   }, []);
-
-  // Modal helpers (Bootstrap-aware with fallback)
-  const showModal = (id) => {
-    const modalEl =
-      typeof document !== "undefined" && document.getElementById(id);
-    if (!modalEl) return;
-    try {
-      if (window.bootstrap?.Modal) {
-        const instance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
-        instance.show();
-        return;
-      }
-    } catch {}
-    modalEl.classList.add("show");
-    modalEl.style.display = "block";
-    modalEl.style.zIndex = "1055";
-    modalEl.removeAttribute("aria-hidden");
-    modalEl.setAttribute("aria-modal", "true");
-    modalEl.setAttribute("role", "dialog");
-    document.body.classList.add("modal-open");
-    if (!document.querySelector(".modal-backdrop")) {
-      const backdrop = document.createElement("div");
-      backdrop.className = "modal-backdrop fade show";
-      backdrop.style.zIndex = "1050";
-      document.body.appendChild(backdrop);
-    }
-  };
-
-  const hideModal = (id) => {
-    const modalEl =
-      typeof document !== "undefined" && document.getElementById(id);
-    if (!modalEl) return;
-    try {
-      if (window.bootstrap?.Modal) {
-        const instance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
-        instance.hide();
-        return;
-      }
-    } catch {}
-    modalEl.classList.remove("show");
-    modalEl.style.display = "none";
-    modalEl.style.zIndex = "";
-    modalEl.setAttribute("aria-hidden", "true");
-    modalEl.removeAttribute("aria-modal");
-    document.body.classList.remove("modal-open");
-    const backdrop = document.querySelector(".modal-backdrop");
-    if (backdrop) backdrop.remove();
-  };
 
   // Fetch inverter types
   const fetchTypes = async () => {
@@ -214,9 +168,7 @@ const InverterTable = () => {
         window.dispatchEvent(new CustomEvent("inverter:saved"));
       }
 
-      hideModal("addNewInverter");
-      resetForm();
-      setModalMode("add");
+      handleCloseModal();
     } catch (e) {
       // noop optional error UI
     } finally {
@@ -234,7 +186,6 @@ const InverterTable = () => {
         setEditingId(null);
         resetForm();
         setSelectedType(null);
-        showModal("addNewInverter");
         return;
       }
       // Edit mode - same as before
@@ -259,7 +210,6 @@ const InverterTable = () => {
       } else {
         setSelectedType(null);
       }
-      showModal("addNewInverter");
     };
     window.addEventListener("inverter:open-edit", openEdit);
     return () => window.removeEventListener("inverter:open-edit", openEdit);
@@ -330,23 +280,57 @@ const InverterTable = () => {
     },
   ];
 
-  // Modal JSX rendered via portal (avoids parent blur)
-  const modalJsx = (
-    <div className="modal fade" id="addNewInverter" tabIndex="-1">
-      <div className="modal-dialog modal-lg" role="document">
+  // Modal logic state:
+  // const [modalMode, setModalMode] = useState(null);
+  // Rest of existing modal state remains
+
+  // For closing modal:
+  const handleCloseModal = () => {
+    setModalMode(null);
+    resetForm();
+    setEditingId(null);
+    setSelectedType(null);
+    setErrors({});
+    setPendingEdit(null);
+  };
+
+  // Render modal & backdrop via React Portal only if modalMode:
+  const backdropNode = (
+    <div
+      className="modal-backdrop fade show"
+      style={{ zIndex: 1050 }}
+      onClick={handleCloseModal}
+      data-testid="modal-backdrop"
+    />
+  );
+  const modalNode = (
+    <div
+      className="modal fade show"
+      id="addNewInverter"
+      tabIndex="-1"
+      style={{ display: "block", zIndex: 1055 }}
+      aria-modal="true"
+      role="dialog"
+      onClick={handleCloseModal}
+    >
+      <div
+        className="modal-dialog modal-lg"
+        role="document"
+        onClick={e => e.stopPropagation()}
+      >
         <div className="modal-content">
+          {/* Modal header/body/footer as before, only update close/cancel to call handleCloseModal */}
           <div className="modal-header">
             <h5 className="modal-title">
-              {editingId
+              {modalMode === 'edit'
                 ? lang("inverter.editInverter")
                 : lang("inverter.addInverter")}
             </h5>
             <button
               type="button"
               className="btn-close"
-              data-bs-dismiss="modal"
               aria-label="Close"
-              onClick={() => hideModal("addNewInverter")}
+              onClick={handleCloseModal}
             ></button>
           </div>
 
@@ -478,17 +462,7 @@ const InverterTable = () => {
             <button
               type="button"
               className="btn btn-danger"
-              data-bs-dismiss="modal"
-              onClick={() => {
-                setCompanyName("");
-                setInverterName("");
-                setApiKey("");
-                setSecretKey("");
-                setSelectedType(null);
-                setEditingId(null);
-                setErrors({});
-                hideModal("addNewInverter");
-              }}
+              onClick={handleCloseModal}
             >
               {lang("common.cancel")}
             </button>
@@ -509,11 +483,15 @@ const InverterTable = () => {
   return (
     <>
       <Table data={invertersData} columns={columns} />
-      {typeof document !== "undefined"
-        ? ReactDOM.createPortal(modalJsx, document.body)
-        : null}
+      {modalMode && typeof document !== "undefined" && (
+        <>
+          {createPortal(backdropNode, document.body)}
+          {createPortal(modalNode, document.body)}
+        </>
+      )}
     </>
   );
+  
 };
 
 export default InverterTable;

@@ -7,6 +7,7 @@ import { FiTrash2, FiEdit3, FiPlus } from "react-icons/fi";
 import Table from "@/components/shared/table/Table";
 import RoleHeaderSetting from "./RoleHeader";
 import { showSuccessToast } from "@/utils/topTost";
+import { createPortal } from "react-dom";
 
 const RoleTable = () => {
   const { lang } = useLanguage();
@@ -14,59 +15,11 @@ const RoleTable = () => {
   const [loading, setLoading] = useState(true);
 
   // Modal States
-  const [modalMode, setModalMode] = useState("add");
+  const [modalMode, setModalMode] = useState(null);
   const [roleName, setRoleName] = useState("");
   const [status, setStatus] = useState("");
   const [editingRole, setEditingRole] = useState(null);
   const [error, setError] = useState("");
-
-  // Modal helpers (Bootstrap-aware with fallback)
-  const showModal = (id) => {
-    const modalEl =
-      typeof document !== "undefined" && document.getElementById(id);
-    if (!modalEl) return;
-    try {
-      if (window.bootstrap?.Modal) {
-        const instance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
-        instance.show();
-        return;
-      }
-    } catch {}
-    modalEl.classList.add("show");
-    modalEl.style.display = "block";
-    modalEl.style.zIndex = "1055";
-    modalEl.removeAttribute("aria-hidden");
-    modalEl.setAttribute("aria-modal", "true");
-    modalEl.setAttribute("role", "dialog");
-    document.body.classList.add("modal-open");
-    if (!document.querySelector(".modal-backdrop")) {
-      const backdrop = document.createElement("div");
-      backdrop.className = "modal-backdrop fade show";
-      backdrop.style.zIndex = "1050";
-      document.body.appendChild(backdrop);
-    }
-  };
-
-  const hideModal = (id) => {
-    const modalEl =
-      typeof document !== "undefined" && document.getElementById(id);
-    if (!modalEl) return;
-    try {
-      if (window.bootstrap?.Modal) {
-        const instance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
-        instance.hide();
-        return;
-      }
-    } catch {}
-    modalEl.classList.remove("show");
-    modalEl.style.display = "none";
-    modalEl.style.zIndex = "";
-    modalEl.setAttribute("aria-hidden", "true");
-    modalEl.removeAttribute("aria-modal");
-    document.body.classList.remove("modal-open");
-    const backdrop = document.querySelector(".modal-backdrop");
-    if (backdrop) backdrop.remove();
-  };
 
   /** ✅ Fetch all roles */
   const fetchRoles = async () => {
@@ -90,7 +43,6 @@ const RoleTable = () => {
     setStatus("");
     setEditingRole(null);
     setError("");
-    showModal("roleCrudModal");
   };
 
   /** ✅ Open Edit Modal */
@@ -100,12 +52,11 @@ const RoleTable = () => {
     setRoleName(role.name);
     setStatus(role.status.toString());
     setError("");
-    showModal("roleCrudModal");
   };
 
   /** ✅ Close Modal */
   const handleClose = () => {
-    hideModal("roleCrudModal");
+    setModalMode(null);
     setRoleName("");
     setStatus("");
     setEditingRole(null);
@@ -269,9 +220,29 @@ const RoleTable = () => {
   }
 
   /** ✅ Render */
-  const modalJsx = (
-    <div className="modal fade" id="roleCrudModal" tabIndex="-1">
-      <div className="modal-dialog" role="document">
+  const backdropNode = (
+    <div
+      className="modal-backdrop fade show"
+      style={{ zIndex: 1050 }}
+      onClick={handleClose}
+      data-testid="modal-backdrop"
+    />
+  );
+  const modalNode = (
+    <div
+      className="modal fade show"
+      id="roleCrudModal"
+      tabIndex="-1"
+      style={{ display: "block", zIndex: 1055 }}
+      aria-modal="true"
+      role="dialog"
+      onClick={handleClose}
+    >
+      <div
+        className="modal-dialog"
+        role="document"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">
@@ -305,7 +276,6 @@ const RoleTable = () => {
                 <div className="invalid-feedback d-block">{error}</div>
               ) : null}
             </div>
-
             <div className="mb-3">
               <label htmlFor="roleStatus" className="form-label">
                 {lang("common.status")}
@@ -322,7 +292,6 @@ const RoleTable = () => {
               </select>
             </div>
           </div>
-
           <div className="modal-footer">
             <button
               type="button"
@@ -359,12 +328,14 @@ const RoleTable = () => {
         <div className="content-area-body">
             <div className="card-body">
               <Table data={rolesData} columns={columns} />
-
-              {/* ✅ Modal via Portal to avoid parent blur */}
-              {typeof document !== "undefined"
-                ? ReactDOM.createPortal(modalJsx, document.body)
-                : null}
-          </div>
+              {/* Render modal and backdrop into body only when modal open */}
+              {(modalMode === "add" || modalMode === "edit") && typeof document !== "undefined" && (
+                <>
+                  {createPortal(backdropNode, document.body)}
+                  {createPortal(modalNode, document.body)}
+                </>
+              )}
+            </div>
         </div>
       </div>
     </>
