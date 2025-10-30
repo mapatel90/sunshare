@@ -555,7 +555,10 @@
     "secretKeyPlaceholder": "Secret Key",
     "updatedSuccessfully": "Inverter Updated Successfully",
     "createdSuccessfully": "Inverter Created Successfully",
-    "deletedSuccessfully": "Inverter Deleted Successfully"
+    "deletedSuccessfully": "Inverter Deleted Successfully",
+    "errorOccurred": "An error occurred. Please try again.",
+    "kilowatt": "Kilowatt",
+    "onlynumbers": "Only numbers are allowed (e.g. 1234.56)"
   },
   "usersView": {
     "CreateUser": "Create User",

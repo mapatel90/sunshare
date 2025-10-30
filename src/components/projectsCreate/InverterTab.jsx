@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { apiGet, apiPost, apiPut, apiPatch } from '@/lib/api';
 import SelectDropdown from '@/components/shared/SelectDropdown';
 import Table from '@/components/shared/table/Table';
-import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiEdit3, FiTrash2 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import { showSuccessToast, showErrorToast } from '@/utils/topTost';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -17,6 +17,7 @@ const InverterTab = ({ projectId }) => {
   const [inverterList, setInverterList] = useState([]);
   const [selectedInverter, setSelectedInverter] = useState(null);
   const [kilowatt, setKilowatt] = useState('');
+  const [kilowattError, setKilowattError] = useState('');
   const [status, setStatus] = useState(1);
   const [editId, setEditId] = useState(null);
   
@@ -47,7 +48,7 @@ const InverterTab = ({ projectId }) => {
   const openEditModal = (row) => {
     setModalType('edit');
     setSelectedInverter(inverterList.find(i => i.id === row.inverter_id) || null);
-    setKilowatt(row.kilowott);
+    setKilowatt(row.kilowatt);
     setStatus(row.status);
     setEditId(row.id);
     setShowModal(true);
@@ -62,6 +63,12 @@ const InverterTab = ({ projectId }) => {
   const handleSave = async (e) => {
     e.preventDefault();
     if (!selectedInverter || !kilowatt) return;
+    if (kilowatt && !/^[0-9]*\.?[0-9]+$/.test(kilowatt)) {
+      setKilowattError(lang('inverter.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)'));
+      return;
+    } else {
+      setKilowattError('');
+    }
     setLoading(true);
     let res = {};
     try {
@@ -69,24 +76,24 @@ const InverterTab = ({ projectId }) => {
         res = await apiPost('/api/project-inverters', {
           project_id: projectId,
           inverter_id: selectedInverter.id,
-          kilowott: kilowatt,
+          kilowatt: kilowatt,
           status,
         });
         if (res.success) {
-          showSuccessToast(lang('modal.successSaved', 'Data saved successfully!'));
+          showSuccessToast(lang('inverter.createdSuccessfully', 'Inverter created successfully!'));
         } else {
-          showErrorToast(res.message || lang('modal.errorOccurred', 'An error occurred. Please try again.'));
+          showErrorToast(res.message || lang('inverter.errorOccurred', 'An error occurred. Please try again.'));
         }
       } else {
         res = await apiPut(`/api/project-inverters/${editId}`, {
           inverter_id: selectedInverter.id,
-          kilowott: kilowatt,
+          kilowatt: kilowatt,
           status,
         });
         if (res.success) {
-          showSuccessToast(lang('modal.successUpdated', 'Data updated successfully!'));
+          showSuccessToast(lang('inverter.updatedSuccessfully', 'Inverter updated successfully!'));
         } else {
-          showErrorToast(res.message || lang('modal.errorOccurred', 'An error occurred. Please try again.'));
+          showErrorToast(res.message || lang('inverter.errorOccurred', 'An error occurred. Please try again.'));
         }
       }
       if (res.success) closeModal();
@@ -108,10 +115,10 @@ const InverterTab = ({ projectId }) => {
     if (confirm.isConfirmed) {
       const res = await apiPatch(`/api/project-inverters/${row.id}/soft-delete`, {});
       if (res && res.success) {
-        showSuccessToast(lang('modal.successDeleted', 'Item deleted successfully!'));
+        showSuccessToast(lang('inverter.deletedSuccessfully', 'Inverter deleted successfully!'));
         getProjectInverters();
       } else {
-        showErrorToast(lang('modal.errorOccurred', 'An error occurred. Please try again.'));
+        showErrorToast(res.message || lang('inverter.errorOccurred', 'An error occurred. Please try again.'));
       }
     }
   };
@@ -124,8 +131,8 @@ const InverterTab = ({ projectId }) => {
       cell: info => info.row.original.inverter?.inverterName || '-',
     },
     {
-      accessorKey: 'kilowott',
-      header: () => lang('projects.investorProfit', 'Kilowatt'), // Reusing available translation, else fallback
+      accessorKey: 'kilowatt',
+      header: () => lang('inverter.kilowatt', 'Kilowatt'),
       cell: info => info.getValue() || '-',
     },
     {
@@ -137,19 +144,48 @@ const InverterTab = ({ projectId }) => {
           : <span className="badge bg-soft-danger text-danger">{lang('common.inactive','Inactive')}</span>,
     },
     {
-      accessorKey: 'actions',
-      header: lang('common.actions','Actions'),
-      meta: { headerClassName: 'text-end' },
-      cell: info => {
-        const row = info.row.original;
+      accessorKey: "actions",
+      header: () => lang("common.actions", "Actions"),
+      cell: ({ row }) => {
+        const item = row.original;
         return (
-          <div className="hstack gap-2 justify-content-end">
-            <button className="btn btn-link btn-sm px-1" title={lang('common.edit','Edit')} onClick={() => openEditModal(row)}><FiEdit2 /></button>
-            <button className="btn btn-link text-danger btn-sm px-1" title={lang('common.delete','Delete')} onClick={() => handleDelete(row)}><FiTrash2 /></button>
+          <div className="d-flex gap-2 justify-content-end" style={{ flexWrap: "nowrap" }}>
+            {/* Edit Icon */}
+            <FiEdit3
+              size={18}
+              onClick={() => openEditModal(item)}
+              title={lang("common.edit", "Edit")}
+              style={{
+                color: "#007bff",
+                cursor: "pointer",
+                transition: "transform 0.2s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            />
+    
+            {/* Delete Icon */}
+            <FiTrash2
+              size={18}
+              onClick={() => handleDelete(item)}
+              title={lang("common.delete", "Delete")}
+              style={{
+                color: "#dc3545",
+                cursor: "pointer",
+                transition: "transform 0.2s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            />
           </div>
         );
       },
-    },
+      meta: {
+        disableSort: true,
+        headerClassName: "text-end",
+      },
+    }
+    
   ];
 
   return (
@@ -183,8 +219,11 @@ const InverterTab = ({ projectId }) => {
                 {selectedInverter && (
                   <>
                     <div className="mb-3">
-                      <label className="form-label">{lang('projects.investorProfit', 'Kilowatt')}</label>
-                      <input type="number" className="form-control" value={kilowatt} onChange={e => setKilowatt(e.target.value)} required />
+                      <label className="form-label">{lang('inverter.kilowatt', 'Kilowatt')}</label>
+                      <input type="text" className="form-control" value={kilowatt} onChange={e => setKilowatt(e.target.value)} required />
+                      {kilowatt && kilowattError && (
+                        <div className="text-danger small mt-1">{kilowattError}</div>
+                      )}
                     </div>
                     <div className="mb-3">
                       <label className="form-label">{lang('common.status', 'Status')}</label>

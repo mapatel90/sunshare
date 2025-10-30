@@ -30,15 +30,15 @@ router.get('/', authenticateToken, async (req, res) => {
 // Add a new project_inverter link
 router.post('/', authenticateToken, async (req, res) => {
   try {
-    const { project_id, inverter_id, kilowott, status } = req.body;
-    if (!project_id || !inverter_id || !kilowott || status === undefined) {
+    const { project_id, inverter_id, kilowatt, status } = req.body;
+    if (!project_id || !inverter_id || !kilowatt || status === undefined) {
       return res.status(400).json({ success: false, message: 'All fields required' });
     }
     const added = await prisma.project_inverters.create({
       data: {
         project_id: parseInt(project_id),
         inverter_id: parseInt(inverter_id),
-        kilowott: String(kilowott),
+        kilowatt: String(kilowatt),
         status: parseInt(status),
       }
     });
@@ -52,15 +52,15 @@ router.post('/', authenticateToken, async (req, res) => {
 router.put('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
-    const { inverter_id, kilowott, status } = req.body;
-    if (!inverter_id || !kilowott || status === undefined) {
+    const { inverter_id, kilowatt, status } = req.body;
+    if (!inverter_id || !kilowatt || status === undefined) {
       return res.status(400).json({ success: false, message: 'Fields missing' });
     }
     const updated = await prisma.project_inverters.update({
       where: { id: parseInt(id) },
       data: {
         inverter_id: parseInt(inverter_id),
-        kilowott: String(kilowott),
+        kilowatt: String(kilowatt),
         status: parseInt(status),
       }
     });

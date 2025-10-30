@@ -541,7 +541,8 @@
     "secretKeyPlaceholder": "Khóa bí mật",
     "updatedSuccessfully": "biến tần Cập nhật thành công",
     "createdSuccessfully": "biến tần Tạo thành công",
-    "deletedSuccessfully": "biến tần Xóa thành công"
+    "deletedSuccessfully": "biến tần Xóa thành công",
+    "onlynumbers": "Chỉ cho phép nhập số (ví dụ: 1234.56)"
   },
   "usersView": {
     "CreateUser": "Tạo người dùng",

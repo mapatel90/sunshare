@@ -43,7 +43,7 @@ const ProjectEditContent = ({ projectId }) => {
     })
     const steps = [
         { name: lang('projects.projectInformation', 'Project Information'), key: 'info' },
-        { name: 'Inverter', key: 'inverter' }
+        { name: lang('inverter.inverter', 'Inverter'), key: 'inverter' }
     ];
     const [activeTab, setActiveTab] = useState('info');
 
