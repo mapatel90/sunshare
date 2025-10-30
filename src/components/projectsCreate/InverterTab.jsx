@@ -63,7 +63,7 @@ const InverterTab = ({ projectId }) => {
   const handleSave = async (e) => {
     e.preventDefault();
     if (!selectedInverter || !kilowatt) return;
-    if (kilowatt && !/^[0-9]*\.?[0-9]+$/.test(kilowatt)) {
+    if (!/^[0-9]*\.?[0-9]+$/.test(kilowatt)) {
       setKilowattError(lang('inverter.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)'));
       return;
     } else {
@@ -220,8 +220,20 @@ const InverterTab = ({ projectId }) => {
                   <>
                     <div className="mb-3">
                       <label className="form-label">{lang('inverter.kilowatt', 'Kilowatt')}</label>
-                      <input type="text" className="form-control" value={kilowatt} onChange={e => setKilowatt(e.target.value)} required />
-                      {kilowatt && kilowattError && (
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={kilowatt}
+                        onChange={e => {
+                          setKilowatt(e.target.value);
+                          // Clear error as soon as valid
+                          if (kilowattError && /^[0-9]*\.?[0-9]+$/.test(e.target.value)) {
+                            setKilowattError('');
+                          }
+                        }}
+                        required
+                      />
+                      {kilowattError && (
                         <div className="text-danger small mt-1">{kilowattError}</div>
                       )}
                     </div>
