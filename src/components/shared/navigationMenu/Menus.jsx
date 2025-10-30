@@ -67,9 +67,11 @@ const Menus = () => {
                             <span className="nxl-mtext" style={{ paddingLeft: "2.5px" }}>
                                 {lang(`menu.${name.toLowerCase()}`, name)}
                             </span>
-                            <span className="nxl-arrow fs-16">
-                                <FiChevronRight />
-                            </span>
+                            {dropdownMenu ? (
+                                <span className={`nxl-arrow fs-16 nxl-item ${pathName === path ? "active" : ""}`}>
+                                    <FiChevronRight />
+                                </span>
+                            ) : null}
                         </Link>
                         <ul className={`nxl-submenu ${openDropdown === name.split(' ')[0] ? "nxl-menu-visible" : "nxl-menu-hidden"}`}>
                             {dropdownMenu && dropdownMenu.map(({ id, name, path, subdropdownMenu, target }) => {

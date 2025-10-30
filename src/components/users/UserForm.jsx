@@ -262,7 +262,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                             type="text"
                                             className={`form-control ${errors.username ? 'is-invalid' : ''}`}
                                             name="username"
-                                            value={formData.username}
+                                            value={formData?.username}
                                             onChange={handleInputChange}
                                             onBlur={handleUsernameBlur}
                                             placeholder={lang('placeholders.enterusername')}
@@ -279,7 +279,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                                     type="password"
                                                     className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                                                     name="password"
-                                                    value={formData.password}
+                                                    value={formData?.password}
                                                     onChange={handleInputChange}
                                                     placeholder={lang('placeholders.enterpassword')}
                                                 />
@@ -292,7 +292,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                                     type="password"
                                                     className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
                                                     name="confirmPassword"
-                                                    value={formData.confirmPassword}
+                                                    value={formData?.confirmPassword}
                                                     onChange={handleInputChange}
                                                     placeholder={lang('placeholders.confirmPassword')}
                                                 />
@@ -304,9 +304,9 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                     <div className="col-md-3 mb-3">
                                         <label className="form-label">{lang('usersView.userRole')} <span className="text-danger">*</span></label>
                                         <select
-                                            className={`form-select ${errors.userRole ? 'is-invalid' : ''}`}
+                                            className={`form-label form-select ${errors.userRole ? 'is-invalid' : ''}`}
                                             name="userRole"
-                                            value={formData.userRole}
+                                            value={formData?.userRole}
                                             onChange={handleInputChange}
                                         >
                                             <option value="">{lang('common.selectRole')}</option>
@@ -319,9 +319,9 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                     <div className="col-md-3 mb-3">
                                         <label className="form-label">{lang('common.status')}</label>
                                         <select
-                                            className="form-select"
+                                            className="form-label form-select"
                                             name="status"
-                                            value={formData.status}
+                                            value={formData?.status}
                                             onChange={handleInputChange}
                                         >
                                             <option value="1">{lang('common.active')}</option>
@@ -341,7 +341,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                             type="text"
                                             className="form-control"
                                             name="address1"
-                                            value={formData.address1}
+                                            value={formData?.address1}
                                             onChange={handleInputChange}
                                             placeholder={lang('placeholders.enteraddress1')}
                                         />
@@ -352,7 +352,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                             type="text"
                                             className="form-control"
                                             name="address2"
-                                            value={formData.address2}
+                                            value={formData?.address2}
                                             onChange={handleInputChange}
                                             placeholder={lang('placeholders.enteraddress2')}
                                         />
@@ -360,8 +360,8 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                     <div className="col-md-3 mb-3">
                                         <label className="form-label">{lang('common.country')}</label>
                                         <select
-                                            className="form-select"
-                                            value={formData.countryId}
+                                            className="form-label form-select"
+                                            value={formData?.countryId}
                                             onChange={(e) => handleLocationChangeLocal('country', e.target.value)}
                                             disabled={loadingCountries}
                                         >
@@ -374,8 +374,8 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                     <div className="col-md-3 mb-3">
                                         <label className="form-label">{lang('common.state')}</label>
                                         <select
-                                            className="form-select"
-                                            value={formData.stateId}
+                                            className="form-label form-select"
+                                            value={formData?.stateId}
                                             onChange={(e) => handleLocationChangeLocal('state', e.target.value)}
                                             disabled={loadingStates || !formData.countryId}
                                         >
@@ -388,8 +388,8 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                     <div className="col-md-3 mb-3">
                                         <label className="form-label">{lang('common.city')}</label>
                                         <select
-                                            className="form-select"
-                                            value={formData.cityId}
+                                            className="form-label form-select"
+                                            value={formData?.cityId}
                                             onChange={(e) => handleLocationChangeLocal('city', e.target.value)}
                                             disabled={loadingCities || !formData.stateId}
                                         >
@@ -405,7 +405,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                             type="text"
                                             className="form-control"
                                             name="zipcode"
-                                            value={formData.zipcode}
+                                            value={formData?.zipcode}
                                             onChange={handleInputChange}
                                             placeholder={lang('placeholders.enterzipcode')}
                                         />

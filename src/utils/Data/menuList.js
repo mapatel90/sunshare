@@ -2,106 +2,33 @@ export const menuList = [
     {
         id: 0,
         name: "dashboards",
-        path: "#",
+        path: "/admin/dashboards/list",
         icon: 'feather-airplay',
-        dropdownMenu: [
-            // {
-            //     id: 1,
-            //     name: "crm",
-            //     path: "/",
-            //     subdropdownMenu: false
-            // },
-            {
-                id: 2,
-                name: "analytics",
-                path: "/admin/dashboards/analytics",
-                subdropdownMenu: false
-            }
-        ]
+        dropdownMenu: false
     },
-    // {
-    //     id: 4,
-    //     name: "payment",
-    //     path: "#",
-    //     icon: 'feather-dollar-sign',
-    //     dropdownMenu: [
-    //         {
-    //             id: 1,
-    //             name: "payment",
-    //             path: "/admin/payment/list",
-    //             subdropdownMenu: false
-    //         },
-    //         {
-    //             id: 2,
-    //             name: "invoiceview",
-    //             path: "/admin/payment/view",
-    //             subdropdownMenu: false
-    //         },
-    //         {
-    //             id: 4,
-    //             name: "invoicecreate",
-    //             path: "/admin/payment/create",
-    //             subdropdownMenu: false
-    //         }
-    //     ]
-    // },
-    // {
-    //     id: 5,
-    //     name: "customers",
-    //     path: "#",
-    //     icon: 'feather-users',
-    //     dropdownMenu: [
-    //         {
-    //             id: 1,
-    //             name: "customers",
-    //             path: "/admin/customers/list",
-    //             subdropdownMenu: false
-    //         },
-    //         {
-    //             id: 2,
-    //             name: "customersview",
-    //             path: "/admin/customers/view",
-    //             subdropdownMenu: false
-    //         },
-    //         {
-    //             id: 3,
-    //             name: "customerscreate",
-    //             path: "/admin/customers/create",
-    //             subdropdownMenu: false
-    //         }
-    //     ]
-    // },
     {
-        id: 7,
+        id: 1,
         name: "projects",
-        path: "#",
+        path: "/admin/projects/list",
         icon: 'feather-briefcase',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "projects",
-                path: "/admin/projects/list",
-                subdropdownMenu: false
-            },
-            
-        ]
+        dropdownMenu: false
     },
     {
-        id: 8,
-        name: "UserManagement",
-        path: "#",
+        id: 2,
+        name: "users",
+        path: "/admin/users/list",
         icon: 'feather-users',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "users",
-                path: "/admin/users/list",
-                subdropdownMenu: false
-            }
-        ]
+        dropdownMenu: false
     },
     {
-        id: 9,
+        id: 3,
+        name: "inverter",
+        path: "/admin/inverter",
+        icon: 'feather-archive',
+        dropdownMenu: false
+    },
+    {
+        id: 4,
         name: "settings",
         path: "#",
         icon: 'feather-settings',
@@ -191,12 +118,5 @@ export const menuList = [
                 subdropdownMenu: false
             },
         ]
-    },
-    {
-        id: 9,
-        name: "inverter",
-        path: "/admin/inverter/list",
-        icon: 'feather-archive',
-        dropdownMenu: false
     },
 ]

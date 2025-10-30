@@ -22,7 +22,7 @@ const ProjectEditContent = ({ projectId }) => {
         handleCountryChange,
         handleStateChange
     } = useLocationData()
-    const { offtakers, loadingOfftakers } = useOfftakerData()
+    const { offtakers, loadingOfftakers, fetchOfftakerById } = useOfftakerData()
 
     const [loading, setLoading] = useState({ form: false, init: true })
     const [error, setError] = useState({})
@@ -93,12 +93,47 @@ const ProjectEditContent = ({ projectId }) => {
         }
     }
 
+    const handleOfftakerChange = async (e) => {
+        const offtakerId = e.target.value
+        setFormData(prev => ({ ...prev, offtaker: offtakerId }))
+        if (offtakerId) {
+            try {
+                const offtaker = await fetchOfftakerById(offtakerId)
+                setFormData(prev => ({
+                    ...prev,
+                    address1: offtaker?.address1 || '',
+                    address2: offtaker?.address2 || '',
+                    cityId: offtaker?.cityId || '',
+                    stateId: offtaker?.stateId || '',
+                    countryId: offtaker?.countryId || '',
+                    zipcode: offtaker?.zipcode || ''
+                }))
+                if (offtaker?.countryId) {
+                    handleCountryChange(offtaker.countryId)
+                }
+                if (offtaker?.stateId) {
+                    handleStateChange(offtaker.stateId)
+                }
+            } catch (err) {
+                console.error('Error fetching offtaker details:', err)
+                setError(err?.message || 'Failed to load offtaker')
+            }
+        }
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         const requiredFields = ['project_name', 'project_type', 'offtaker', 'countryId', 'stateId', 'cityId']
         const errors = {}
         requiredFields.forEach(field => { if (!formData[field]) { errors[field] = lang('validation.required', 'Required') } })
+        const numberRegex = /^[0-9]*\.?[0-9]*$/;
+        if (formData.investorProfit && !numberRegex.test(formData.investorProfit)) {
+            errors.investorProfit = lang('projects.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)');
+        }
+        if (formData.weshareprofite && !numberRegex.test(formData.weshareprofite)) {
+            errors.weshareprofite = lang('projects.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)');
+        }
         if (Object.keys(errors).length) { setError(errors); return }
 
         setLoading(prev => ({ ...prev, form: true }))
@@ -151,7 +186,7 @@ const ProjectEditContent = ({ projectId }) => {
                             </div>
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">{lang('projects.selectOfftaker', 'Select Offtaker')} <span className="text-danger">*</span></label>
-                                <select className={`form-control ${error.offtaker ? 'is-invalid' : ''}`} name="offtaker" value={formData.offtaker} onChange={handleInputChange} disabled={loadingOfftakers}>
+                                <select className={`form-control ${error.offtaker ? 'is-invalid' : ''}`} name="offtaker" value={formData.offtaker} onChange={handleOfftakerChange} disabled={loadingOfftakers}>
                                     <option value="">{lang('projects.selectOfftaker', 'Select Offtaker')}</option>
                                     {offtakers.map(o => (
                                         <option key={o.id} value={o.id}>{o.firstName} {o.lastName}</option>
@@ -202,12 +237,18 @@ const ProjectEditContent = ({ projectId }) => {
                                 <input type="text" className={`form-control ${error.zipcode ? 'is-invalid' : ''}`} name="zipcode" value={formData.zipcode} onChange={handleInputChange} />
                             </div>
                             <div className="col-md-3 mb-3">
-                                <label className="form-label">{lang('projects.investorProfit', 'Investor Profit')}</label>
+                                <label className="form-label">{lang('projects.investorProfit', 'Investor Profit')} %</label>
                                 <input type="text" className={`form-control ${error.investorProfit ? 'is-invalid' : ''}`} name="investorProfit" value={formData.investorProfit} onChange={handleInputChange} />
+                                {error.investorProfit && (
+                                    <div className="invalid-feedback">{error.investorProfit}</div>
+                                )}
                             </div>
                             <div className="col-md-3 mb-3">
-                                <label className="form-label">{lang('projects.weshareprofite', 'Weshare profite')}</label>
+                                <label className="form-label">{lang('projects.weshareprofite', 'Weshare profite')} %</label>
                                 <input type="text" className={`form-control ${error.weshareprofite ? 'is-invalid' : ''}`} name="weshareprofite" value={formData.weshareprofite} onChange={handleInputChange} />
+                                {error.weshareprofite && (
+                                    <div className="invalid-feedback">{error.weshareprofite}</div>
+                                )}
                             </div>
                             <div className="col-md-3 mb-3">
                                 <label className="form-label">{lang('projects.status', 'Status')}</label>
@@ -236,7 +277,7 @@ const ProjectEditContent = ({ projectId }) => {
                     </div>
                 </div>
 
-                
+
             </form>
         </div>
     )
