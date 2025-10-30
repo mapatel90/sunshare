@@ -1,12 +1,12 @@
 import React from "react";
-import Role from "@/components/role/Role";
+import RoleTable from "@/components/role/RoleTable";
 
 const page = () => {
     return (
         <>
-            <Role />
+            <RoleTable />
         </>
     )
 }
 
-export default page
+export default page 

@@ -1,12 +1,15 @@
-import React from "react";
-import Inverter from "@/components/inverter/Inverter";
+'use client'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
-const page = () => {
-    return (
-        <div>
-            <Inverter />
-        </div>
-    );
-};
+const InvertersPage = () => {
+  const router = useRouter()
 
-export default page;
+  useEffect(() => {
+    router.replace('/admin/inverter/list')
+  }, [router])
+
+  return null
+}
+
+export default InvertersPage

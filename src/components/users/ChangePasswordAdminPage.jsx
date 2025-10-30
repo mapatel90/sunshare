@@ -24,7 +24,7 @@ const ChangePasswordAdminPage = () => {
         if (!currentPassword) newErrors.currentPassword = lang('placeholders.enterpassword') || 'Please enter current password'
         if (!newPassword) newErrors.newPassword = lang('placeholders.enterpassword') || 'Please enter new password'
         else if (newPassword.length < 8) newErrors.newPassword = lang('validation.passwordTooShort') || 'Password must be at least 8 characters'
-        if (newPassword !== confirmPassword) newErrors.confirmPassword = lang('validation.passwordsNotMatch') || 'Passwords do not match'
+        if (newPassword !== confirmPassword) newErrors.confirmPassword = lang('validation.newpasswordsNotMatch') || 'Passwords do not match'
         setErrors(newErrors)
         if (Object.keys(newErrors).length) return
 

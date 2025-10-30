@@ -11,7 +11,9 @@ router.get('/', authenticateToken, async (req, res) => {
     const offset = (page - 1) * limit;
 
     // Build where clause
-    const where = {};
+    const where = {
+      is_deleted: 0,
+    };
     if (search) {
       where.name = { contains: search, mode: 'insensitive' };
     }
@@ -206,8 +208,9 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     }
 
     // Delete role
-    await prisma.role.delete({
-      where: { id: parseInt(id) }
+    await prisma.role.update({
+      where: { id: parseInt(id) },
+      data: { is_deleted: 1 }
     });
 
     res.json({
