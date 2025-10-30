@@ -74,7 +74,7 @@ router.get('/', authenticateToken, async (req, res) => {
     const limitInt = parseInt(limit);
     const offset = (pageInt - 1) * limitInt;
 
-    const where = {};
+    const where = { is_deleted: 0 };
 
     // Optional filters
     if (search) {
@@ -221,12 +221,15 @@ router.put('/:id', authenticateToken, async (req, res) => {
 // Delete a project by ID
 router.delete('/:id', authenticateToken, async (req, res) => {
   try {
-    const { id } = req.params
-    await prisma.project.delete({ where: { id: parseInt(id) } })
-    res.json({ success: true })
+    const { id } = req.params;
+    await prisma.project.update({
+      where: { id: parseInt(id) },
+      data: { is_deleted: 1 }
+    });
+    res.json({ success: true });
   } catch (error) {
-    console.error('Delete project error:', error)
-    res.status(500).json({ success: false, message: 'Internal server error' })
+    console.error('Delete project error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
 

@@ -82,7 +82,7 @@ const Dropdown = ({
                                                 <span>{item.label}</span>
                                             </a>
                                         ) : (
-                                            <Link href={item.link || "#"} target={item.link ? '_blank' : undefined} className={`${active === item.label ? "active" : ""} dropdown-item`}
+                                            <Link href={item.link || "#"} className={`${active === item.label ? "active" : ""} dropdown-item`}
                                                 data-bs-toggle={item.link || dataBsToggle} data-bs-target={item.modalTarget} onClick={() => onClick && onClick(item.label, id)}
                                             >
                                                 {

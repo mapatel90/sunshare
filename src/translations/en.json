@@ -443,7 +443,8 @@
     "createproject": "Create Project",
     "editproject": "Edit Project",
     "viewproject": "View Project",
-    "projectlist": "Project List"
+    "projectlist": "Project List",
+    "onlynumbers": "Only numbers are allowed (e.g. 1234.56)"
   },
   "settings": {
     "generalSettings": "General Settings",

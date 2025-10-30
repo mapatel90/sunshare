@@ -31,20 +31,21 @@ const useOfftakerData = () => {
     }
   }
 
-  // const fetchOfftakerById = async (id) => {
-  //   try {
-  //     setError(null)
-  //     const response = await apiGet(`/api/getOfftakers/${id}`)
-  //     if (response.success) {
-  //       return response.data
-  //     }
-  //     return null
-  //   } catch (err) {
-  //     console.error('Error fetching offtaker details:', err)
-  //     setError(err.message)
-  //     return null
-  //   }
-  // }
+  // fetchOfftakerById implementation (uncommented)
+  const fetchOfftakerById = async (id) => {
+    try {
+      setError(null)
+      const response = await apiGet(`/api/users/${id}`)
+      if (response.success) {
+        return response.data
+      }
+      return null
+    } catch (err) {
+      console.error('Error fetching offtaker details:', err)
+      setError(err.message)
+      return null
+    }
+  }
 
   useEffect(() => {
     fetchOfftakers()
@@ -55,7 +56,7 @@ const useOfftakerData = () => {
     loadingOfftakers,
     error,
     fetchOfftakers,
-    // fetchOfftakerById,
+    fetchOfftakerById, // make available
   }
 }
 

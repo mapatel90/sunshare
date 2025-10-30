@@ -445,7 +445,8 @@
     "createproject": "Tạo dự án",
     "editproject": "Sửa dự án",
     "viewproject": "Xem dự án",
-    "projectlist": "Danh sách dự án"
+    "projectlist": "Danh sách dự án",
+    "onlynumbers": "Chỉ cho phép nhập số (ví dụ: 1234.56)"
   },
   "placeholders": {
     "your_company_name": "Tên công ty của bạn [Ví dụ: Theme Ocean]",

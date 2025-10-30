@@ -102,6 +102,16 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
             }
         });
 
+        const numberRegex = /^[0-9]*\.?[0-9]*$/;
+
+        if (formData.investorProfit && !numberRegex.test(formData.investorProfit)) {
+            errors.investorProfit = lang('projects.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)');
+        }
+
+        if (formData.weshareprofite && !numberRegex.test(formData.weshareprofite)) {
+            errors.weshareprofite = lang('projects.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)');
+        }
+
         if (Object.keys(errors).length > 0) {
             setError(prev => ({ ...prev, ...errors }));
             return;
@@ -314,20 +324,22 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
 
                                 {/* Investor Profit */}
                                 <div className="col-md-3 mb-3">
-                                    <label className="form-label">{lang('projects.investorProfit', 'Investor Profit')}</label>
+                                    <label className="form-label">{lang('projects.investorProfit', 'Investor Profit')} %</label>
                                     <input
                                         type="text"
                                         className={`form-control ${error.investorProfit ? 'is-invalid' : ''}`}
                                         name="investorProfit"
                                         value={formData.investorProfit}
                                         onChange={handleInputChange}
-                                        placeholder={lang('projects.investorProfitPlaceholder', 'Enter investor profit')}
                                     />
+                                    {error.investorProfit && (
+                                        <div className="invalid-feedback">{error.investorProfit}</div>
+                                    )}
                                 </div>
 
                                 {/* Weshare profite */}
                                 <div className="col-md-3 mb-3">
-                                    <label className="form-label">{lang('projects.weshareprofite', 'Weshare profite')}</label>
+                                    <label className="form-label">{lang('projects.weshareprofite', 'Weshare profite')} %</label>
                                     <input
                                         type="text"
                                         className={`form-control ${error.weshareprofite ? 'is-invalid' : ''}`}
@@ -353,6 +365,7 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
                                     </select>
                                 </div>
                             </div>
+
                             {/* Actions inside Address Information */}
                             <div className="col-12 mt-2 d-flex justify-content-end">
                                 <button type="submit" className="btn btn-primary" disabled={loading.form}>
