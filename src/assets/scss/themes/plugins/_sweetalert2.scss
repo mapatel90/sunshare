@@ -17,6 +17,7 @@
 .swal2-container {
 	z-index: 999999 !important;
 	.swal2-title {
+		padding: 4%;
 		font-size: 24px !important;
 		font-weight: $font-700 !important;
 	}
@@ -33,6 +34,7 @@
 	}
 	.swal2-popup.swal2-toast .swal2-title {
 		color: $dark;
+		padding: 4%;
 		margin: auto 15px;
 		font-size: $font-13 !important;
 		font-weight: $font-600 !important;
