@@ -8,6 +8,7 @@ import Table from "@/components/shared/table/Table";
 import RoleHeaderSetting from "./RoleHeader";
 import { showSuccessToast } from "@/utils/topTost";
 import { createPortal } from "react-dom";
+import Swal from "sweetalert2";
 
 const RoleTable = () => {
   const { lang } = useLanguage();
@@ -103,14 +104,16 @@ const RoleTable = () => {
 
   /** ✅ Delete Role */
   const handleDelete = async (roleId) => {
-    if (
-      !window.confirm(
-        lang("messages.confirmDelete") ||
-          "Are you sure you want to delete this role?"
-      )
-    )
-      return;
-
+    const result = await Swal.fire({
+      title: lang("messages.confirmDelete") || "Are you sure you want to delete this role?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: lang("common.yesDelete") || "Yes, delete it!",
+      cancelButtonText: lang("common.cancel") || "Cancel",
+    });
+    if (!result.isConfirmed) return;
     try {
       const response = await apiDelete(`/api/roles/${roleId}`);
       if (response.success) {

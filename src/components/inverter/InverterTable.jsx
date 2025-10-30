@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, memo, useEffect } from "react";
-import ReactDOM from "react-dom";
+import React, { useState, useEffect } from "react";
 import Table from "@/components/shared/table/Table";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { apiGet, apiDelete, apiPost, apiPut } from "@/lib/api";
@@ -8,6 +7,7 @@ import { FiEdit3, FiTrash2 } from "react-icons/fi";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { showSuccessToast } from "@/utils/topTost";
 import { createPortal } from "react-dom";
+import Swal from "sweetalert2";
 
 const InverterTable = () => {
   const { lang } = useLanguage();
@@ -56,7 +56,16 @@ const InverterTable = () => {
   };
 
   const handleDelete = async (inverterId) => {
-    if (!window.confirm(lang("messages.confirmDelete"))) {
+    const result = await Swal.fire({
+      title: lang("messages.confirmDelete"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: lang("common.yesDelete") || "Yes, delete it!",
+      cancelButtonText: lang("common.cancel") || "Cancel",
+    });
+    if (!result.isConfirmed) {
       return;
     }
     try {
@@ -253,9 +262,24 @@ const InverterTable = () => {
     { accessorKey: "status", header: () => lang("inverter.status"),
       cell: ({ row }) => {
         const s = row.original.status;
-        if (s === 1 || s === "1") return lang("inverter.active") || "Active";
-        if (s === 0 || s === "0") return lang("inverter.inactive") || "Inactive";
-        return s; // fallback
+        const config = {
+          1: { label: lang("inverter.active") || "Active", color: "#17c666" },
+          0: { label: lang("inverter.inactive") || "Inactive", color: "#ea4d4d" },
+        }[s] || { label: s, color: "#999" };
+        return (
+          <span
+            className="badge"
+            style={{
+              backgroundColor: config.color,
+              color: "#fff",
+              padding: "5px 10px",
+              borderRadius: "8px",
+              fontSize: "12px"
+            }}
+          >
+            {config.label}
+          </span>
+        );
       }
     },
     {
@@ -295,10 +319,6 @@ const InverterTable = () => {
       },
     },
   ];
-
-  // Modal logic state:
-  // const [modalMode, setModalMode] = useState(null);
-  // Rest of existing modal state remains
 
   // For closing modal:
   const handleCloseModal = () => {
