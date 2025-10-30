@@ -195,7 +195,7 @@ export const menuList = [
     {
         id: 9,
         name: "inverter",
-        path: "/admin/inverter",
+        path: "/admin/inverter/list",
         icon: 'feather-archive',
         dropdownMenu: false
     },

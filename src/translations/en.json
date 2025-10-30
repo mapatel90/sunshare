@@ -170,7 +170,12 @@
     "emailInvalid": "Please enter a valid email address",
     "passwordTooShort": "Password must be at least 8 characters",
     "passwordsNotMatch": "Passwords do not match",
-    "phoneInvalid": "Please enter a valid phone number"
+    "phoneInvalid": "Please enter a valid phone number",
+    "companyNameRequired": "Company name is required",
+    "inverterNameRequired": "Inverter name is required",
+    "typeRequired": "Inverter type is required",
+    "apiKeyRequired": "API key is required",
+    "secretKeyRequired": "Secret key is required"
   },
   "menu": {
     "dashboards": "Dashboards",
@@ -526,7 +531,10 @@
     "roleId": "Role ID",
     "role": "Role",
     "createdAt": "Created At",
-    "updatedAt": "Updated At"
+    "updatedAt": "Updated At",
+    "createdSuccessfully": "Role Created Successfully",
+    "updatedSuccessfully": "Role Updated Successfully",
+    "deletedSuccessfully": "Role Deleted Successfully"
   },
   "inverter": {
     "inverter": "Inverter",
@@ -541,7 +549,10 @@
     "apiKey": "API Key",
     "apiKeyPlaceholder": "API Key",
     "secretKey": "Secret Key",
-    "secretKeyPlaceholder": "Secret Key"
+    "secretKeyPlaceholder": "Secret Key",
+    "updatedSuccessfully": "Inverter Updated Successfully",
+    "createdSuccessfully": "Inverter Created Successfully",
+    "deletedSuccessfully": "Inverter Deleted Successfully"
   },
   "usersView": {
     "CreateUser": "Create User",

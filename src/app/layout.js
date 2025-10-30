@@ -20,9 +20,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Providers>
+        {/* <Providers>
           {children}
-        </Providers>
+        </Providers> */}
         <LanguageProvider>
           <AuthProvider>
             <SettingSideBarProvider>

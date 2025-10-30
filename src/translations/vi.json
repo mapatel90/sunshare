@@ -171,7 +171,12 @@
     "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ",
     "passwordTooShort": "Mật khẩu phải có ít nhất 8 ký tự",
     "passwordsNotMatch": "Mật khẩu không khớp",
-    "phoneInvalid": "Vui lòng nhập số điện thoại hợp lệ"
+    "phoneInvalid": "Vui lòng nhập số điện thoại hợp lệ",
+    "companyNameRequired": "Tên công ty là bắt buộc",
+    "inverterNameRequired": "Tên biến tần là bắt buộc",
+    "typeRequired": "Loại biến tần là bắt buộc",
+    "apiKeyRequired": "API key là bắt buộc",
+    "secretKeyRequired": "Secret key là bắt buộc"
   },
   "menu": {
     "dashboards": "Bảng điều khiển",
@@ -477,7 +482,10 @@
     "roleId": "ID vai trò",
     "role": "Vai trò",
     "createdAt": "Ngày tạo",
-    "updatedAt": "Ngày cập nhật"
+    "updatedAt": "Ngày cập nhật",
+    "createdSuccessfully" : "Vai trò đã được tạo thành công",
+    "updatedSuccessfully" : "Vai trò đã được cập nhật thành công",
+    "deletedSuccessfully" : "Đã xóa vai trò thành công"
   },
   "smtp": {
     "title": "Cấu hình SMTP",
@@ -527,9 +535,11 @@
     "apiKey": "Khóa API",
     "apiKeyPlaceholder": "Khóa API",
     "secretKey": "Khóa bí mật",
-    "secretKeyPlaceholder": "Khóa bí mật"
-  }
-  ,
+    "secretKeyPlaceholder": "Khóa bí mật",
+    "updatedSuccessfully": "biến tần Cập nhật thành công",
+    "createdSuccessfully": "biến tần Tạo thành công",
+    "deletedSuccessfully": "biến tần Xóa thành công"
+  },
   "usersView": {
     "CreateUser": "Tạo người dùng",
     "username": "Tên người dùng",

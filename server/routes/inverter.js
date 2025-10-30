@@ -50,7 +50,9 @@ router.get("/", authenticateToken, async (req, res) => {
     const offset = (page - 1) * limit;
 
     // Build dynamic filters
-    const where = {};
+    const where = {
+      is_deleted: 0,
+    };
     if (search) {
       // 👇 Search in companyName OR inverterName
       where.OR = [
@@ -161,9 +163,22 @@ router.delete("/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Delete inverter by ID
-    await prisma.inverter.delete({
+    //  const inverter = await prisma.inverter.findUnique({
+    //   where: { id: parseInt(id) },
+    //   data: { is_deleted: 0 },
+    // });
+
+    // if (!inverter) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: "Inverter not found",
+    //   });
+    // }
+
+    // Soft delete (set is_deleted = 1)
+    await prisma.inverter.update({
       where: { id: parseInt(id) },
+      data: { is_deleted: 1 },
     });
 
     res.status(200).json({
