@@ -22,7 +22,7 @@ const SelectTopLabel = ({
                 {isOptional ? <span className="fw-normal text-muted text-capitalize"> (Optional)</span> : ""}
             </label>
             <select 
-                className="form-control" 
+                className="form-label form-control" 
                 value={value || ''}
                 onChange={onChange}
                 disabled={disabled || loading}
