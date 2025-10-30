@@ -6,10 +6,10 @@ const router = express.Router();
 
 router.post("/", authenticateToken, async (req, res) => {
   try {
-    const { companyName, inverterName, inverter_type_id, apiKey, secretKey } = req.body;
+    const { companyName, inverterName, inverter_type_id, apiKey, secretKey, status } = req.body;
 
     // Basic validation
-    if (!companyName || !inverterName || !inverter_type_id || !apiKey || !secretKey) {
+    if (!companyName || !inverterName || !inverter_type_id || !apiKey || !secretKey || status === undefined) {
       return res.status(400).json({
         success: false,
         message: "All fields are required.",
@@ -24,7 +24,7 @@ router.post("/", authenticateToken, async (req, res) => {
         inverter_type_id,
         apiKey,
         secretKey,
-        status: 1,      // 👈 fixed default
+        status,  
         api_status: 1,  // 👈 fixed default
       },
     });
@@ -122,10 +122,10 @@ router.get("/", authenticateToken, async (req, res) => {
 router.put("/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
-    const { companyName, inverterName, inverter_type_id, apiKey, secretKey } = req.body;
+    const { companyName, inverterName, inverter_type_id, apiKey, secretKey, status } = req.body;
 
     // Basic validation
-    if (!companyName || !inverterName || !inverter_type_id || !apiKey || !secretKey ) {
+    if (!companyName || !inverterName || !inverter_type_id || !apiKey || !secretKey || status === undefined) {
       return res.status(400).json({
         success: false,
         message: "All fields are required.",
@@ -141,6 +141,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
         inverter_type_id,
         apiKey,
         secretKey,
+        status,
       },
     });
 

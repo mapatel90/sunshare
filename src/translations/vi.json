@@ -541,7 +541,11 @@
     "secretKeyPlaceholder": "Khóa bí mật",
     "updatedSuccessfully": "biến tần Cập nhật thành công",
     "createdSuccessfully": "biến tần Tạo thành công",
-    "deletedSuccessfully": "biến tần Xóa thành công"
+    "deletedSuccessfully": "biến tần Xóa thành công",
+    "active": "Tích cực",
+    "inactive": "Không hoạt động",
+    "status": "Trạng thái",
+    "selectStatus": "Chọn trạng thái"
   },
   "usersView": {
     "CreateUser": "Tạo người dùng",

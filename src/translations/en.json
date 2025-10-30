@@ -176,7 +176,8 @@
     "typeRequired": "Inverter type is required",
     "apiKeyRequired": "API key is required",
     "secretKeyRequired": "Secret key is required",
-    "newpasswordsNotMatch": "New passwords do not match"
+    "newpasswordsNotMatch": "New passwords do not match",
+    "statusRequired": "Status is required"
   },
   "menu": {
     "dashboards": "Dashboards",
@@ -547,7 +548,10 @@
     "companyNamePlaceholder": "Company Name",
     "inverterName": "Inverter Name",
     "inverterNamePlaceholder": "Inverter Name",
+    "active": "Active",
+    "inactive": "Inactive",
     "type": "Inverter Type",
+    "status": "Status",
     "selectType": "Select Type",
     "apiKey": "API Key",
     "apiKeyPlaceholder": "API Key",
@@ -555,7 +559,8 @@
     "secretKeyPlaceholder": "Secret Key",
     "updatedSuccessfully": "Inverter Updated Successfully",
     "createdSuccessfully": "Inverter Created Successfully",
-    "deletedSuccessfully": "Inverter Deleted Successfully"
+    "deletedSuccessfully": "Inverter Deleted Successfully",
+    "selectStatus": "Select Status"
   },
   "usersView": {
     "CreateUser": "Create User",
