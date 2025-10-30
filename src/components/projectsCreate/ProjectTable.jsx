@@ -32,6 +32,7 @@ const StatusDropdown = memo(({ value, onChange }) => {
       options={statusOptions}
       defaultSelect={String(value ?? 0)}
       onSelectOption={handleChange}
+      searchable={false}
     />
   )
 })

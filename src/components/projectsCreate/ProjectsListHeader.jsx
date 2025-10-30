@@ -19,7 +19,7 @@ const ProjectsListHeader = () => {
   return (
     <>
       <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-        <a href="#" className="btn btn-icon btn-light-brand" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+        {/* <a href="#" className="btn btn-icon btn-light-brand" data-bs-toggle="collapse" data-bs-target="#collapseOne">
           <FiBarChart size={16} />
         </a>
         <Dropdown
@@ -38,7 +38,7 @@ const ProjectsListHeader = () => {
           triggerClass='btn btn-icon btn-light-brand'
           isAvatar={false}
           iconStrokeWidth={0}
-        />
+        /> */}
         <Link href="/admin/projects/create" className="btn btn-primary">
           <FiPlus size={16} className='me-2' />
           <span>Create Prject</span>

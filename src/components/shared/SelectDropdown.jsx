@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import getIcon from '@/utils/getIcon';
 
-const SelectDropdown = ({ options, selectedOption, onSelectOption, className, defaultSelect }) => {
+const SelectDropdown = ({ options, selectedOption, onSelectOption, className, defaultSelect, searchable = true }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [openUpwards, setOpenUpwards] = useState(false);
@@ -33,9 +33,9 @@ const SelectDropdown = ({ options, selectedOption, onSelectOption, className, de
     const toggleDropdown = () => setIsOpen(!isOpen);
 
 
-    const filteredOptions = options?.filter(option =>
-        option.label.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredOptions = searchable
+        ? options?.filter(option => option.label.toLowerCase().includes(searchTerm.toLowerCase()))
+        : options;
 
     useEffect(() => {
         if (isOpen) {
@@ -71,15 +71,17 @@ const SelectDropdown = ({ options, selectedOption, onSelectOption, className, de
 
             {isOpen && (
                 <div className="dropdown-list">
-                    <div className='search-input-outer'>
-                        <input
-                            type="text"
-                            className="search-input"
-                            placeholder="Search..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
+                    {searchable && (
+                        <div className='search-input-outer'>
+                            <input
+                                type="text"
+                                className="search-input"
+                                placeholder="Search..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+                    )}
                     <ul>
                         {filteredOptions.length > 0 ? (
                             filteredOptions.map((option) => (
