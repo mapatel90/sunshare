@@ -13,6 +13,7 @@ import SelectTopLabel from '@/components/shared/SelectTopLabel'
 import { showErrorToast } from '@/utils/topTost'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { apiPost } from '@/lib/api'
 
 const SettingGeneralForm = () => {
     const { lang } = useLanguage()
@@ -169,13 +170,28 @@ const SettingGeneralForm = () => {
         try {
             setIsSubmitting(true)
             
-            // Include uploaded image in form data
+            let newImagePath = formData.site_image
+            // If a new image was selected (data URL), upload it now and delete old on server
+            if (uploadedImage && typeof uploadedImage === 'string' && uploadedImage.startsWith('data:')) {
+                const resp = await apiPost('/api/settings/upload-logo', {
+                    dataUrl: uploadedImage,
+                    oldImagePath: formData.site_image || null
+                })
+                if (resp?.success && resp?.data?.path) {
+                    newImagePath = resp.data.path
+                }
+            }
+
+            // Include uploaded image path in form data
             const settingsToUpdate = {
                 ...formData,
-                site_image: uploadedImage || formData.site_image
+                site_image: newImagePath
             }
             
             await updateSettings(settingsToUpdate)
+            // Make sure local form state reflects the saved image and clear temp preview
+            setFormData(prev => ({ ...prev, site_image: newImagePath }))
+            setUploadedImage(null)
             
         } catch (error) {
             console.error('Error saving settings:', error)

@@ -2,9 +2,55 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticateToken } from '../middleware/auth.js';
 import nodemailer from 'nodemailer';
+import fs from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 const router = express.Router();
 const prisma = new PrismaClient();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Helper: ensure directory exists
+const ensureDir = (dirPath) => {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+};
+
+// Helper: save base64 dataURL to disk
+const saveDataUrlToFile = (dataUrl, destDir) => {
+  const matches = dataUrl.match(/^data:(.+);base64,(.+)$/);
+  if (!matches || matches.length !== 3) {
+    throw new Error('Invalid image data');
+  }
+  const mimeType = matches[1];
+  const base64Data = matches[2];
+  const ext = mimeType.split('/')[1] || 'png';
+  const filename = `logo_${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  ensureDir(destDir);
+  const filePath = join(destDir, filename);
+  fs.writeFileSync(filePath, Buffer.from(base64Data, 'base64'));
+  // Return public URL path (Next serves /public/* at /*)
+  return `/images/logo/${filename}`;
+};
+
+// Helper: delete old logo if within logo dir
+const deleteOldLogoIfSafe = (publicPath) => {
+  try {
+    if (!publicPath) return;
+    // Only allow deletion inside /images/logo
+    if (!publicPath.startsWith('/images/logo/')) return;
+    const relativePath = publicPath.replace(/^[/\\]+/, '');
+    const absolutePath = join(__dirname, '../../public', relativePath);
+    if (fs.existsSync(absolutePath)) {
+      fs.unlinkSync(absolutePath);
+    }
+  } catch (e) {
+    // Swallow deletion errors to avoid blocking upload
+    console.warn('Failed to delete old logo', e.message);
+  }
+};
 
 // Get all settings
 router.get('/', authenticateToken, async (req, res) => {
@@ -183,6 +229,27 @@ router.delete('/:key', authenticateToken, async (req, res) => {
       message: 'Error deleting setting',
       error: error.message
     });
+  }
+});
+
+// Upload site logo (accepts base64 data URL), saves under public/images/logo and deletes old
+router.post('/upload-logo', authenticateToken, async (req, res) => {
+  try {
+    const { dataUrl, oldImagePath } = req.body || {};
+    if (!dataUrl) {
+      return res.status(400).json({ success: false, message: 'dataUrl is required' });
+    }
+
+    const logoDir = join(__dirname, '../../public/images/logo');
+    const publicPath = saveDataUrlToFile(dataUrl, logoDir);
+
+    // Delete previous logo if provided
+    deleteOldLogoIfSafe(oldImagePath);
+
+    return res.json({ success: true, message: 'Logo uploaded', data: { path: publicPath } });
+  } catch (error) {
+    console.error('Error uploading logo:', error);
+    return res.status(500).json({ success: false, message: 'Error uploading logo', error: error.message });
   }
 });
 

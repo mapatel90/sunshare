@@ -61,7 +61,7 @@ const UsersTable = () => {
       })
 
       const response = await apiGet(`/api/users?${params.toString()}`)
-      
+
       if (response.success) {
         console.log("All User::", response.data.users)
         setUsers(response.data.users)
@@ -95,7 +95,7 @@ const UsersTable = () => {
       if (result.isConfirmed) {
         setLoading(true)
         await apiDelete(`/api/users/${userId}`)
-        
+
         Swal.fire({
           icon: 'success',
           title: 'Deleted!',
@@ -103,7 +103,7 @@ const UsersTable = () => {
           timer: 2000,
           showConfirmButton: false
         })
-        
+
         // Refresh the table
         await fetchUsers(pagination.page, filters.search, filters.role, filters.status)
       }
@@ -169,7 +169,7 @@ const UsersTable = () => {
         const user = row.original
         const fullName = `${user.firstName} ${user.lastName}` || 'N/A'
         const initials = `${user.firstName?.charAt(0) || ''}${user.lastName?.charAt(0) || ''}`
-        
+
         return (
           <div className="hstack gap-3">
             <div className="text-white avatar-text user-avatar-text avatar-md">
@@ -187,46 +187,48 @@ const UsersTable = () => {
       accessorKey: 'username',
       header: () => lang("authentication.username"),
       cell: ({ row }) => (
-        <a href={`mailto:${row.original.username}`} className="text-decoration-none">
-          {/* <FiMail size={14} className="me-2" /> */}
-          {row.original.username}
-        </a>
+        <span className='text-truncate-1-line fw-bold'>
+          {row.original?.username || '-'}
+        </span>
       )
     },
     {
       accessorKey: 'email',
       header: () => lang("authentication.email"),
-      cell: ({ row }) => (
-        <a href={`mailto:${row.original.email}`} className="text-decoration-none">
-          <FiMail size={14} className="me-2" />
-          {row.original.email}
-        </a>
-      )
-    },
-    {
-      accessorKey: 'phoneNumber',
-      header: () => lang("common.phone"),
-      cell: ({ row }) => (
-        row.original.phoneNumber ? (
-          <a href={`tel:${row.original.phoneNumber}`} className="text-decoration-none">
-            <FiPhone size={14} className="me-2" />
-            {row.original.phoneNumber}
+      cell: ({ row }) => {
+        const email = row.original?.email || '-'
+        return email !== '-' ? (
+          <a href={`mailto:${email}`} className="text-decoration-none">
+            <FiMail size={14} className="me-2" />
+            {email}
           </a>
         ) : (
           <span className="text-muted">-</span>
         )
-      )
+      }
+    },
+    {
+      accessorKey: 'phoneNumber',
+      header: () => lang("common.phone"),
+      cell: ({ row }) => {
+        const phone = row.original?.phoneNumber || ''
+        return phone ? (
+          <a href={`tel:${phone}`} className="text-decoration-none">
+            <FiPhone size={14} className="me-2" />
+            {phone}
+          </a>
+        ) : (
+          <span className="text-muted">-</span>
+        )
+      }
     },
     {
       accessorKey: 'userRole',
       header: () => lang("roles.role"),
       cell: ({ row }) => {
-        const role = roleMapping[row.original.role.name.charAt(0).toUpperCase() + row.original.role.name.slice(1)] || { label: 'Unknown', color: 'secondary' }
-        return (
-          <span className='text-truncate-1-line fw-bold'>
-            {row.original.role.name.charAt(0).toUpperCase() + row.original.role.name.slice(1)}
-          </span>
-        )
+        const roleName = row.original?.role?.name || 'Unknown'
+        const displayName = roleName.charAt(0).toUpperCase() + roleName.slice(1)
+        return <span className='text-truncate-1-line fw-bold'>{displayName}</span>
       }
     },
     {
@@ -241,19 +243,6 @@ const UsersTable = () => {
         )
       }
     },
-    // {
-    //   accessorKey: 'createdAt',
-    //   header: () => 'Created',
-    //   cell: ({ row }) => {
-    //     const date = new Date(row.original.createdAt)
-    //     return (
-    //       <div>
-    //         <div>{date.toLocaleDateString()}</div>
-    //         <div className="fs-12 text-muted">{date.toLocaleTimeString()}</div>
-    //       </div>
-    //     )
-    //   }
-    // },
     {
       accessorKey: 'actions',
       header: () => lang("table.actions"),
@@ -270,7 +259,7 @@ const UsersTable = () => {
             label: lang("common.delete"),
             icon: <FiTrash2 />,
             className: 'text-danger',
-            onClick: () => handleDeleteUser(user.id, `${user.firstName} ${user.lastName}`)
+            onClick: () => handleDeleteUser(user.id, `${user?.firstName} ${user?.lastName}`)
           }
         ]
 
@@ -279,11 +268,11 @@ const UsersTable = () => {
             <Link href={`/admin/users/view?id=${user.id}`} className="avatar-text avatar-md">
               <FiEye />
             </Link>
-            <Dropdown 
-              dropdownItems={actions} 
-              triggerClass="avatar-md" 
-              triggerPosition="0,21" 
-              triggerIcon={<FiMoreHorizontal />} 
+            <Dropdown
+              dropdownItems={actions}
+              triggerClass="avatar-md"
+              triggerPosition="0,21"
+              triggerIcon={<FiMoreHorizontal />}
             />
           </div>
         )

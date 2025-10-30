@@ -5,13 +5,14 @@ import useBootstrapUtils from '@/hooks/useBootstrapUtils'
 import SettingSidebar from '@/components/setting/SettingSidebar'
 import Header from '@/components/shared/header/Header'
 import { usePathname } from 'next/navigation'
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 const layout = ({ children }) => {
     const pathName = usePathname()
     useBootstrapUtils(pathName)
 
     return (
-        <>
+        <ProtectedRoute>
             <Header />
             <NavigationManu />
             <main className="nxl-container apps-container">
@@ -22,7 +23,7 @@ const layout = ({ children }) => {
                     </div>
                 </div>
             </main>
-        </>
+        </ProtectedRoute>
     )
 }
 
