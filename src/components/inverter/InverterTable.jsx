@@ -241,7 +241,7 @@ const InverterTable = () => {
   }, [typeOptions, pendingEdit]);
 
   const columns = [
-    { accessorKey: "id", header: () => "ID" },
+    // { accessorKey: "id", header: () => "ID" },
     { accessorKey: "companyName", header: () => lang("inverter.companyName") },
     {
       accessorKey: "inverterName",

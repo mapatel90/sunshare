@@ -282,7 +282,7 @@ const RoleTable = () => {
               </label>
               <select
                 id="roleStatus"
-                className="form-select"
+                className="form-label form-select"
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >

@@ -545,7 +545,8 @@
     "active": "Tích cực",
     "inactive": "Không hoạt động",
     "status": "Trạng thái",
-    "selectStatus": "Chọn trạng thái"
+    "selectStatus": "Chọn trạng thái",
+    "onlynumbers": "Chỉ cho phép nhập số (ví dụ: 1234.56)"
   },
   "usersView": {
     "CreateUser": "Tạo người dùng",
