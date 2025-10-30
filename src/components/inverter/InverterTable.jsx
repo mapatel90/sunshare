@@ -28,6 +28,8 @@ const InverterTable = () => {
   const [errors, setErrors] = useState({});
   // Modal logic state:
   const [modalMode, setModalMode] = useState(null);
+  const [status, setStatus] = useState("");
+  const [statusError, setStatusError] = useState("");
 
   const resetForm = () => {
     setCompanyName("");
@@ -38,6 +40,8 @@ const InverterTable = () => {
     setEditingId(null);
     setErrors({});
     setPendingEdit(null);
+    setStatus("");
+    setStatusError("");
   };
 
   const fetchInverters = async () => {
@@ -139,9 +143,10 @@ const InverterTable = () => {
       apiKey: !apiKey ? lang("validation.apiKeyRequired") : "",
       secretKey: !secretKey ? lang("validation.secretKeyRequired") : "",
     };
-
+    const newStatusError = !status && status !== 0 ? lang("validation.statusRequired") : "";
+    setStatusError(newStatusError);
     setErrors(newErrors);
-    if (Object.values(newErrors).some(Boolean)) return;
+    if (Object.values(newErrors).some(Boolean) || newStatusError) return;
     try {
       setSubmitting(true);
       const payload = {
@@ -150,6 +155,7 @@ const InverterTable = () => {
         inverter_type_id: parseInt(selectedType.value),
         apiKey,
         secretKey,
+        status: parseInt(status),
       };
       const res = editingId
         ? await apiPut(`/api/inverters/${editingId}`, payload)
@@ -197,6 +203,8 @@ const InverterTable = () => {
       setSecretKey(item.secretKey || "");
       setErrors({});
       setPendingEdit(item);
+      // set status for edit mode
+      setStatus(item.status !== undefined && item.status !== null ? String(item.status) : "");
       if (Array.isArray(typeOptions) && typeOptions.length > 0) {
         if (item.inverter_type_id !== undefined && item.inverter_type_id !== null) {
           const valueToOption = new Map(typeOptions.map((o) => [o.value, o]));
@@ -242,6 +250,14 @@ const InverterTable = () => {
     { accessorKey: "inverter_type_id", header: () => lang("inverter.type") },
     { accessorKey: "apiKey", header: () => lang("inverter.apiKey") },
     { accessorKey: "secretKey", header: () => lang("inverter.secretKey") },
+    { accessorKey: "status", header: () => lang("inverter.status"),
+      cell: ({ row }) => {
+        const s = row.original.status;
+        if (s === 1 || s === "1") return lang("inverter.active") || "Active";
+        if (s === 0 || s === "0") return lang("inverter.inactive") || "Inactive";
+        return s; // fallback
+      }
+    },
     {
       accessorKey: "actions",
       header: () => lang("common.actions"),
@@ -455,6 +471,24 @@ const InverterTable = () => {
                   {errors.secretKey}
                 </div>
               ) : null}
+            </div>
+
+            {/* Status Dropdown Section */}
+            <div className="form-group mb-4">
+              <label className="form-label">{lang("inverter.status")}</label>
+              <select
+                className={`form-select ${statusError ? "is-invalid" : ""}`}
+                value={status}
+                onChange={e => {
+                  setStatus(e.target.value);
+                  if (statusError) setStatusError("");
+                }}
+              >
+                <option value="">{lang("inverter.selectStatus") || "Select Status"}</option>
+                <option value="1">{lang("inverter.active") || "Active"}</option>
+                <option value="0">{lang("inverter.inactive") || "Inactive"}</option>
+              </select>
+              {statusError ? <div className="invalid-feedback d-block">{statusError}</div> : null}
             </div>
           </div>
 

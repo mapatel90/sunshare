@@ -4,7 +4,6 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { FiSunrise } from "react-icons/fi";
 import Menus from './Menus';
 import { NavigationContext } from '@/contentApi/navigationProvider';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -15,6 +14,7 @@ const NavigationManu = () => {
     const { lang } = useLanguage()
     const { settings } = useSettings()
     const pathName = usePathname()
+    
     useEffect(() => {
         setNavigationOpen(false)
     }, [pathName])
@@ -24,8 +24,36 @@ const NavigationManu = () => {
                 <div className="m-header">
                     <Link href="/" className="b-brand">
                         {/* <!-- ========   dynamic logo   ============ --> */}
-                        <Image width={140} height={30} src={settings?.site_image || "/images/logo-full.png"} alt="logo" className="logo logo-lg" />
-                        {/* <Image width={140} height={30} src={settings?.site_image || "/images/logo-abbr.png"} alt="logo" className="logo logo-sm" /> */}
+                        {/* {settings?.site_image} */}
+                        <img
+                            width={140}
+                            height={30}
+                            src={settings?.site_image || "Sunshare"}
+                            alt="Sunshare"
+                            className="logo logo-lg"
+                            // onError={e => {
+                            //     if (e.target.src !== window.location.origin + "Sunshare" && e.target.src !== window.location.origin + "/_next/image?url=%2Fimages%2Flogo-full.png&w=256&q=75") {
+                            //         e.target.src = "Sunshare";
+                            //     } else {
+                            //         e.target.style.display = "none";
+                            //     }
+                            // }}
+                        />
+                        {/* <Image width={140} height={30} src={settings?.site_image || "/images/logo-abbr.png"} alt="Sunshare" className="logo logo-sm" /> */}
+                        <img
+                            width={140}
+                            height={30}
+                            src={settings?.site_image || "S"}
+                            alt="Sunshare"
+                            className="logo logo-sm"
+                            // onError={e => {
+                            //     if (e.target.src !== window.location.origin + "/images/logo-abbr.png" && e.target.src !== window.location.origin + "/_next/image?url=%2Fimages%2Flogo-abbr.png&w=256&q=75") {
+                            //         e.target.src = "/images/logo-abbr.png";
+                            //     } else {
+                            //         e.target.style.display = "none";
+                            //     }
+                            // }}
+                        />
                     </Link>
                 </div>
 
