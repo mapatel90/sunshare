@@ -136,9 +136,11 @@ model Inverter {
   updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
 
   inverterType    InverterType  @relation(fields: [inverter_type_id], references: [id])
+  projectInverters  Project_inverters[]
 
   @@map("inverters")
 }
+
 model Project {
   id               Int       @id @default(autoincrement())
   offtaker_id      Int
@@ -163,5 +165,24 @@ model Project {
   country          Country?  @relation(fields: [countryId], references: [id])
   offtaker         User      @relation(fields: [offtaker_id], references: [id])
 
+  projectInverters  Project_inverters[]
+
   @@map("projects")
+}
+
+model Project_inverters {
+  id           Int       @id @default(autoincrement())
+  project_id   Int
+  inverter_id  Int
+  kilowott     String    @db.VarChar(255)
+  status       Int       @default(0)
+  is_deleted   Int       @default(0)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  project      Project?  @relation(fields: [project_id], references: [id])
+  inverter     Inverter? @relation(fields: [inverter_id], references: [id])
+
+  @@map("project_inverters")
 }

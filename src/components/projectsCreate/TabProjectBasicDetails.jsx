@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 import { showSuccessToast, showErrorToast } from '@/utils/topTost'
 import { useLanguage } from '@/contexts/LanguageContext'
 
-const TabProjectType = ({ setFormData, formData, error, setError }) => {
+const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
     const router = useRouter()
     const { lang } = useLanguage()
     // Location data via shared hook (same behavior as UsersCreateForm)
@@ -389,4 +389,4 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
     )
 }
 
-export default TabProjectType
+export default TabProjectBasicDetails
