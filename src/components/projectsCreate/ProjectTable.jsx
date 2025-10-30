@@ -110,13 +110,20 @@ const ProjectTable = () => {
     },
     {
       accessorKey: 'status',
-      header: () => lang('projects.status', 'Status'),
-      cell: info => (
-        <StatusDropdown
-          value={info.getValue()}
-          onChange={(val) => handleStatusChange(info.row.original.id, val)}
-        />
-      )
+      header: () => lang("common.status"),
+      cell: ({ row }) => {
+        const statusValue = row.original.status
+        const status =
+          statusValue == 1
+            ? { label: 'Active', color: 'success' }
+            : { label: 'Inactive', color: 'danger' }
+    
+        return (
+          <span className={`badge bg-soft-${status.color} text-${status.color}`}>
+            {status.label}
+          </span>
+        )
+      }
     },
     {
       accessorKey: 'actions',
