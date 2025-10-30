@@ -68,7 +68,7 @@ const Menus = () => {
                                 {lang(`menu.${name.toLowerCase()}`, name)}
                             </span>
                             {dropdownMenu ? (
-                                <span className={`nxl-item ${pathName === path ? "active" : ""}`}>
+                                <span className={`nxl-arrow fs-16 nxl-item ${pathName === path ? "active" : ""}`}>
                                     <FiChevronRight />
                                 </span>
                             ) : null}
