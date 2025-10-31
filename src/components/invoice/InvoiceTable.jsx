@@ -87,6 +87,7 @@ const InvoiceTable = () => {
 
   useEffect(() => {
     fetchInvoices();
+    fetchProjects();
     const onSaved = () => fetchInvoices();
     window.addEventListener("invoice:saved", onSaved);
     return () => window.removeEventListener("invoice:saved", onSaved);
@@ -109,13 +110,13 @@ const InvoiceTable = () => {
       if (!item) {
         setModalMode("add");
         resetForm();
-        fetchProjects();
+        // projects are preloaded on mount
         // offtaker will be loaded based on project selection
         return;
       }
       setModalMode("edit");
       setEditingId(item.id || null);
-      fetchProjects();
+      // projects are preloaded on mount
       // Ensure offtaker options align with selected project's offtaker
       setSelectedProject(item.project ? { label: item.project.project_name, value: String(item.project.id) } : null);
       const ofLabel = item.offtaker ? ([item.offtaker.fullName].filter(Boolean).join(" ") || item.offtaker.email) : "";
