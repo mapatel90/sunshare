@@ -451,7 +451,16 @@
     "viewproject": "View Project",
     "projectlist": "Project List",
     "projecttype": "Project Type",
-    "onlynumbers": "Only numbers are allowed (e.g. 1234.56)"
+    "onlynumbers": "Only numbers are allowed (e.g. 1234.56)",
+    "askingPrice": "Asking Price",
+    "leaseTerm": "Lease Term",
+    "productCode": "Product Code",
+    "projectDescription": "Project Description",
+    "askingPriceRequired": "Asking price is required",
+    "leaseTermRequired": "Lease term is required",
+    "productCodeRequired": "Product code is required",
+    "year" : "year",
+    "onlynumbersWithoutdesimal" : "Only numbers are allowed (e.g. 123456)"
   },
   "settings": {
     "generalSettings": "General Settings",

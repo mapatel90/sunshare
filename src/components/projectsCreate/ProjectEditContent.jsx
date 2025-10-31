@@ -37,6 +37,10 @@ const ProjectEditContent = ({ projectId }) => {
         stateId: '',
         cityId: '',
         zipcode: '',
+        asking_price: '',
+        lease_term: '',
+        product_code: '',
+        project_description: '',
         investorProfit: '',
         weshareprofite: '',
         status: ''
@@ -68,6 +72,10 @@ const ProjectEditContent = ({ projectId }) => {
                         stateId: p.stateId || '',
                         cityId: p.cityId || '',
                         zipcode: p.zipcode || '',
+                        asking_price: p.asking_price || '',
+                        lease_term: p.lease_term ?? '',
+                        product_code: p.product_code || '',
+                        project_description: p.project_description || '',
                         investorProfit: p.investor_profit || '',
                         weshareprofite: p.weshare_profit || '',
                         status: p.status === 1 ? 'active' : 'inactive'
@@ -88,6 +96,24 @@ const ProjectEditContent = ({ projectId }) => {
     const handleInputChange = (e) => {
         const { name, value } = e.target
         setFormData(prev => ({ ...prev, [name]: value }))
+        // live clear errors when valid
+        setError(prev => {
+            const next = { ...prev }
+            if (name in next) {
+                const numberRegex = /^[0-9]*\.?[0-9]*$/
+                const intRegex = /^\d+$/
+                let isValid = true
+                if (name === 'investorProfit' || name === 'weshareprofite' || name === 'asking_price') {
+                    isValid = value === '' || numberRegex.test(value)
+                } else if (name === 'lease_term') {
+                    isValid = value !== '' && intRegex.test(value)
+                } else {
+                    isValid = Boolean(value)
+                }
+                if (isValid) delete next[name]
+            }
+            return next
+        })
     }
 
     const handleLocationChange = (type, value) => {
@@ -133,15 +159,29 @@ const ProjectEditContent = ({ projectId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const requiredFields = ['project_name', 'project_type_id', 'offtaker', 'countryId', 'stateId', 'cityId']
+        const requiredFields = ['project_name', 'project_type_id', 'offtaker', 'countryId', 'stateId', 'cityId', 'asking_price', 'lease_term', 'product_code']
         const errors = {}
         requiredFields.forEach(field => { if (!formData[field]) { errors[field] = lang('validation.required', 'Required') } })
         const numberRegex = /^[0-9]*\.?[0-9]*$/;
+        const intRegex = /^\d+$/;
         if (formData.investorProfit && !numberRegex.test(formData.investorProfit)) {
             errors.investorProfit = lang('projects.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)');
         }
         if (formData.weshareprofite && !numberRegex.test(formData.weshareprofite)) {
             errors.weshareprofite = lang('projects.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)');
+        }
+        if (!formData.asking_price) {
+            errors.asking_price = lang('projects.askingPriceRequired', 'Asking price is required')
+        } else if (!numberRegex.test(formData.asking_price)) {
+            errors.asking_price = lang('projects.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)')
+        }
+        if (!formData.lease_term) {
+            errors.lease_term = lang('projects.leaseTermRequired', 'Lease term is required')
+        } else if (!intRegex.test(String(formData.lease_term))) {
+            errors.lease_term = lang('projects.onlynumbersWithoutdesimal', 'Only numbers are allowed (e.g. 123456)')
+        }
+        if (!formData.product_code) {
+            errors.product_code = lang('projects.productCodeRequired', 'Product code is required')
         }
         if (Object.keys(errors).length) { setError(errors); return }
 
@@ -157,6 +197,10 @@ const ProjectEditContent = ({ projectId }) => {
                 state_id: Number(formData.stateId),
                 city_id: Number(formData.cityId),
                 zipcode: formData.zipcode || '',
+                asking_price: formData.asking_price || '',
+                lease_term: formData.lease_term ? Number(formData.lease_term) : null,
+                product_code: formData.product_code || '',
+                project_description: formData.project_description || '',
                 investor_profit: formData.investorProfit || '0',
                 weshare_profit: formData.weshareprofite || '0',
                 status: formData.status === 'active' ? 1 : 0
@@ -206,20 +250,20 @@ const ProjectEditContent = ({ projectId }) => {
                                     </div>
                                     <div className="card-body">
                                         <div className="row">
-                                            <div className="col-md-6 mb-3">
+                                            <div className="col-md-4 mb-3">
                                                 <label className="form-label">{lang('projects.projectName', 'Project Name')} <span className="text-danger">*</span></label>
                                                 <input type="text" className={`form-control ${error.project_name ? 'is-invalid' : ''}`} name="project_name" value={formData.project_name} onChange={handleInputChange} />
                                             </div>
-                                            <div className="col-md-6 mb-3">
+                                            <div className="col-md-4 mb-3">
                                                 <label className="form-label">{lang('projects.projectType', 'Project Type')} <span className="text-danger">*</span></label>
-                                                <select className={`form-select ${error.project_type_id ? 'is-invalid' : ''}`} name="project_type_id" value={formData.project_type_id} onChange={handleInputChange}>
+                                                <select className={`form-control ${error.project_type_id ? 'is-invalid' : ''}`} name="project_type_id" value={formData.project_type_id} onChange={handleInputChange}>
                                                     <option value="">{lang('projects.projectType', 'Project Type')}</option>
                                                     {projectTypes.map(t => (
                                                         <option key={t.id} value={t.id}>{t.type_name}</option>
                                                     ))}
                                                 </select>
                                             </div>
-                                            <div className="col-md-6 mb-3">
+                                            <div className="col-md-4 mb-3">
                                                 <label className="form-label">{lang('projects.selectOfftaker', 'Select Offtaker')} <span className="text-danger">*</span></label>
                                                 <select className={`form-control ${error.offtaker ? 'is-invalid' : ''}`} name="offtaker" value={formData.offtaker} onChange={handleOfftakerChange} disabled={loadingOfftakers}>
                                                     <option value="">{lang('projects.selectOfftaker', 'Select Offtaker')}</option>
@@ -227,6 +271,35 @@ const ProjectEditContent = ({ projectId }) => {
                                                         <option key={o.id} value={o.id}>{o.firstName} {o.lastName}</option>
                                                     ))}
                                                 </select>
+                                            </div>
+                                            {/* New fields row: asking_price, lease_term, product_code */}
+                                            <div className="col-12">
+                                                <div className="row">
+                                                    <div className="col-md-4 mb-3">
+                                                        <label className="form-label">{lang('projects.askingPrice', 'Asking Price')} <span className="text-danger">*</span></label>
+                                                        <input type="text" className={`form-control ${error.asking_price ? 'is-invalid' : ''}`} name="asking_price" value={formData.asking_price || ''} onChange={handleInputChange} inputMode="decimal" />
+                                                        {error.asking_price && (<div className="invalid-feedback">{error.asking_price}</div>)}
+                                                    </div>
+                                                    <div className="col-md-4 mb-3">
+                                                        <label className="form-label">{lang('projects.leaseTerm', 'Lease Term')} ({lang('projects.year', 'year')}) <span className="text-danger">*</span></label>
+                                                        <input type="text" className={`form-control ${error.lease_term ? 'is-invalid' : ''}`} name="lease_term" value={formData.lease_term || ''} onChange={handleInputChange} inputMode="numeric" />
+                                                        {error.lease_term && (<div className="invalid-feedback">{error.lease_term}</div>)}
+                                                    </div>
+                                                    <div className="col-md-4 mb-3">
+                                                        <label className="form-label">{lang('projects.productCode', 'Product Code')} <span className="text-danger">*</span></label>
+                                                        <input type="text" className={`form-control ${error.product_code ? 'is-invalid' : ''}`} name="product_code" value={formData.product_code || ''} onChange={handleInputChange} />
+                                                        {error.product_code && (<div className="invalid-feedback">{error.product_code}</div>)}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {/* Description row */}
+                                            <div className="col-12">
+                                                <div className="row">
+                                                    <div className="col-md-12 mb-3">
+                                                        <label className="form-label">{lang('projects.projectDescription', 'Project Description')}</label>
+                                                        <textarea className={`form-control ${error.project_description ? 'is-invalid' : ''}`} name="project_description" value={formData.project_description || ''} onChange={handleInputChange} rows={4} />
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

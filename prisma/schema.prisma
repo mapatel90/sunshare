@@ -150,6 +150,10 @@ model Project {
   project_type_id  Int       
   address1         String?   @map("address_1") @db.VarChar(255)
   address2         String?   @map("address_2") @db.VarChar(255)
+  project_description String? @db.Text
+  asking_price     String?   @db.VarChar(255)
+  lease_term       Int?
+  product_code     String?   @db.VarChar(255)
   cityId           Int?      @map("city_id")
   stateId          Int?      @map("state_id")
   countryId        Int?      @map("country_id")

@@ -80,6 +80,11 @@ const ProjectTable = () => {
       cell: info => info.getValue() || '-'
     },
     {
+      accessorKey: 'product_code',
+      header: () => lang('projects.productCode', 'Product Code'),
+      cell: info => info.getValue() || '-'
+    },
+    {
       accessorKey: 'projectType.type_name',
       header: () => lang('projects.projectType', 'Project Type'),
       cell: info => info.row.original.projectType?.type_name || '-'
@@ -117,7 +122,7 @@ const ProjectTable = () => {
           statusValue == 1
             ? { label: lang('common.active'), color: 'success' }
             : { label: lang('common.inactive'), color: 'danger' }
-    
+
         return (
           <span className={`badge bg-soft-${status.color} text-${status.color}`}>
             {status.label}
@@ -133,7 +138,8 @@ const ProjectTable = () => {
         const rowActions = [
           { label: 'Edit', icon: <FiEdit3 />, link: `/admin/projects/edit/${id}` },
           { type: 'divider' },
-          { label: lang('common.delete', 'Delete'), icon: <FiTrash2 />, onClick: async () => {
+          {
+            label: lang('common.delete', 'Delete'), icon: <FiTrash2 />, onClick: async () => {
               try {
                 const confirm = await Swal.fire({
                   icon: 'warning',
@@ -155,7 +161,8 @@ const ProjectTable = () => {
               } finally {
                 setLoading(false)
               }
-            } },
+            }
+          },
         ]
         return (
           <div className="hstack gap-2 justify-content-end">
