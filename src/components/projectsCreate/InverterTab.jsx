@@ -9,7 +9,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 const InverterTab = ({ projectId }) => {
   const { lang } = useLanguage();
-  
+
   // Modal & Form state
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('add');
@@ -20,14 +20,36 @@ const InverterTab = ({ projectId }) => {
   const [kilowattError, setKilowattError] = useState('');
   const [status, setStatus] = useState(1);
   const [editId, setEditId] = useState(null);
-  
+  // ------- STATE: add for serial number field -------
+  const [serialNumber, setSerialNumber] = useState('');
+
   // Table state
   const [projectInverters, setProjectInverters] = useState([]);
+  // Inverter types map: id -> type
+  const [inverterTypesMap, setInverterTypesMap] = useState({});
 
   useEffect(() => {
     apiGet('/api/inverters?status=1&limit=100').then(res => {
       if (res?.success) setInverterList(res.data.inverters);
     });
+  }, []);
+
+  // Fetch inverter types for mapping id -> type
+  useEffect(() => {
+    const fetchTypes = async () => {
+      try {
+        const res = await apiGet('/api/inverterTypes');
+        const items = Array.isArray(res?.data) ? res.data : [];
+        const map = items.reduce((acc, it) => {
+          acc[it.id] = it.type;
+          return acc;
+        }, {});
+        setInverterTypesMap(map);
+      } catch (e) {
+        // noop
+      }
+    };
+    fetchTypes();
   }, []);
 
   const getProjectInverters = () => {
@@ -41,6 +63,7 @@ const InverterTab = ({ projectId }) => {
     setModalType('add');
     setSelectedInverter(null);
     setKilowatt('');
+    setSerialNumber(''); // <--
     setStatus(1);
     setEditId(null);
     setShowModal(true);
@@ -49,6 +72,7 @@ const InverterTab = ({ projectId }) => {
     setModalType('edit');
     setSelectedInverter(inverterList.find(i => i.id === row.inverter_id) || null);
     setKilowatt(row.kilowatt);
+    setSerialNumber(row.inverter_serial_number || ''); // <--
     setStatus(row.status);
     setEditId(row.id);
     setShowModal(true);
@@ -77,6 +101,7 @@ const InverterTab = ({ projectId }) => {
           project_id: projectId,
           inverter_id: selectedInverter.id,
           kilowatt: kilowatt,
+          inverter_serial_number: serialNumber,
           status,
         });
         if (res.success) {
@@ -88,6 +113,7 @@ const InverterTab = ({ projectId }) => {
         res = await apiPut(`/api/project-inverters/${editId}`, {
           inverter_id: selectedInverter.id,
           kilowatt: kilowatt,
+          inverter_serial_number: serialNumber,
           status,
         });
         if (res.success) {
@@ -128,7 +154,25 @@ const InverterTab = ({ projectId }) => {
     {
       accessorKey: 'inverter.inverterName',
       header: () => lang('inverter.inverterName', 'Inverter Name'),
-      cell: info => info.row.original.inverter?.inverterName || '-',
+      cell: info => {
+        const row = info.row.original;
+        const name = row.inverter?.companyName || '-';
+        return row.inverter?.companyName || '-';
+      }
+    },
+    {
+      accessorKey: 'inverter.inverterType.type',
+      header: () => lang('inverter.type', 'Type'),
+      cell: info => {
+        const inv = info.row.original.inverter;
+        const type = inv?.inverterType?.type || inverterTypesMap[inv?.inverter_type_id];
+        return type || '-';
+      },
+    },
+    {
+      accessorKey: 'inverter_serial_number',
+      header: () => lang('inverter.serialNumber', 'Serial Number'),
+      cell: info => info.row.original.inverter_serial_number || '-',
     },
     {
       accessorKey: 'kilowatt',
@@ -140,8 +184,8 @@ const InverterTab = ({ projectId }) => {
       header: () => lang('common.status', 'Status'),
       cell: info =>
         info.getValue() == 1
-          ? <span className="badge bg-soft-success text-success">{lang('common.active','Active')}</span>
-          : <span className="badge bg-soft-danger text-danger">{lang('common.inactive','Inactive')}</span>,
+          ? <span className="badge bg-soft-success text-success">{lang('common.active', 'Active')}</span>
+          : <span className="badge bg-soft-danger text-danger">{lang('common.inactive', 'Inactive')}</span>,
     },
     {
       accessorKey: "actions",
@@ -163,7 +207,7 @@ const InverterTab = ({ projectId }) => {
               onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
               onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
             />
-    
+
             {/* Delete Icon */}
             <FiTrash2
               size={18}
@@ -185,13 +229,13 @@ const InverterTab = ({ projectId }) => {
         headerClassName: "text-end",
       },
     }
-    
+
   ];
 
   return (
     <div className="inverter-management">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h6 className="fw-bold mb-0">{lang('inverter.inverter', 'Inverters')} {lang('projects.projectlist','Project List')}</h6>
+        <h6 className="fw-bold mb-0">{lang('inverter.inverter', 'Inverters')} {lang('projects.projectlist', 'Project List')}</h6>
         <button type="button" className="btn btn-primary" onClick={openAddModal}>
           + {lang('inverter.addInverter', 'Add Inverter')}
         </button>
@@ -202,17 +246,18 @@ const InverterTab = ({ projectId }) => {
           <div className="modal-dialog" role="document">
             <form className="modal-content" onSubmit={handleSave}>
               <div className="modal-header">
-                <h5 className="modal-title">{modalType === 'edit' ? lang('inverter.editInverter','Edit Inverter') : lang('inverter.addInverter','Add Inverter')}</h5>
+                <h5 className="modal-title">{modalType === 'edit' ? lang('inverter.editInverter', 'Edit Inverter') : lang('inverter.addInverter', 'Add Inverter')}</h5>
                 <button type="button" className="btn-close" onClick={closeModal}></button>
               </div>
               <div className="modal-body">
                 {/* Dropdown for inverter */}
                 <div className="mb-3">
-                  <label className="form-label">{lang('inverter.inverterName', 'Inverter Name')}</label>
-                  <SelectDropdown options={inverterList.map(inv => ({ value: inv.id, label: inv.inverterName }))}
+                  <label className="form-label">{lang('inverter.inverterName', 'Inverter')}</label>
+                  {console.log("🔍 Inverter List:", inverterList)}
+                  <SelectDropdown options={inverterList.map(inv => ({ value: inv.id, label: inv.companyName + (inv.inverter_type_id ? ` (${inv.inverter_type_id})` : ""), }))}
                     selectedOption={selectedInverter?.id}
                     onSelectOption={opt => setSelectedInverter(inverterList.find(i => i.id === opt.value))}
-                    defaultSelect={lang('inverter.selectType', 'Select Inverter')}
+                    defaultSelect={lang('inverter.selectInverter', 'Select Inverter')}
                   />
                 </div>
                 {/* Show after select */}
@@ -238,6 +283,16 @@ const InverterTab = ({ projectId }) => {
                       )}
                     </div>
                     <div className="mb-3">
+                      <label className="form-label">{lang('inverter.serialNumber', 'Inverter Serial Number')}</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={serialNumber}
+                        onChange={e => setSerialNumber(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
                       <label className="form-label">{lang('common.status', 'Status')}</label>
                       <SelectDropdown options={STATUS_OPTIONS} selectedOption={status} onSelectOption={opt => setStatus(opt.value)} defaultSelect={lang('projects.selectStatus', 'Select Status')} searchable={false} />
                     </div>
@@ -245,9 +300,9 @@ const InverterTab = ({ projectId }) => {
                 )}
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={closeModal}>{lang('common.cancel','Cancel')}</button>
+                <button type="button" className="btn btn-secondary" onClick={closeModal}>{lang('common.cancel', 'Cancel')}</button>
                 <button type="submit" className="btn btn-primary" disabled={loading || !selectedInverter || !kilowatt}>
-                  {loading ? lang('common.loading','Loading...') : lang('common.save','Save')}
+                  {loading ? lang('common.loading', 'Loading...') : lang('common.save', 'Save')}
                 </button>
               </div>
             </form>
