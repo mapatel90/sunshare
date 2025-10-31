@@ -30,7 +30,7 @@ router.get('/', authenticateToken, async (req, res) => {
 // Add a new project_inverter link
 router.post('/', authenticateToken, async (req, res) => {
   try {
-    const { project_id, inverter_id, kilowatt, status } = req.body;
+    const { project_id, inverter_id, kilowatt, status, inverter_serial_number } = req.body;
     if (!project_id || !inverter_id || !kilowatt || status === undefined) {
       return res.status(400).json({ success: false, message: 'All fields required' });
     }
@@ -39,6 +39,7 @@ router.post('/', authenticateToken, async (req, res) => {
         project_id: parseInt(project_id),
         inverter_id: parseInt(inverter_id),
         kilowatt: String(kilowatt),
+        inverter_serial_number: inverter_serial_number || null,
         status: parseInt(status),
       }
     });
@@ -52,7 +53,7 @@ router.post('/', authenticateToken, async (req, res) => {
 router.put('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
-    const { inverter_id, kilowatt, status } = req.body;
+    const { inverter_id, kilowatt, status, inverter_serial_number } = req.body;
     if (!inverter_id || !kilowatt || status === undefined) {
       return res.status(400).json({ success: false, message: 'Fields missing' });
     }
@@ -61,6 +62,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
       data: {
         inverter_id: parseInt(inverter_id),
         kilowatt: String(kilowatt),
+        inverter_serial_number: inverter_serial_number || null,
         status: parseInt(status),
       }
     });

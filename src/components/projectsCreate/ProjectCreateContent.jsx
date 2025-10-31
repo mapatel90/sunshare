@@ -17,6 +17,10 @@ const ProjectCreateContent = () => {
         stateId: '',
         cityId: '',
         zipcode: '',
+        asking_price: '',
+        lease_term: '',
+        product_code: '',
+        project_description: '',
         status: 'active'
     });
 

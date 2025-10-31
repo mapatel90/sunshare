@@ -9,9 +9,22 @@ export const menuList = [
     {
         id: 1,
         name: "projects",
-        path: "/admin/projects/list",
+        path: "#",
         icon: 'feather-briefcase',
-        dropdownMenu: false
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "List",
+                path: "/admin/projects/list",
+                subdropdownMenu: false
+            },
+            {
+                id: 2,
+                name: "Type",
+                path: "/admin/projects/type",
+                subdropdownMenu: false
+            }
+        ]
     },
     {
         id: 2,

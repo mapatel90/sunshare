@@ -454,7 +454,17 @@
     "editproject": "Sửa dự án",
     "viewproject": "Xem dự án",
     "projectlist": "Danh sách dự án",
-    "onlynumbers": "Chỉ cho phép nhập số (ví dụ: 1234.56)"
+    "projecttype": "Loại dự án",
+    "onlynumbers": "Chỉ cho phép nhập số (ví dụ: 1234.56)",
+    "askingPrice": "Giá chào bán",
+    "leaseTerm": "Thời hạn thuê",
+    "productCode": "Mã sản phẩm",
+    "projectDescription": "Mô tả dự án",
+    "askingPriceRequired": "Giá chào bán là bắt buộc",
+    "leaseTermRequired": "Thời hạn thuê là bắt buộc",
+    "productCodeRequired": "Mã sản phẩm là bắt buộc",
+    "year" : "năm",
+    "onlynumbersWithoutdesimal" : "Chỉ cho phép nhập số (ví dụ: 123456)"
   },
   "placeholders": {
     "your_company_name": "Tên công ty của bạn [Ví dụ: Theme Ocean]",
@@ -533,7 +543,7 @@
     "editInverter": "Sửa bộ biến tần",
     "companyName": "Tên công ty",
     "companyNamePlaceholder": "Tên công ty",
-    "inverterName": "Tên bộ biến tần",
+    "inverterName": "Tên biến tần",
     "inverterNamePlaceholder": "Tên bộ biến tần",
     "type": "Loại bộ biến tần",
     "selectType": "Chọn loại",
@@ -548,7 +558,22 @@
     "inactive": "Không hoạt động",
     "status": "Trạng thái",
     "selectStatus": "Chọn trạng thái",
-    "onlynumbers": "Chỉ cho phép nhập số (ví dụ: 1234.56)"
+    "onlynumbers": "Chỉ cho phép nhập số (ví dụ: 1234.56)",
+    "selectInverter" : "Chọn biến tần",
+    "serialNumber" : "Số seri",
+    "kilowatt" : "Kilowatt"
+  },
+  "projectType": {
+    "title": "Loại dự án",
+    "addType": "Thêm loại",
+    "editType": "Sửa loại",
+    "name": "Tên",
+    "status": "Trạng thái",
+    "createdSuccessfully": "Tạo loại thành công",
+    "updatedSuccessfully": "Cập nhật loại thành công",
+    "deletedSuccessfully": "Xóa loại thành công",
+    "errorOccurred": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "selectStatus": "Chọn trạng thái"
   },
   "inverterType": {
     "addType": "Thêm loại biến tần",

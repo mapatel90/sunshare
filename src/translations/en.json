@@ -453,7 +453,17 @@
     "editproject": "Edit Project",
     "viewproject": "View Project",
     "projectlist": "Project List",
-    "onlynumbers": "Only numbers are allowed (e.g. 1234.56)"
+    "projecttype": "Project Type",
+    "onlynumbers": "Only numbers are allowed (e.g. 1234.56)",
+    "askingPrice": "Asking Price",
+    "leaseTerm": "Lease Term",
+    "productCode": "Product Code",
+    "projectDescription": "Project Description",
+    "askingPriceRequired": "Asking price is required",
+    "leaseTermRequired": "Lease term is required",
+    "productCodeRequired": "Product code is required",
+    "year" : "year",
+    "onlynumbersWithoutdesimal" : "Only numbers are allowed (e.g. 123456)"
   },
   "settings": {
     "generalSettings": "General Settings",
@@ -565,7 +575,21 @@
     "selectStatus": "Select Status",
     "errorOccurred": "An error occurred. Please try again.",
     "kilowatt": "Kilowatt",
-    "onlynumbers": "Only numbers are allowed (e.g. 1234.56)"
+    "onlynumbers": "Only numbers are allowed (e.g. 1234.56)",
+    "selectInverter" : "Select Inverter",
+    "serialNumber" : "Serial Number"
+  },
+  "projectType": {
+    "title": "Project Types",
+    "addType": "Add Type",
+    "editType": "Edit Type",
+    "name": "Name",
+    "status": "Status",
+    "createdSuccessfully": "Type Created Successfully",
+    "updatedSuccessfully": "Type Updated Successfully",
+    "deletedSuccessfully": "Type Deleted Successfully",
+    "errorOccurred": "An error occurred. Please try again.",
+    "selectStatus": "Select Status"
   },
   "inverterType": {
     "addType": "Add Inverter Type",
