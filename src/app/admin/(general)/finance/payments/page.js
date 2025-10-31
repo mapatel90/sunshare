@@ -170,7 +170,7 @@ const PaymentsPage = () => {
             header: () => lang('payments.offtaker', 'Offtaker'),
             cell: ({ row }) => {
                 const user = row.original?.offtaker
-                return user ? `${user.firstName} ${user.lastName}` : '-'
+                return user ? `${user.fullName}` : '-'
             }
         },
         {
@@ -271,7 +271,7 @@ const PaymentsPage = () => {
                                     >
                                         <option value="">{lang('payments.selectOfftaker', 'Select Offtaker')}</option>
                                         {offtakers.map(o => (
-                                            <option key={o.id} value={o.id}>{o.firstName} {o.lastName}</option>
+                                            <option key={o.id} value={o.id}>{o.fullName}</option>
                                         ))}
                                     </select>
                                     {formError.offtaker_id && <div className="invalid-feedback">{formError.offtaker_id}</div>}
