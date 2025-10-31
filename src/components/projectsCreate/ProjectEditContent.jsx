@@ -29,7 +29,7 @@ const ProjectEditContent = ({ projectId }) => {
     const [error, setError] = useState({})
     const [formData, setFormData] = useState({
         project_name: '',
-        project_type: '',
+        project_type_id: '',
         offtaker: '',
         address1: '',
         address2: '',
@@ -41,23 +41,26 @@ const ProjectEditContent = ({ projectId }) => {
         weshareprofite: '',
         status: ''
     })
+    const [projectTypes, setProjectTypes] = useState([])
     const steps = [
         { name: lang('projects.projectInformation', 'Project Information'), key: 'info' },
         { name: lang('inverter.inverter', 'Inverter'), key: 'inverter' }
     ];
     const [activeTab, setActiveTab] = useState('info');
 
-    // Load existing project
+    // Load types and existing project
     useEffect(() => {
         const load = async () => {
             try {
                 setLoading(prev => ({ ...prev, init: true }))
+                const typesRes = await apiGet('/api/project-types')
+                if (typesRes?.success) setProjectTypes(typesRes.data)
                 const res = await apiGet(`/api/projects/${projectId}`)
                 if (res?.success && res.data) {
                     const p = res.data
                     setFormData({
                         project_name: p.project_name || '',
-                        project_type: p.project_type || '',
+                        project_type_id: p.project_type_id || p.projectType?.id || '',
                         offtaker: String(p.offtaker_id || ''),
                         address1: p.address1 || '',
                         address2: p.address2 || '',
@@ -130,7 +133,7 @@ const ProjectEditContent = ({ projectId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const requiredFields = ['project_name', 'project_type', 'offtaker', 'countryId', 'stateId', 'cityId']
+        const requiredFields = ['project_name', 'project_type_id', 'offtaker', 'countryId', 'stateId', 'cityId']
         const errors = {}
         requiredFields.forEach(field => { if (!formData[field]) { errors[field] = lang('validation.required', 'Required') } })
         const numberRegex = /^[0-9]*\.?[0-9]*$/;
@@ -146,7 +149,7 @@ const ProjectEditContent = ({ projectId }) => {
         try {
             const payload = {
                 name: formData.project_name,
-                type: formData.project_type,
+                project_type_id: Number(formData.project_type_id),
                 offtaker_id: Number(formData.offtaker),
                 address1: formData.address1 || '',
                 address2: formData.address2 || '',
@@ -209,7 +212,12 @@ const ProjectEditContent = ({ projectId }) => {
                                             </div>
                                             <div className="col-md-6 mb-3">
                                                 <label className="form-label">{lang('projects.projectType', 'Project Type')} <span className="text-danger">*</span></label>
-                                                <input type="text" className={`form-control ${error.project_type ? 'is-invalid' : ''}`} name="project_type" value={formData.project_type} onChange={handleInputChange} />
+                                                <select className={`form-select ${error.project_type_id ? 'is-invalid' : ''}`} name="project_type_id" value={formData.project_type_id} onChange={handleInputChange}>
+                                                    <option value="">{lang('projects.projectType', 'Project Type')}</option>
+                                                    {projectTypes.map(t => (
+                                                        <option key={t.id} value={t.id}>{t.type_name}</option>
+                                                    ))}
+                                                </select>
                                             </div>
                                             <div className="col-md-6 mb-3">
                                                 <label className="form-label">{lang('projects.selectOfftaker', 'Select Offtaker')} <span className="text-danger">*</span></label>

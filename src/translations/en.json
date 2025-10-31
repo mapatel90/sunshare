@@ -450,6 +450,7 @@
     "editproject": "Edit Project",
     "viewproject": "View Project",
     "projectlist": "Project List",
+    "projecttype": "Project Type",
     "onlynumbers": "Only numbers are allowed (e.g. 1234.56)"
   },
   "settings": {
@@ -561,6 +562,18 @@
     "onlynumbers": "Only numbers are allowed (e.g. 1234.56)",
     "selectInverter" : "Select Inverter",
     "serialNumber" : "Serial Number"
+  },
+  "projectType": {
+    "title": "Project Types",
+    "addType": "Add Type",
+    "editType": "Edit Type",
+    "name": "Name",
+    "status": "Status",
+    "createdSuccessfully": "Type Created Successfully",
+    "updatedSuccessfully": "Type Updated Successfully",
+    "deletedSuccessfully": "Type Deleted Successfully",
+    "errorOccurred": "An error occurred. Please try again.",
+    "selectStatus": "Select Status"
   },
   "usersView": {
     "CreateUser": "Create User",

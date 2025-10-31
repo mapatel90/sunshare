@@ -24,8 +24,20 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
     } = useLocationData()
     const { offtakers, loadingOfftakers, fetchOfftakerById } = useOfftakerData()
     const [loading, setLoading] = useState({ form: false })
+    const [projectTypes, setProjectTypes] = useState([])
 
-    // Offtakers are loaded by hook on mount
+    // Offtakers are loaded by hook on mount; load project types
+    useEffect(() => {
+        const loadTypes = async () => {
+            try {
+                const res = await apiGet('/api/project-types')
+                if (res?.success) setProjectTypes(res.data)
+            } catch (e) {
+                // noop
+            }
+        }
+        loadTypes()
+    }, [])
 
     // ✅ Handle all input fields
     const handleInputChange = (e) => {
@@ -93,7 +105,7 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
         e.preventDefault();
 
         // Basic validation
-        const requiredFields = ['project_name', 'project_type', 'offtaker', 'countryId', 'stateId', 'cityId'];
+        const requiredFields = ['project_name', 'project_type_id', 'offtaker', 'countryId', 'stateId', 'cityId'];
         const errors = {};
 
         requiredFields.forEach(field => {
@@ -123,7 +135,7 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
             // Prepare the project data for submission
             const projectData = {
                 name: formData.project_name,
-                type: formData.project_type,
+                project_type_id: Number(formData.project_type_id),
                 offtaker_id: Number(formData.offtaker),
                 address1: formData.address1 || '',
                 address2: formData.address2 || '',
@@ -185,16 +197,19 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
                                     <label className="form-label">
                                         {lang('projects.projectType', 'Project Type')} <span className="text-danger">*</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        className={`form-control ${error.project_type ? 'is-invalid' : ''}`}
-                                        name="project_type"
-                                        value={formData.project_type}
+                                    <select
+                                        className={`form-select ${error.project_type_id ? 'is-invalid' : ''}`}
+                                        name="project_type_id"
+                                        value={formData.project_type_id || ''}
                                         onChange={handleInputChange}
-                                        placeholder={lang('projects.projectTypePlaceholder', 'Enter project type')}
-                                    />
-                                    {error.project_type && (
-                                        <div className="invalid-feedback">{error.project_type}</div>
+                                    >
+                                        <option value="">{lang('projects.projectType', 'Project Type')}</option>
+                                        {projectTypes.map(t => (
+                                            <option key={t.id} value={t.id}>{t.type_name}</option>
+                                        ))}
+                                    </select>
+                                    {error.project_type_id && (
+                                        <div className="invalid-feedback">{error.project_type_id}</div>
                                     )}
                                 </div>
                                 <div className="col-md-6 mb-3">

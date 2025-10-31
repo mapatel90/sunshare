@@ -452,6 +452,7 @@
     "editproject": "Sửa dự án",
     "viewproject": "Xem dự án",
     "projectlist": "Danh sách dự án",
+    "projecttype": "Loại dự án",
     "onlynumbers": "Chỉ cho phép nhập số (ví dụ: 1234.56)"
   },
   "placeholders": {
@@ -546,6 +547,18 @@
     "selectInverter" : "Chọn biến tần",
     "serialNumber" : "Số seri",
     "kilowatt" : "Kilowatt"
+  },
+  "projectType": {
+    "title": "Loại dự án",
+    "addType": "Thêm loại",
+    "editType": "Sửa loại",
+    "name": "Tên",
+    "status": "Trạng thái",
+    "createdSuccessfully": "Tạo loại thành công",
+    "updatedSuccessfully": "Cập nhật loại thành công",
+    "deletedSuccessfully": "Xóa loại thành công",
+    "errorOccurred": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "selectStatus": "Chọn trạng thái"
   },
   "usersView": {
     "CreateUser": "Tạo người dùng",

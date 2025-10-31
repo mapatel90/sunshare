@@ -147,7 +147,7 @@ model Project {
   id               Int       @id @default(autoincrement())
   offtaker_id      Int
   project_name     String    @db.VarChar(255)
-  project_type     String    @db.VarChar(255)
+  project_type_id  Int       
   address1         String?   @map("address_1") @db.VarChar(255)
   address2         String?   @map("address_2") @db.VarChar(255)
   cityId           Int?      @map("city_id")
@@ -166,6 +166,7 @@ model Project {
   state            State?    @relation(fields: [stateId], references: [id])
   country          Country?  @relation(fields: [countryId], references: [id])
   offtaker         User      @relation(fields: [offtaker_id], references: [id])
+  projectType      Project_type @relation(fields: [project_type_id], references: [id])
 
   projectInverters  Project_inverters[]
 
@@ -188,4 +189,17 @@ model Project_inverters {
   inverter     Inverter? @relation(fields: [inverter_id], references: [id])
 
   @@map("project_inverters")
+}
+
+model Project_type {
+  id          Int       @id @default(autoincrement())
+  type_name   String    @db.VarChar(255)
+  status      Int       @default(0)
+  is_deleted  Int       @default(0)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  projects    Project[]
+
+  @@map("project_types")
 }

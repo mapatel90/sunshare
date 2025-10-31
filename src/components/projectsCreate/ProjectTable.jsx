@@ -80,9 +80,9 @@ const ProjectTable = () => {
       cell: info => info.getValue() || '-'
     },
     {
-      accessorKey: 'project_type',
+      accessorKey: 'projectType.type_name',
       header: () => lang('projects.projectType', 'Project Type'),
-      cell: info => info.getValue() || '-'
+      cell: info => info.row.original.projectType?.type_name || '-'
     },
     {
       accessorKey: 'city.name',
@@ -115,8 +115,8 @@ const ProjectTable = () => {
         const statusValue = row.original.status
         const status =
           statusValue == 1
-            ? { label: 'Active', color: 'success' }
-            : { label: 'Inactive', color: 'danger' }
+            ? { label: lang('common.active'), color: 'success' }
+            : { label: lang('common.inactive'), color: 'danger' }
     
         return (
           <span className={`badge bg-soft-${status.color} text-${status.color}`}>
