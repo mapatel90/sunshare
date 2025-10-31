@@ -606,6 +606,22 @@
     "typeNameRequired": "Type name is required",
     "statusRequired": "Status is required"
   },
+  "payments": {
+    "title": "Payments",
+    "addPayment": "Add Payment",
+    "editPayment": "Edit Payment",
+    "createdSuccessfully": "Payment Created Successfully",
+    "updatedSuccessfully": "Payment Updated Successfully",
+    "deletedSuccessfully": "Payment Deleted Successfully",
+    "errorOccurred": "An error occurred. Please try again.",
+    "invoice": "Invoice",
+    "selectInvoice": "Select Invoice",
+    "offtaker": "Offtaker",
+    "selectOfftaker": "Select Offtaker",
+    "amount": "Amount",
+    "status": "Status",
+    "onlynumbers": "Only numbers are allowed (e.g. 123456)"
+  },
   "usersView": {
     "CreateUser": "Create User",
     "username": "Username",

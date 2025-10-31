@@ -590,6 +590,22 @@
     "typeNameRequired": "Tên loại là bắt buộc",
     "statusRequired": "Trạng thái là bắt buộc"
   },
+  "payments": {
+    "title": "Thanh toán",
+    "addPayment": "Thêm thanh toán",
+    "editPayment": "Sửa thanh toán",
+    "createdSuccessfully": "Tạo thanh toán thành công",
+    "updatedSuccessfully": "Cập nhật thanh toán thành công",
+    "deletedSuccessfully": "Xóa thanh toán thành công",
+    "errorOccurred": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "invoice": "Hóa đơn",
+    "selectInvoice": "Chọn hóa đơn",
+    "offtaker": "Offtaker",
+    "selectOfftaker": "Chọn Offtaker",
+    "amount": "Số tiền",
+    "status": "Trạng thái",
+    "onlynumbers": "Chỉ cho phép nhập số (ví dụ: 123456)"
+  },
   "usersView": {
     "CreateUser": "Tạo người dùng",
     "username": "Tên người dùng",

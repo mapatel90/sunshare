@@ -48,6 +48,7 @@ model User {
   country     Country?  @relation("UserCountry", fields: [countryId], references: [id])
   projects    Project[]
   invoices    Invoice[]
+  payments     Payment[]  @relation("UserPayments")
 
   @@map("users")
 }
@@ -228,4 +229,19 @@ model Project_type {
   projects    Project[]
 
   @@map("project_types")
+}
+
+model Payment {
+  id          Int       @id @default(autoincrement())
+  invoice_id  Int    @default(0)
+  offtaker_id    Int    @default(0)
+  amount      Int    @default(0)
+  status      Int       @default(0)
+  is_deleted  Int       @default(0)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  offtaker     User      @relation("UserPayments", fields: [offtaker_id], references: [id])
+
+  @@map("payments")
 }

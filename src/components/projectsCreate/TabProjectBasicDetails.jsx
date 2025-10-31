@@ -317,6 +317,7 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
                                     {error.product_code && (<div className="invalid-feedback">{error.product_code}</div>)}
                                 </div>
                             </div>
+                            
                             {/* Description full-width row */}
                             <div className="row">
                                 <div className="col-md-12 mb-3">

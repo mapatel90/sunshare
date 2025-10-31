@@ -18,6 +18,7 @@ import projectsRouter from './routes/projects.js';
 import projectInvertersRoutes from './routes/projectInverters.js';
 import invoiceRoutes from './routes/invoice.js';
 import projectTypesRoutes from './routes/projectTypes.js';
+import paymentsRoutes from './routes/payments.js';
 
 // Load environment variables
 const __filename = fileURLToPath(import.meta.url);
@@ -68,6 +69,7 @@ app.use('/api/projects', projectsRouter);
 app.use('/api/project-inverters', projectInvertersRoutes);
 app.use('/api/invoice', invoiceRoutes);
 app.use('/api/project-types', projectTypesRoutes);
+app.use('/api/payments', paymentsRoutes);
 
 // 404 handler
 app.use((req, res) => {

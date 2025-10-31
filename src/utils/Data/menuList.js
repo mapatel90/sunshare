@@ -7,6 +7,13 @@ export const menuList = [
         dropdownMenu: false
     },
     {
+        id: 5,
+        name: "payments",
+        path: "/admin/payments",
+        icon: 'feather-credit-card',
+        dropdownMenu: false
+    },
+    {
         id: 1,
         name: "projects",
         path: "#",
