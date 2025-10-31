@@ -546,7 +546,7 @@
     "editInverter": "Edit Inverter",
     "companyName": "Company Name",
     "companyNamePlaceholder": "Company Name",
-    "inverterName": "Inverter Name",
+    "inverterName": "Inverter",
     "inverterNamePlaceholder": "Inverter Name",
     "active": "Active",
     "inactive": "Inactive",
@@ -563,7 +563,9 @@
     "selectStatus": "Select Status",
     "errorOccurred": "An error occurred. Please try again.",
     "kilowatt": "Kilowatt",
-    "onlynumbers": "Only numbers are allowed (e.g. 1234.56)"
+    "onlynumbers": "Only numbers are allowed (e.g. 1234.56)",
+    "selectInverter" : "Select Inverter",
+    "serialNumber" : "Serial Number"
   },
   "usersView": {
     "CreateUser": "Create User",
