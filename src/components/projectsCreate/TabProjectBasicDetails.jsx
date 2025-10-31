@@ -211,7 +211,7 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
                                         <option value="">{lang('projects.selectOfftaker', 'Select Offtaker')}</option>
                                         {offtakers.map(offtaker => (
                                             <option key={offtaker.id} value={offtaker.id}>
-                                                {offtaker.firstName} {offtaker.lastName}
+                                                {offtaker.fullName}
                                             </option>
                                         ))}
                                     </select>

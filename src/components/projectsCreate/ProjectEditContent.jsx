@@ -216,7 +216,7 @@ const ProjectEditContent = ({ projectId }) => {
                                                 <select className={`form-control ${error.offtaker ? 'is-invalid' : ''}`} name="offtaker" value={formData.offtaker} onChange={handleOfftakerChange} disabled={loadingOfftakers}>
                                                     <option value="">{lang('projects.selectOfftaker', 'Select Offtaker')}</option>
                                                     {offtakers.map(o => (
-                                                        <option key={o.id} value={o.id}>{o.firstName} {o.lastName}</option>
+                                                        <option key={o.id} value={o.id}>{o.fullName}</option>
                                                     ))}
                                                 </select>
                                             </div>

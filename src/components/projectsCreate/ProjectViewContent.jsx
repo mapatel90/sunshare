@@ -47,7 +47,7 @@ const ProjectViewContent = ({ projectId }) => {
                         <div className="col-md-6">
                             <Field label={lang('projects.projectName', 'Project Name')} value={project.project_name} />
                             <Field label={lang('projects.projectType', 'Project Type')} value={project.project_type} />
-                            <Field label={lang('projects.selectOfftaker', 'Offtaker')} value={`${project.offtaker?.firstName ?? ''} ${project.offtaker?.lastName ?? ''}`.trim()} />
+                            <Field label={lang('projects.selectOfftaker', 'Offtaker')} value={`${project.offtaker?.fullName ?? ''}`.trim()} />
                         </div>
                         <div className="col-md-6">
                             <Field label={lang('projects.status', 'Status')} value={project.status === 1 ? lang('projects.active', 'Active') : lang('projects.inactive', 'Inactive')} />

@@ -23,12 +23,32 @@ export const menuList = [
     {
         id: 3,
         name: "inverter",
-        path: "/admin/inverter",
+        path: "#",
         icon: 'feather-archive',
-        dropdownMenu: false
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "Type",
+                path: "/admin/inverter/type",
+                subdropdownMenu: false
+            },
+            {
+                id: 2,
+                name: "list",
+                path: "/admin/inverter/list",
+                subdropdownMenu: false
+            },
+        ]
     },
     {
         id: 4,
+        name: "invoices",
+        path: "/admin/invoice",
+        icon: 'feather-file-text',
+        dropdownMenu: false
+    },
+    {
+        id: 5,
         name: "settings",
         path: "#",
         icon: 'feather-settings',

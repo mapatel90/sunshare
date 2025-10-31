@@ -153,8 +153,7 @@ import prisma from '../server/utils/prisma.js';
 // Create user
 const user = await prisma.user.create({
   data: {
-    firstName: 'John',
-    lastName: 'Doe',
+    fullName: 'John Doe',
     email: 'john@example.com',
     password: hashedPassword,
     userRole: 'user'
@@ -168,8 +167,7 @@ const users = await prisma.user.findMany({
   },
   select: {
     id: true,
-    firstName: true,
-    lastName: true,
+    fulllName: true,
     email: true
   }
 });

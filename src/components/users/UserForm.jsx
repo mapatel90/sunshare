@@ -12,8 +12,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
 
     const [formData, setFormData] = useState({
         username: '',
-        firstName: '',
-        lastName: '',
+        fullName: '',
         email: '',
         phoneNumber: '',
         password: '',
@@ -85,8 +84,7 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
             newErrors.username = 'Username must be at least 3 characters long'
         }
 
-        if (!formData.firstName.trim()) newErrors.firstName = 'First name is required'
-        if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required'
+        if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required'
 
         if (!formData.email.trim()) {
             newErrors.email = 'Email is required'
@@ -203,28 +201,16 @@ const UserForm = ({ initialData = {}, onSubmit, includePassword = false, exclude
                                 <h6 className="mb-3">{lang('usersView.personalInformation')}</h6>
                                 <div className="row">
                                     <div className="col-md-3 mb-3">
-                                        <label className="form-label">{lang('usersView.firstName')} <span className="text-danger">*</span></label>
+                                        <label className="form-label">{lang('usersView.fullName')} <span className="text-danger">*</span></label>
                                         <input
                                             type="text"
-                                            className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-                                            name="firstName"
-                                            value={formData.firstName}
+                                            className={`form-control ${errors.fullName ? 'is-invalid' : ''}`}
+                                            name="fullName"
+                                            value={formData.fullName}
                                             onChange={handleInputChange}
-                                            placeholder={lang('placeholders.enterfirstname')}
+                                            placeholder={lang('placeholders.enterfullname')}
                                         />
-                                        {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
-                                    </div>
-                                    <div className="col-md-3 mb-3">
-                                        <label className="form-label">{lang('usersView.lastName')} <span className="text-danger">*</span></label>
-                                        <input
-                                            type="text"
-                                            className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-                                            name="lastName"
-                                            value={formData.lastName}
-                                            onChange={handleInputChange}
-                                            placeholder={lang('placeholders.enterlastname')}
-                                        />
-                                        {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
+                                        {errors.fullName && <div className="invalid-feedback">{errors.fullName}</div>}
                                     </div>
                                     <div className="col-md-3 mb-3">
                                         <label className="form-label">{lang('authentication.email')} <span className="text-danger">*</span></label>

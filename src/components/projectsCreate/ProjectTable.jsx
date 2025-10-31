@@ -105,7 +105,7 @@ const ProjectTable = () => {
       cell: info => {
         const offtaker = info.getValue()
         if (!offtaker) return '-'
-        return `${offtaker.firstName || ''} ${offtaker.lastName || ''}`.trim()
+        return `${offtaker.fullName || ''}`.trim()
       }
     },
     {

@@ -50,7 +50,7 @@ router.post('/AddProject', authenticateToken, async (req, res) => {
                 state: true,
                 city: true,
                 offtaker: {
-                    select: { id: true, firstName: true, lastName: true, email: true }
+                    select: { id: true, fullName: true, email: true }
                 }
             }
         });
@@ -92,7 +92,7 @@ router.get('/', authenticateToken, async (req, res) => {
         where,
         include: {
           offtaker: {
-            select: { firstName: true, lastName: true, email: true }
+            select: { fullName: true, email: true }
           },
           city: true,
           state: true,
@@ -150,7 +150,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
     const project = await prisma.project.findUnique({
       where: { id: parseInt(id) },
       include: {
-        offtaker: { select: { id: true, firstName: true, lastName: true, email: true } },
+        offtaker: { select: { id: true, fullName: true, email: true } },
         city: true,
         state: true,
         country: true,
@@ -204,7 +204,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
         ...(status !== undefined && { status: parseInt(status) }),
       },
       include: {
-        offtaker: { select: { id: true, firstName: true, lastName: true, email: true } },
+        offtaker: { select: { id: true, fullName: true, email: true } },
         city: true,
         state: true,
         country: true,

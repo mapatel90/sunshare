@@ -21,8 +21,7 @@ export const authenticateToken = async (req, res, next) => {
       where: { id: decoded.userId },
       select: {
         id: true,
-        firstName: true,
-        lastName: true,
+        fullName: true,
         email: true,
         userRole: true,
         status: true

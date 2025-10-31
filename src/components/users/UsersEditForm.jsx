@@ -69,8 +69,7 @@ const UsersEditForm = () => {
         const user = response.data
         setFormData({
           username: user.username || '',
-          firstName: user.firstName || '',
-          lastName: user.lastName || '',
+          fullName: user.fullName || '',
           email: user.email || '',
           password: user.password || '',
           confirmPassword: user.password || '',

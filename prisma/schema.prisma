@@ -27,8 +27,7 @@ model User {
   id          Int       @id @default(autoincrement())
   userRole    Int       @map("user_role") @default(3)
   username    String    @unique @db.VarChar(150)
-  firstName   String    @map("first_name") @db.VarChar(100)
-  lastName    String    @map("last_name") @db.VarChar(100)
+  fullName   String    @map("full_name") @db.VarChar(100)
   email       String    @db.VarChar(150)
   phoneNumber String?   @map("phone_number") @db.VarChar(20)
   password    String    @db.VarChar(255)
@@ -48,6 +47,7 @@ model User {
   state       State?    @relation("UserState", fields: [stateId], references: [id])
   country     Country?  @relation("UserCountry", fields: [countryId], references: [id])
   projects    Project[]
+  invoices    Invoice[]
 
   @@map("users")
 }
@@ -119,6 +119,7 @@ model InverterType {
   id        Int      @id @default(autoincrement())
   type      String   @unique @db.VarChar(255)
   status    Int      @default(1)
+  is_deleted  Int      @default(0)
 
   inverters Inverter[]
   @@map("inverter_type")
@@ -168,6 +169,7 @@ model Project {
   offtaker         User      @relation(fields: [offtaker_id], references: [id])
 
   projectInverters  Project_inverters[]
+  invoices         Invoice[]
 
   @@map("projects")
 }
@@ -187,4 +189,24 @@ model Project_inverters {
   inverter     Inverter? @relation(fields: [inverter_id], references: [id])
 
   @@map("project_inverters")
+}
+
+model Invoice {
+  id           Int       @id @default(autoincrement())
+  offtaker_id  Int
+  project_id   Int
+  amount       Float
+  total_unit   Float
+  start_time   DateTime  @default(now())
+  end_time     DateTime  @default(now())
+  status       Int       @default(0)
+  is_deleted   Int       @default(0)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  offtaker     User      @relation(fields: [offtaker_id], references: [id])
+  project      Project   @relation(fields: [project_id], references: [id])
+
+  @@map("invoices")
 }
