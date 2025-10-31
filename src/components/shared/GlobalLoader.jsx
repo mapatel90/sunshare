@@ -28,7 +28,7 @@ export default function GlobalLoader() {
         width: 56,
         height: 56,
         border: "4px solid #e5e7eb",
-        borderTopColor: "#2563eb",
+        borderTopColor: "#F6A623",
         borderRadius: "50%",
         animation: "sunshare-spin 0.8s linear infinite",
       }} />

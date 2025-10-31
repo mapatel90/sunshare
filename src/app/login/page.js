@@ -1,18 +1,46 @@
-import LoginForm from '@/components/authentication/LoginForm'
 import React from 'react'
+import Link from 'next/link'
 
 const LoginPage = () => {
     return (
-        <main className="auth-minimal-wrapper">
-            <div className="auth-minimal-inner">
-                <div className="minimal-card-wrapper">
-                    <div className="card mb-4 mt-5 mx-4 mx-sm-0 position-relative">
-                        <div className="wd-50 bg-white p-2 rounded-circle shadow-lg position-absolute translate-middle top-0 start-50">
-                            <img src="/images/logo-abbr.png" alt="img" className="img-fluid" />
-                        </div>
-                        <div className="card-body p-sm-5">
-                            <LoginForm registerPath={"/register"} resetPath={"/reset"} />
-                        </div>
+        <main
+            className="d-flex flex-column align-items-center justify-content-center min-vh-100 login-bg"
+        >
+            <div className="text-center mb-4">
+                <img
+                    src="/images/main_logo.png"
+                    alt="WeShare"
+                    className="img-fluid mb-3"
+                    style={{ maxWidth: '200px' }}
+                />
+                <h4 className="mb-2 fw-semibold">Login into your Account</h4>
+            </div>
+
+            <div
+                className="card shadow-lg border-0 text-center p-4"
+                style={{
+                    maxWidth: '560px',
+                    width: '100%',
+                    backgroundColor: 'rgba(255,255,255,0.95)',
+                    borderRadius: '1rem',
+                }}
+            >
+                <div className="card-body">                  
+                    <div className="d-flex flex-wrap justify-content-center gap-3 mt-3">
+                        <Link
+                            href="/offtaker/login"
+                            className="btn btn-warning text-dark fw-semibold px-5 py-3 shadow-sm"
+                        >
+                            Login as Offtaker
+                        </Link>
+
+                        <Link
+                            href="/investor/login"
+                            className="btn fw-semibold px-5 py-3 shadow-sm"
+                            style={{ backgroundColor: '#102C41', color: '#fff' }}
+                        >
+                            Login as Investor
+                        </Link>
                     </div>
                 </div>
             </div>
