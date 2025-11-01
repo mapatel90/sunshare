@@ -18,7 +18,7 @@ const PaymentsPage = () => {
     const [showModal, setShowModal] = useState(false)
     const [modalType, setModalType] = useState('add') // add | edit
     const [editId, setEditId] = useState(null)
-    const [loading, setLoading] = useState(false)
+    // const [loading, setLoading] = useState(false)
 
     const [form, setForm] = useState({
         invoice_id: '',
@@ -101,7 +101,7 @@ const PaymentsPage = () => {
 
         // Clear previous errors and proceed
         setFormError({});
-        setLoading(true);
+        // setLoading(true);
 
         try {
             const payload = {
@@ -131,7 +131,7 @@ const PaymentsPage = () => {
         } catch (err) {
             showErrorToast(err?.message || lang('payments.errorOccurred', 'An error occurred. Please try again.'));
         } finally {
-            setLoading(false);
+            // setLoading(false);
         }
     };
 
@@ -309,8 +309,8 @@ const PaymentsPage = () => {
                                 <button type="button" className="btn btn-secondary" onClick={closeModal}>
                                     {lang('common.cancel', 'Cancel')}
                                 </button>
-                                <button type="submit" className="btn btn-primary" disabled={loading}>
-                                    {loading ? lang('common.loading', 'Loading...') : lang('common.save', 'Save')}
+                                <button type="submit" className="btn btn-primary">
+                                    {lang('common.save', 'Save')}
                                 </button>
                             </div>
                         </form>

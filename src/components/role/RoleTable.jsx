@@ -212,15 +212,16 @@ const RoleTable = () => {
   ];
 
   /** ✅ Loader */
-  if (loading) {
-    return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
+  // Commented out - using global loader instead
+  // if (loading) {
+  //   return (
+  //     <div className="text-center py-5">
+  //       <div className="spinner-border text-primary" role="status">
+  //         <span className="visually-hidden">Loading...</span>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   /** ✅ Render */
   const backdropNode = (

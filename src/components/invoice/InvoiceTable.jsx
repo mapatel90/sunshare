@@ -12,7 +12,6 @@ import Swal from "sweetalert2";
 const InvoiceTable = () => {
   const { lang } = useLanguage();
   const [invoicesData, setInvoicesData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [modalMode, setModalMode] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [projectOptions, setProjectOptions] = useState([]);
@@ -39,7 +38,6 @@ const InvoiceTable = () => {
 
   const fetchInvoices = async () => {
     try {
-      setLoading(true);
       const response = await apiGet("/api/invoice/");
       if (response?.success && response?.data?.invoices) {
         setInvoicesData(response.data.invoices);
@@ -48,8 +46,6 @@ const InvoiceTable = () => {
       }
     } catch (e) {
       setInvoicesData([]);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -274,16 +270,6 @@ const InvoiceTable = () => {
       },
     },
   ];
-
-  if (loading) {
-    return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">{lang("table.loading")}</span>
-        </div>
-      </div>
-    );
-  }
 
   const handleCloseModal = () => {
     setModalMode(null);
