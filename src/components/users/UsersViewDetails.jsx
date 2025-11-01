@@ -107,8 +107,8 @@ const UsersViewDetails = () => {
   }
   const role = userRole?.name
   const status = statusMapping[user.status] || { labelKey: 'misc.unknown', fallback: 'Unknown', color: 'secondary' }
-  const fullName = `${user.firstName} ${user.lastName}`
-  const initials = `${user.firstName?.charAt(0) || ''}${user.lastName?.charAt(0) || ''}`
+  const fullName = `${user.fullName}`
+  const initials = `${user.fullName?.charAt(0) || ''}`
 
   return (
     <div className="row">
@@ -164,12 +164,9 @@ const UsersViewDetails = () => {
                   <h6 className="fw-bold mb-3">{lang('usersView.personalInformation', 'Personal Information')}</h6>
                   <div className="vstack gap-2">
                     <div className="hstack justify-content-between">
-                      <span className="text-muted">{lang('usersView.firstName', 'First Name')}:</span>
-                      <span className="fw-semibold">{user.firstName}</span>
+                      <span className="text-muted">{lang('usersView.fullName', 'Full Name')}:</span>
+                      <span className="fw-semibold">{user.fullName}</span>
                     </div>
-                    <div className="hstack justify-content-between">
-                      <span className="text-muted">{lang('usersView.lastName', 'Last Name')}:</span>
-                      <span className="fw-semibold">{user.lastName}</span>
                     </div>
                     <div className="hstack justify-content-between">
                       <span className="text-muted">{lang('common.email', 'Email')}:</span>

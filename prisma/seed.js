@@ -67,8 +67,7 @@ async function main() {
     where: { username: 'admin' },
     update: {},
     create: {
-      firstName: 'System',
-      lastName: 'Administrator',
+      fullName: 'System Administrator',
       username: 'admin',
       email: 'admin@sunshare.com',
       password: adminPassword,
@@ -88,8 +87,7 @@ async function main() {
 
   const sampleUsers = [
     {
-      firstName: 'John',
-      lastName: 'Manager',
+      fullName: 'John Manager',
       username: 'johnmanager',
       email: 'manager@sunshare.com',
       userRole: 2,
@@ -101,8 +99,7 @@ async function main() {
       zipcode: "400001",
     },
     {
-      firstName: 'Test',
-      lastName: 'User',
+      fullName: 'Test User',
       username: 'testuser',
       email: 'wrapcode.info@gmail.com',
       userRole: 3,
@@ -114,8 +111,7 @@ async function main() {
       zipcode: "90210",
     },
     {
-      firstName: 'Nguyen',
-      lastName: 'Van Minh',
+      fullName: 'Nguyen Van Minh',
       username: 'vietnamuser',
       email: 'vietnam.user@sunshare.com',
       userRole: 3,

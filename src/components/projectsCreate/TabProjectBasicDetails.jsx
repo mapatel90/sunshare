@@ -24,13 +24,44 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
     } = useLocationData()
     const { offtakers, loadingOfftakers, fetchOfftakerById } = useOfftakerData()
     const [loading, setLoading] = useState({ form: false })
+    const [projectTypes, setProjectTypes] = useState([])
 
-    // Offtakers are loaded by hook on mount
+    // Offtakers are loaded by hook on mount; load project types
+    useEffect(() => {
+        const loadTypes = async () => {
+            try {
+                const res = await apiGet('/api/project-types')
+                if (res?.success) setProjectTypes(res.data)
+            } catch (e) {
+                // noop
+            }
+        }
+        loadTypes()
+    }, [])
 
     // ✅ Handle all input fields
     const handleInputChange = (e) => {
         const { name, value } = e.target
         setFormData(prev => ({ ...prev, [name]: value }))
+
+        // live-clear field errors when valid
+        setError(prev => {
+            const next = { ...prev }
+            if (name in next) {
+                const numberRegex = /^[0-9]*\.?[0-9]*$/
+                const intRegex = /^\d+$/
+                let isValid = true
+                if (name === 'investorProfit' || name === 'weshareprofite' || name === 'asking_price') {
+                    isValid = value === '' || numberRegex.test(value)
+                } else if (name === 'lease_term') {
+                    isValid = value !== '' && intRegex.test(value)
+                } else {
+                    isValid = Boolean(value)
+                }
+                if (isValid) delete next[name]
+            }
+            return next
+        })
     }
 
     // ✅ Handle country/state/city dropdown changes (same pattern as UsersCreateForm)
@@ -93,7 +124,7 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
         e.preventDefault();
 
         // Basic validation
-        const requiredFields = ['project_name', 'project_type', 'offtaker', 'countryId', 'stateId', 'cityId'];
+        const requiredFields = ['project_name', 'project_type_id', 'offtaker', 'countryId', 'stateId', 'cityId', 'asking_price', 'lease_term', 'product_code'];
         const errors = {};
 
         requiredFields.forEach(field => {
@@ -103,6 +134,7 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
         });
 
         const numberRegex = /^[0-9]*\.?[0-9]*$/;
+        const intRegex = /^\d+$/;
 
         if (formData.investorProfit && !numberRegex.test(formData.investorProfit)) {
             errors.investorProfit = lang('projects.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)');
@@ -110,6 +142,25 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
 
         if (formData.weshareprofite && !numberRegex.test(formData.weshareprofite)) {
             errors.weshareprofite = lang('projects.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)');
+        }
+
+        // asking price numeric
+        if (!formData.asking_price) {
+            errors.asking_price = lang('projects.askingPriceRequired', 'Asking price is required');
+        } else if (!numberRegex.test(formData.asking_price)) {
+            errors.asking_price = lang('projects.onlynumbers', 'Only numbers are allowed (e.g. 1234.56)');
+        }
+
+        // lease term required integer
+        if (!formData.lease_term) {
+            errors.lease_term = lang('projects.leaseTermRequired', 'Lease term is required');
+        } else if (!intRegex.test(String(formData.lease_term))) {
+            errors.lease_term = lang('projects.onlynumbersWithoutdesimal', 'Only numbers are allowed (e.g. 123456)');
+        }
+
+        // product code required
+        if (!formData.product_code) {
+            errors.product_code = lang('projects.productCodeRequired', 'Product code is required');
         }
 
         if (Object.keys(errors).length > 0) {
@@ -123,7 +174,7 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
             // Prepare the project data for submission
             const projectData = {
                 name: formData.project_name,
-                type: formData.project_type,
+                project_type_id: Number(formData.project_type_id),
                 offtaker_id: Number(formData.offtaker),
                 address1: formData.address1 || '',
                 address2: formData.address2 || '',
@@ -132,6 +183,10 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
                 city_id: Number(formData.cityId),
                 zipcode: formData.zipcode || '',
                 project_manage: formData.projectManage || 'Project Manager',
+                asking_price: formData.asking_price || '',
+                lease_term: formData.lease_term ? Number(formData.lease_term) : null,
+                product_code: formData.product_code || '',
+                project_description: formData.project_description || '',
                 investor_profit: formData.investorProfit || '0',
                 weshare_profit: formData.weshareprofite || '0',
                 status: formData.status === 'active' ? 1 : 0
@@ -165,7 +220,7 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
                         </div>
                         <div className="card-body">
                             <div className="row">
-                                <div className="col-md-6 mb-3">
+                                <div className="col-md-4 mb-3">
                                     <label className="form-label">
                                         {lang('projects.projectName', 'Project Name')} <span className="text-danger">*</span>
                                     </label>
@@ -181,23 +236,26 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
                                         <div className="invalid-feedback">{error.project_name}</div>
                                     )}
                                 </div>
-                                <div className="col-md-6 mb-3">
+                                <div className="col-md-4 mb-3">
                                     <label className="form-label">
                                         {lang('projects.projectType', 'Project Type')} <span className="text-danger">*</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        className={`form-control ${error.project_type ? 'is-invalid' : ''}`}
-                                        name="project_type"
-                                        value={formData.project_type}
+                                    <select
+                                        className={`form-control ${error.project_type_id ? 'is-invalid' : ''}`}
+                                        name="project_type_id"
+                                        value={formData.project_type_id || ''}
                                         onChange={handleInputChange}
-                                        placeholder={lang('projects.projectTypePlaceholder', 'Enter project type')}
-                                    />
-                                    {error.project_type && (
-                                        <div className="invalid-feedback">{error.project_type}</div>
+                                    >
+                                        <option value="">{lang('projects.projectType', 'Project Type')}</option>
+                                        {projectTypes.map(t => (
+                                            <option key={t.id} value={t.id}>{t.type_name}</option>
+                                        ))}
+                                    </select>
+                                    {error.project_type_id && (
+                                        <div className="invalid-feedback">{error.project_type_id}</div>
                                     )}
                                 </div>
-                                <div className="col-md-6 mb-3">
+                                <div className="col-md-4 mb-3">
                                     <label className="form-label">
                                         {lang('projects.selectOfftaker', 'Select Offtaker')} <span className="text-danger">*</span>
                                     </label>
@@ -211,13 +269,66 @@ const TabProjectBasicDetails = ({ setFormData, formData, error, setError }) => {
                                         <option value="">{lang('projects.selectOfftaker', 'Select Offtaker')}</option>
                                         {offtakers.map(offtaker => (
                                             <option key={offtaker.id} value={offtaker.id}>
-                                                {offtaker.firstName} {offtaker.lastName}
+                                                {offtaker.fullName}
                                             </option>
                                         ))}
                                     </select>
                                     {error.offtaker && (
                                         <div className="invalid-feedback">{error.offtaker}</div>
                                     )}
+                                </div>
+                            </div>
+
+                            {/* row: asking_price, lease_term, product_code */}
+                            <div className="row">
+                                <div className="col-md-4 mb-3">
+                                    <label className="form-label">{lang('projects.askingPrice', 'Asking Price')} <span className="text-danger">*</span></label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${error.asking_price ? 'is-invalid' : ''}`}
+                                        name="asking_price"
+                                        value={formData.asking_price || ''}
+                                        onChange={handleInputChange}
+                                        inputMode="decimal"
+                                    />
+                                    {error.asking_price && (<div className="invalid-feedback">{error.asking_price}</div>)}
+                                </div>
+                                <div className="col-md-4 mb-3">
+                                    <label className="form-label">{lang('projects.leaseTerm', 'Lease Term')} {lang('projects.year', 'year')} <span className="text-danger">*</span></label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${error.lease_term ? 'is-invalid' : ''}`}
+                                        name="lease_term"
+                                        value={formData.lease_term || ''}
+                                        onChange={handleInputChange}
+                                        inputMode="numeric"
+                                    />
+                                    {error.lease_term && (<div className="invalid-feedback">{error.lease_term}</div>)}
+                                </div>
+                                <div className="col-md-4 mb-3">
+                                    <label className="form-label">{lang('projects.productCode', 'Product Code')} <span className="text-danger">*</span></label>
+                                    <input
+                                        type="text"
+                                        className={`form-control ${error.product_code ? 'is-invalid' : ''}`}
+                                        name="product_code"
+                                        value={formData.product_code || ''}
+                                        onChange={handleInputChange}
+                                    />
+                                    {error.product_code && (<div className="invalid-feedback">{error.product_code}</div>)}
+                                </div>
+                            </div>
+                            
+                            {/* Description full-width row */}
+                            <div className="row">
+                                <div className="col-md-12 mb-3">
+                                    <label className="form-label">{lang('projects.projectDescription', 'Project Description')}</label>
+                                    <textarea
+                                        className={`form-control ${error.project_description ? 'is-invalid' : ''}`}
+                                        name="project_description"
+                                        value={formData.project_description || ''}
+                                        onChange={handleInputChange}
+                                        rows={4}
+                                    />
                                 </div>
                             </div>
                         </div>

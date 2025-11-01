@@ -167,8 +167,8 @@ const UsersTable = () => {
       header: () => lang("common.user"),
       cell: ({ row }) => {
         const user = row.original
-        const fullName = `${user.firstName} ${user.lastName}` || 'N/A'
-        const initials = `${user.firstName?.charAt(0) || ''}${user.lastName?.charAt(0) || ''}`
+        const fullName = `${user.fullName}` || 'N/A'
+        const initials = `${user.fullName?.charAt(0) || ''}`
 
         return (
           <div className="hstack gap-3">
@@ -259,7 +259,7 @@ const UsersTable = () => {
             label: lang("common.delete"),
             icon: <FiTrash2 />,
             className: 'text-danger',
-            onClick: () => handleDeleteUser(user.id, `${user?.firstName} ${user?.lastName}`)
+            onClick: () => handleDeleteUser(user.id, `${user?.fullName}`)
           }
         ]
 

@@ -46,7 +46,7 @@ export default function AuthProvider({ children }) {
       // Transform user data to match frontend expectations
       const transformedUser = {
         id: data.data.id,
-        name: `${data.data.firstName} ${data.data.lastName}`,
+        name: `${data.data.fullName}`,
         email: data.data.email,
         phone: data.data.phoneNumber,
         role: data.data.userRole,
@@ -77,8 +77,8 @@ export default function AuthProvider({ children }) {
       console.log('📡 Login API response:', data)
 
       if (data.success) {
-        // Backend returns user with firstName, lastName structure
-        const userName = `${data.data.user.firstName} ${data.data.user.lastName}`
+        // Backend returns user with fullName structure
+        const userName = `${data.data.user.fullName}`
         console.log('✅ Login successful for user:', userName)
 
         // Store token (backend returns 'token', not 'accessToken')

@@ -13,7 +13,7 @@ router.post('/AddProject', authenticateToken, async (req, res) => {
     try {
         const {
             name,
-            type,
+            project_type_id,
             offtaker_id,
             address1,
             address2,
@@ -21,19 +21,23 @@ router.post('/AddProject', authenticateToken, async (req, res) => {
             state_id,
             city_id,
             zipcode,
+            asking_price,
+            lease_term,
+            product_code,
+            project_description,
             investor_profit = '0',
             weshare_profit = '0',
             status = 1
         } = req.body;
 
-        if (!name || !type || !offtaker_id || !address1 || !country_id || !state_id || !city_id) {
+        if (!name || !project_type_id || !offtaker_id || !address1 || !country_id || !state_id || !city_id) {
             return res.status(400).json({ success: false, message: 'Please provide all required fields' });
         }
 
         const project = await prisma.project.create({
             data: {
                 project_name: name,
-                project_type: type,
+                project_type_id: parseInt(project_type_id),
                 offtaker_id: parseInt(offtaker_id),
                 address1,
                 address2: address2 || '',
@@ -41,6 +45,10 @@ router.post('/AddProject', authenticateToken, async (req, res) => {
                 stateId: parseInt(state_id),
                 cityId: parseInt(city_id),
                 zipcode: zipcode || '',
+                asking_price: asking_price || '',
+                lease_term: lease_term !== undefined && lease_term !== null && `${lease_term}` !== '' ? parseInt(lease_term) : null,
+                product_code: product_code || '',
+                project_description: project_description || '',
                 investor_profit,
                 weshare_profit,
                 status: parseInt(status)
@@ -50,7 +58,7 @@ router.post('/AddProject', authenticateToken, async (req, res) => {
                 state: true,
                 city: true,
                 offtaker: {
-                    select: { id: true, firstName: true, lastName: true, email: true }
+                    select: { id: true, fullName: true, email: true }
                 }
             }
         });
@@ -92,11 +100,12 @@ router.get('/', authenticateToken, async (req, res) => {
         where,
         include: {
           offtaker: {
-            select: { firstName: true, lastName: true, email: true }
+            select: { fullName: true, email: true }
           },
           city: true,
           state: true,
-          country: true
+          country: true,
+          projectType: true
         },
         skip: offset,
         take: limitInt,
@@ -150,10 +159,11 @@ router.get('/:id', authenticateToken, async (req, res) => {
     const project = await prisma.project.findUnique({
       where: { id: parseInt(id) },
       include: {
-        offtaker: { select: { id: true, firstName: true, lastName: true, email: true } },
+        offtaker: { select: { id: true, fullName: true, email: true } },
         city: true,
         state: true,
         country: true,
+        projectType: true,
       },
     });
 
@@ -174,7 +184,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
     const { id } = req.params;
     const {
       name,
-      type,
+      project_type_id,
       offtaker_id,
       address1,
       address2,
@@ -182,6 +192,10 @@ router.put('/:id', authenticateToken, async (req, res) => {
       state_id,
       city_id,
       zipcode,
+      asking_price,
+      lease_term,
+      product_code,
+      project_description,
       investor_profit = '0',
       weshare_profit = '0',
       status,
@@ -191,7 +205,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
       where: { id: parseInt(id) },
       data: {
         ...(name !== undefined && { project_name: name }),
-        ...(type !== undefined && { project_type: type }),
+        ...(project_type_id !== undefined && { project_type_id: parseInt(project_type_id) }),
         ...(offtaker_id !== undefined && { offtaker_id: parseInt(offtaker_id) }),
         ...(address1 !== undefined && { address1 }),
         ...(address2 !== undefined && { address2 }),
@@ -199,15 +213,20 @@ router.put('/:id', authenticateToken, async (req, res) => {
         ...(state_id !== undefined && { stateId: parseInt(state_id) }),
         ...(city_id !== undefined && { cityId: parseInt(city_id) }),
         ...(zipcode !== undefined && { zipcode }),
+        ...(asking_price !== undefined && { asking_price: asking_price || '' }),
+        ...(lease_term !== undefined && { lease_term: (lease_term !== null && `${lease_term}` !== '' ? parseInt(lease_term) : null) }),
+        ...(product_code !== undefined && { product_code: product_code || '' }),
+        ...(project_description !== undefined && { project_description: project_description || '' }),
         ...(investor_profit !== undefined && { investor_profit }),
         ...(weshare_profit !== undefined && { weshare_profit }),
         ...(status !== undefined && { status: parseInt(status) }),
       },
       include: {
-        offtaker: { select: { id: true, firstName: true, lastName: true, email: true } },
+        offtaker: { select: { id: true, fullName: true, email: true } },
         city: true,
         state: true,
         country: true,
+        projectType: true,
       },
     });
 

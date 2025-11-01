@@ -20,12 +20,21 @@ const ProfileModal = () => {
     return (
         <div className="dropdown nxl-h-item">
             <a href="#" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
-                <Image width={40} height={40} src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar me-0" />
+                {/* Replace image with default user icon */}
+                <span style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#f0f0f0' }}>
+                    <FiUser size={24} color="#555" />
+                </span>
             </a>
             <div className="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown">
                 <div className="dropdown-header">
                     <div className="d-flex align-items-center">
-                        <Image width={40} height={40} src={user?.avatar || "/images/avatar/1.png"} alt="user-image" className="img-fluid user-avtar" />
+                        {user?.avatar ? (
+                            <Image width={40} height={40} src={user.avatar} alt="user-image" className="img-fluid user-avtar" />
+                        ) : (
+                            <span style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#f0f0f0', marginRight: '12px' }}>
+                                <FiUser size={24} color="#555" />
+                            </span>
+                        )}
                         <div>
                             {/* <h6 className="text-dark mb-0">{user?.name || 'User'} <span className="badge bg-soft-success text-success ms-1">{user?.userRole?.toUpperCase() || 'USER'}</span></h6> */}
                             <h6 className="text-dark mb-0">{user?.name || 'User'}</h6>

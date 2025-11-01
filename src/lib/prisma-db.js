@@ -75,8 +75,7 @@ export class DatabaseAdapter {
       const where = {};
       if (search) {
         where.OR = [
-          { firstName: { contains: search, mode: 'insensitive' } },
-          { lastName: { contains: search, mode: 'insensitive' } },
+          { fullName: { contains: search, mode: 'insensitive' } },
           { email: { contains: search, mode: 'insensitive' } }
         ];
       }

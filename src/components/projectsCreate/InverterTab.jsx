@@ -156,17 +156,17 @@ const InverterTab = ({ projectId }) => {
       header: () => lang('inverter.inverterName', 'Inverter Name'),
       cell: info => {
         const row = info.row.original;
-        const name = row.inverter?.companyName || '-';
-        return row.inverter?.companyName || '-';
+        const name = row.inverter?.inverterName || '-';
+        const type = row.inverter?.inverterType?.type || inverterTypesMap[row.inverter?.inverter_type_id] || '';
+        return type ? `${name} (${type})` : name;
       }
     },
     {
-      accessorKey: 'inverter.inverterType.type',
-      header: () => lang('inverter.type', 'Type'),
+      accessorKey: 'inverter.companyName',
+      header: () => lang('inverter.companyName', 'Company Name'),
       cell: info => {
         const inv = info.row.original.inverter;
-        const type = inv?.inverterType?.type || inverterTypesMap[inv?.inverter_type_id];
-        return type || '-';
+        return inv.companyName;
       },
     },
     {
@@ -252,9 +252,12 @@ const InverterTab = ({ projectId }) => {
               <div className="modal-body">
                 {/* Dropdown for inverter */}
                 <div className="mb-3">
-                  <label className="form-label">{lang('inverter.inverterName', 'Inverter')}</label>
+                  <label className="form-label">{lang('inverter.inverter', 'Inverter')}</label>
                   {console.log("🔍 Inverter List:", inverterList)}
-                  <SelectDropdown options={inverterList.map(inv => ({ value: inv.id, label: inv.companyName + (inv.inverter_type_id ? ` (${inv.inverter_type_id})` : ""), }))}
+                  <SelectDropdown options={inverterList.map(inv => ({
+                    value: inv.id,
+                    label: inv.inverterName + ` - ` + inv.inverter_type_id + (inv.companyName ? ` (${inv.companyName})` : ""),
+                  }))}
                     selectedOption={selectedInverter?.id}
                     onSelectOption={opt => setSelectedInverter(inverterList.find(i => i.id === opt.value))}
                     defaultSelect={lang('inverter.selectInverter', 'Select Inverter')}

@@ -17,8 +17,7 @@ router.get('/', authenticateToken, async (req, res) => {
     const where = {};
     if (search) {
       where.OR = [
-        { firstName: { contains: search, mode: 'insensitive' } },
-        { lastName: { contains: search, mode: 'insensitive' } },
+        { fullName: { contains: search, mode: 'insensitive' } },
         { email: { contains: search, mode: 'insensitive' } }
       ];
     }
@@ -57,8 +56,7 @@ router.get('/', authenticateToken, async (req, res) => {
         where,
         // select: {
         //   id: true,
-        //   firstName: true,
-        //   lastName: true,
+        //   fullName: true,
         //   email: true,
         //   phoneNumber: true,
         //   userRole: true,
@@ -121,8 +119,7 @@ router.post('/', authenticateToken, async (req, res) => {
   try {
     const {
       username,
-      firstName,
-      lastName,
+      fullName,
       email,
       phoneNumber,
       password,
@@ -137,10 +134,10 @@ router.post('/', authenticateToken, async (req, res) => {
     } = req.body;
 
     // Validate required fields
-    if (!username || !firstName || !lastName || !email || !password) {
+    if (!username || !fullName || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'First name, last name, email, and password are required'
+        message: 'Full name, email, and password are required'
       });
     }
 
@@ -171,8 +168,7 @@ router.post('/', authenticateToken, async (req, res) => {
     const newUser = await prisma.user.create({
       data: {
         username,
-        firstName,
-        lastName,
+        fullName,
         email,
         phoneNumber,
         password: hashedPassword,
@@ -189,8 +185,7 @@ router.post('/', authenticateToken, async (req, res) => {
       select: {
         id: true,
         username: true,
-        firstName: true,
-        lastName: true,
+        fullName: true,
         email: true,
         phoneNumber: true,
         userRole: true,
@@ -271,8 +266,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
       where: { id: parseInt(id) },
       select: {
         id: true,
-        firstName: true,
-        lastName: true,
+        fullName: true,
         username: true,
         email: true,
         password: true,
@@ -336,8 +330,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      firstName,
-      lastName,
+      fullName,
       email,
       username,
       phoneNumber,
@@ -381,8 +374,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
 
     // Build update data
     const updateData = {
-      ...(firstName && { firstName }),
-      ...(lastName && { lastName }),
+      ...(fullName && { fullName }),
       ...(username && { username }),
       ...(email && { email }),
       ...(phoneNumber !== undefined && { phoneNumber }),
@@ -409,8 +401,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
       data: updateData,
       select: {
         id: true,
-        firstName: true,
-        lastName: true,
+        fullName: true,
         username: true,
         email: true,
         phoneNumber: true,
@@ -570,8 +561,7 @@ router.post('/GetUserByRole', authenticateToken, async (req, res) => {
       where: { userRole: parseInt(user_role) },
       select: {
         id: true,
-        firstName: true,
-        lastName: true,
+        fullName: true,
         username: true,
         email: true,
         phoneNumber: true,
