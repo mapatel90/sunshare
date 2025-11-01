@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
+import React from 'react'
+import Link from 'next/link'
 import { Box, Card, CardContent, Typography } from "@mui/material";
-import RegisterForm from "@/components/authentication/RegisterForm";
+import LoginForm from '@/components/authentication/LoginForm'
 
-const RegisterPage = () => {
+const OfftakerLoginPage = () => {
     return (
         <Box
             className="loginSection"
@@ -31,7 +31,7 @@ const RegisterPage = () => {
                     }}
                 />
                 <Typography variant="h5" fontWeight={600}>
-                    Sign Up into your Account!
+                    Login into your Account
                 </Typography>
             </Box>
 
@@ -47,11 +47,11 @@ const RegisterPage = () => {
                 }}
             >
                 <CardContent>
-                    <RegisterForm loginPath="/login" />
+                    <LoginForm registerPath={"/register"} resetPath={"/reset"} />
                 </CardContent>
             </Card>
         </Box>
-    );
-};
+    )
+}
 
-export default RegisterPage;
+export default OfftakerLoginPage

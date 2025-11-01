@@ -189,7 +189,7 @@ const PaymentsPage = () => {
             header: () => lang('payments.offtaker', 'Offtaker'),
             cell: ({ row }) => {
                 const user = row.original?.offtaker
-                return user ? `${user.firstName} ${user.lastName}` : '-'
+                return user ? `${user.fullName}` : '-'
             }
         },
         {
@@ -351,15 +351,23 @@ const PaymentsPage = () => {
                                 {formError.offtaker_id && <FormHelperText>{formError.offtaker_id}</FormHelperText>}
                             </FormControl>
 
-                            <TextField
-                                label={`${lang('payments.amount', 'Amount')} *`}
-                                type="text"
-                                value={form.amount}
-                                onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                                error={!!formError.amount}
-                                helperText={formError.amount}
-                                fullWidth
-                            />
+                                <div className="mb-3">
+                                    <label className="form-label">
+                                        {lang('payments.offtaker', 'Offtaker')} <span className="text-danger">*</span>
+                                    </label>
+                                    <select
+                                        className={`form-control ${formError.offtaker_id ? 'is-invalid' : ''}`}
+                                        value={form.offtaker_id}
+                                        onChange={(e) => setForm({ ...form, offtaker_id: e.target.value })}
+                                        disabled={loadingOfftakers}
+                                    >
+                                        <option value="">{lang('payments.selectOfftaker', 'Select Offtaker')}</option>
+                                        {offtakers.map(o => (
+                                            <option key={o.id} value={o.id}>{o.fullName}</option>
+                                        ))}
+                                    </select>
+                                    {formError.offtaker_id && <div className="invalid-feedback">{formError.offtaker_id}</div>}
+                                </div>
 
                             <FormControl fullWidth error={!!formError.status}>
                                 <InputLabel id="status-select-label">{lang('common.status', 'Status')} *</InputLabel>

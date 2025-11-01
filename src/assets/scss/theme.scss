@@ -84,6 +84,12 @@
 @import "themes/pages/help-knowledgebase";
 @import "themes/pages/setting";
 
+/*
+	Custom user styles - add your classes to `custom.scss` (same folder)
+	Gujarati: tamara custom class ahiya add karo ane app ma use karo.
+*/
+@import "custom";
+
 // Pluginss
 @import "themes/plugins/pace";
 @import "themes/plugins/select2";
@@ -108,3 +114,5 @@
 <--!----------------------------------------------------------------!-->
 */
 @import "themes/layouts/nxl-responsive";
+
+

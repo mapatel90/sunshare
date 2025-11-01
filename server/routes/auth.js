@@ -14,7 +14,7 @@ router.post('/register', async (req, res) => {
       email,
       password,
       phoneNumber,
-      userRole = 3, // Default to role 3 (user) as per schema
+      userRole, 
       address1,
       address2,
       city,

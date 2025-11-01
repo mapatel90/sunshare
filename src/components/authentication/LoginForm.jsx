@@ -2,15 +2,29 @@
 
 import Link from 'next/link'
 import React, { useState } from 'react'
-import { FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi'
+import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { 
+    Box, 
+    TextField, 
+    Button, 
+    Typography, 
+    Alert, 
+    IconButton, 
+    InputAdornment,
+    Checkbox,
+    FormControlLabel
+} from '@mui/material'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLanguage } from '@/contexts/LanguageContext'
-
 const LoginForm = ({ registerPath, resetPath }) => {
+    const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
+    const [usernameError, setUsernameError] = useState('')
+    const [passwordError, setPasswordError] = useState('')
     const { login } = useAuth()
     const { lang } = useLanguage()
 
@@ -18,89 +32,184 @@ const LoginForm = ({ registerPath, resetPath }) => {
         e.preventDefault()
         setLoading(true)
         setError('')
+        setUsernameError('')
+        setPasswordError('')
 
-    const result = await login(username, password)
-        
+        // Validation
+        let isValid = true
+
+        if (!username.trim()) {
+            setUsernameError(lang('validation.usernameRequired'))
+            isValid = false
+        }
+
+        if (!password.trim()) {
+            setPasswordError(lang('validation.passwordRequired'))
+            isValid = false
+        } else if (password.length < 6) {
+            setPasswordError(lang('validation.passwordMinLength'))
+            isValid = false
+        }
+
+        if (!isValid) {
+            setLoading(false)
+            return
+        }
+
+        const result = await login(username, password)
+
         if (!result.success) {
             setError(result.message)
         }
-        
+
         setLoading(false)
     }
 
     return (
-        <>
-            <h2 className="fs-20 fw-bolder mb-4">{lang('authentication.login')}</h2>
-            {/* <h4 className="fs-13 fw-bold mb-2">Login to your account</h4>
-            <p className="fs-12 fw-medium text-muted">Thank you for get back <strong>Sunshare</strong> web applications, let's access our the best recommendation for you.</p>
-             */}
+        <Box>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                <Link href="/login" style={{ textDecoration: 'none', color: '#6c757d', fontSize: '0.9375rem' }}>
+                    <span style={{ marginRight: '0.25rem' }}>&#8592;</span> {lang('common.back')}
+                </Link>
+            </Box>
             {error && (
-                <div className="alert alert-danger" role="alert">
+                <Alert severity="error" sx={{ mb: 3 }}>
                     {error}
-                </div>
+                </Alert>
             )}
-            
-            <form onSubmit={handleSubmit} className="w-100 mt-4 pt-2">
-                <div className="mb-4">
-                    <input 
-                        type="text" 
-                        className="form-control" 
+
+            <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', mt: 2 }}>
+                <Box sx={{ mb: 3 }}>
+                    <Typography variant="body2" sx={{ mb: 1, color: '#696969', fontWeight: 500 }}>
+                        {lang('authentication.username') || 'Username'} *
+                    </Typography>
+                    <TextField
+                        fullWidth
                         placeholder={lang('authentication.username')}
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required 
+                        onChange={(e) => {
+                            setUsername(e.target.value)
+                            if (usernameError) setUsernameError('')
+                        }}
+                        error={!!usernameError}
+                        helperText={usernameError}
+                        required
+                        variant="outlined"
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                backgroundColor: '#fff',
+                                borderRadius: '8px',
+                                '& fieldset': {
+                                    borderColor: '#e0e0e0',
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: '#F6A623',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#F6A623',
+                                    borderWidth: '2px',
+                                },
+                            },
+                        }}
                     />
-                </div>
-                <div className="mb-3">
-                    <input 
-                        type="password" 
-                        className="form-control" 
-                        placeholder={lang('authentication.password')} 
+                </Box>
+
+                <Box sx={{ mb: 3 }}>
+                    <Typography variant="body2" sx={{ mb: 1, color: '#696969', fontWeight: 500 }}>
+                        {lang('authentication.password') || 'Password'} *
+                    </Typography>
+                    <TextField
+                        fullWidth
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder={lang('authentication.password')}
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required 
+                        onChange={(e) => {
+                            setPassword(e.target.value)
+                            if (passwordError) setPasswordError('')
+                        }}
+                        error={!!passwordError}
+                        helperText={passwordError}
+                        required
+                        variant="outlined"
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                backgroundColor: '#fff',
+                                borderRadius: '8px',
+                                '& fieldset': {
+                                    borderColor: '#e0e0e0',
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: '#F6A623',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#F6A623',
+                                    borderWidth: '2px',
+                                },
+                            },
+                        }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={() => setShowPassword((v) => !v)}
+                                        edge="end"
+                                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                        sx={{ color: '#696969' }}
+                                    >
+                                        {showPassword ? <FiEye size={18} /> : <FiEyeOff size={18} />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
-                </div>
-                <div className="d-flex align-items-center justify-content-between">
-                    <div>
-                        <div className="custom-control custom-checkbox">
-                            <input type="checkbox" className="custom-control-input" id="rememberMe" />
-                            <label className="custom-control-label c-pointer" htmlFor="rememberMe">{lang('authentication.rememberMe')}</label>
-                        </div>
-                    </div>
-                    <div>
-                        <Link href={resetPath} className="fs-11 text-primary">{lang('authentication.forgotPassword')}?</Link>
-                    </div>
-                </div>
-                <div className="mt-5">
-                    <button 
-                        type="submit" 
-                        className="btn btn-lg btn-primary w-100"
-                        disabled={loading}
+                </Box>
+
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 4 }}>
+                    <FormControlLabel
+                        control={<Checkbox id="rememberMe" />}
+                        label={lang('authentication.rememberMe')}
+                    />
+                    <Link
+                        href={resetPath}
+                        style={{ fontSize: '0.75rem', color: '#2386FF', textDecoration: 'none' }}
                     >
-                        {loading ? lang('common.loading') : lang('authentication.signIn')}
-                    </button>
-                </div>
-            </form>
-            {/* <div className="w-100 mt-5 text-center mx-auto">
-                <div className="mb-4 border-bottom position-relative"><span className="small py-1 px-3 text-uppercase text-muted bg-white position-absolute translate-middle">or</span></div>
-                <div className="d-flex align-items-center justify-content-center gap-2">
-                    <a href="#" className="btn btn-light-brand flex-fill" data-toggle="tooltip" data-title="Login with Facebook">
-                        <FiFacebook size={16} />
-                    </a>
-                    <a href="#" className="btn btn-light-brand flex-fill" data-toggle="tooltip" data-title="Login with Twitter">
-                        <FiTwitter size={16} />
-                    </a>
-                    <a href="#" className="btn btn-light-brand flex-fill" data-toggle="tooltip" data-title="Login with Github">
-                        <FiGithub size={16} className='text' />
-                    </a>
-                </div>
-            </div> */}
-            {/* <div className="mt-5 text-muted">
-                <span> Don't have an account?</span>
-                <Link href={registerPath} className="fw-bold"> Create an Account</Link>
-            </div> */}
-        </>
+                        {lang('authentication.forgotPassword')}?
+                    </Link>
+                </Box>
+
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    size="large"
+                    disabled={loading}
+                    sx={{
+                        backgroundColor: '#F6A623',
+                        color: '#fff',
+                        py: 1.5,
+                        fontSize: '1rem',
+                        textTransform: 'none',
+                        '&:hover': {
+                            backgroundColor: '#e09620',
+                        },
+                    }}
+                >
+                    {loading ? lang('common.loading') : lang('authentication.login')}
+                </Button>
+            </Box>
+
+            <Box sx={{ mt: 3, textAlign: 'center' }}>
+                <Typography variant="body2" color="text.secondary">
+                    Don't have an account?{' '}
+                    <Link
+                        href={registerPath}
+                        style={{ fontWeight: 600, color: '#0d6efd', textDecoration: 'none' }}
+                    >
+                        {lang('authentication.signUp') || 'Sign up'}
+                    </Link>
+                </Typography>
+            </Box>
+        </Box>
     )
 }
 

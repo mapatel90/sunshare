@@ -1,0 +1,151 @@
+/*
+  custom.scss
+  - Place your project-specific classes and utilities here.
+  - Gujarati note: Aa file ma tame tamara custom class add kari ne app ma use kari shako cho.
+    (આ ફાઇલમાં તમે તમારા કસ્ટમ ક્લાસ એડ કરી ને એપમાં ઉપયોગ કરી શકો છો)
+*/
+
+// Global font family
+* {
+  font-family: "Poppins", sans-serif !important;
+}
+
+body {
+  font-family: "Poppins", sans-serif !important;
+}
+
+// Utility spacing classes
+.u-mt-1 {
+    margin-top: .25rem !important;
+}
+
+.u-mt-2 {
+    margin-top: .5rem !important;
+}
+
+.u-mt-3 {
+    margin-top: 1rem !important;
+}
+
+.u-mb-1 {
+    margin-bottom: .25rem !important;
+}
+
+.u-mb-2 {
+    margin-bottom: .5rem !important;
+}
+
+.u-p-1 {
+    padding: .25rem !important;
+}
+
+.u-p-2 {
+    padding: .5rem !important;
+}
+
+// Text helpers
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-muted-compact {
+    color: #6c757d;
+    font-size: .875rem;
+}
+
+// Button example
+.btn-custom {
+    background-color: #0b76ef;
+    color: #fff;
+    border-radius: .375rem;
+    padding: .5rem .75rem;
+    display: inline-block;
+    text-decoration: none;
+
+    &:hover {
+        background-color: darken(#0b76ef, 7%);
+    }
+}
+
+// Card variant
+.card-outline {
+    border: 1px solid rgba(0, 0, 0, .06);
+    background-color: #fff;
+}
+
+// Responsive helper (example)
+@media (max-width: 576px) {
+    .hide-xs {
+        display: none !important;
+    }
+}
+
+// Example component class with Gujarati comment
+/* Example: .promo-banner - homepage par mukva mate */
+.promo-banner {
+    background: linear-gradient(90deg, #0b76ef 0%, #00c6ff 100%);
+    color: #fff;
+    padding: 1rem;
+    border-radius: .5rem;
+    box-shadow: 0 4px 12px rgba(11, 118, 239, 0.12);
+}
+
+.btn-orange {
+    background-color: #F6A623;
+    color: #FFFFFF;
+    padding: .5rem 1rem;
+    border-radius: .6rem;
+    height: 50px;
+    width: 478px;
+}
+
+// .login-bg {
+//     background-image: linear-gradient(to bottom, rgba(237, 237, 237, 0.4), rgba(255,230,188,0.4), rgba(255,230,188,0.4) ), url('/images/footer-one-bg1.jpg');
+//     background-size: 100% 100%, cover;
+//     background-position: center center;
+//     background-attachment: fixed;
+//     background-repeat: no-repeat, no-repeat;
+//     padding: 2rem;
+// }
+
+// Login section styles Start
+.loginSection {
+  position: relative;
+  background: url('/images/loginBgImg.png') no-repeat center center top;
+  background-size: contain;
+}
+
+.loginSection::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/images/footer-one-bg1.svg') no-repeat center bottom;
+  background-size: contain;
+  background-blend-mode: lighten;
+  opacity: 1;
+  z-index: 0;
+}
+
+.loginSection::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(217, 217, 217, 0) 0%, #FFE6BC 100%);
+  z-index: 0;
+}
+
+/* Ensure content is above the background layers */
+.loginSection > * {
+  position: relative;
+  z-index: 1;
+}
+
+// Login section styles End

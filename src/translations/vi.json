@@ -74,13 +74,19 @@
     "manageAllYourCrm": "Quản lý tất cả Sunshare crm của bạn",
     "letsSetupYourAccount": "Hãy thiết lập tất cả cho bạn, để bạn có thể xác minh tài khoản cá nhân và bắt đầu thiết lập hồ sơ của mình.",
     "fullName": "Họ và tên",
+    "firstName": "Tên",
+    "lastName": "Họ",
     "username": "Tên người dùng",
     "generatePassword": "Tạo mật khẩu",
     "showHidePassword": "Hiện/Ẩn mật khẩu",
     "receiveCommunityEmails": "Có, tôi muốn nhận email cộng đồng Sunshare",
     "agreeToTerms": "Tôi đồng ý với tất cả",
     "termsConditions": "Điều khoản & Điều kiện",
-    "fees": "Phí"
+    "fees": "Phí",
+    "registerAs": "Đăng ký với tư cách",
+    "becomeOfftaker": "Trở thành Offtaker",
+    "becomeInvestor": "Trở thành Nhà đầu tư",
+    "termsPolicy": "Điều khoản & Chính sách"
   },
   "common": {
     "save": "Lưu",
@@ -177,7 +183,19 @@
     "typeRequired": "Loại biến tần là bắt buộc",
     "apiKeyRequired": "API key là bắt buộc",
     "secretKeyRequired": "Secret key là bắt buộc",
-    "newpasswordsNotMatch": "Mật khẩu mới không khớp"
+    "newpasswordsNotMatch": "Mật khẩu mới không khớp",
+    "usernameRequired": "Tên người dùng là bắt buộc",
+    "passwordRequired": "Mật khẩu là bắt buộc",
+    "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự",
+    "emailRequired": "Email là bắt buộc",
+    "emailInvalidFormat": "Vui lòng nhập địa chỉ email hợp lệ",
+    "confirmPasswordRequired": "Xác nhận mật khẩu là bắt buộc",
+    "passwordsDoNotMatch": "Mật khẩu không khớp",
+    "usernameAlreadyExists": "Tên người dùng đã tồn tại",
+    "emailAlreadyExists": "Email đã tồn tại",
+    "userTypeRequired": "Vui lòng chọn loại người dùng",
+    "firstNameRequired": "Tên là bắt buộc",
+    "lastNameRequired": "Họ là bắt buộc"
   },
   "menu": {
     "dashboards": "Bảng điều khiển",

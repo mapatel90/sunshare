@@ -1,23 +1,107 @@
-import LoginForm from '@/components/authentication/LoginForm'
-import React from 'react'
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { Box, Card, CardContent, Button, Typography } from "@mui/material";
 
 const LoginPage = () => {
     return (
-        <main className="auth-minimal-wrapper">
-            <div className="auth-minimal-inner">
-                <div className="minimal-card-wrapper">
-                    <div className="card mb-4 mt-5 mx-4 mx-sm-0 position-relative">
-                        <div className="wd-50 bg-white p-2 rounded-circle shadow-lg position-absolute translate-middle top-0 start-50">
-                            <img src="/images/logo-abbr.png" alt="img" className="img-fluid" />
-                        </div>
-                        <div className="card-body p-sm-5">
-                            <LoginForm registerPath={"/register"} resetPath={"/reset"} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    )
-}
+        <Box
+            className="loginSection"
+            sx={{
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+                p: 2,
+            }}
+        >
+            {/* Logo + Title */}
+            <Box sx={{ textAlign: "center", mb: 4 }}>
+                <Box
+                    component="img"
+                    src="/images/main_logo.png"
+                    alt="WeShare"
+                    sx={{
+                        maxWidth: 200,
+                        mb: 2,
+                    }}
+                />
+                <Typography variant="h5" fontWeight={600}>
+                    Login into your Account
+                </Typography>
+            </Box>
 
-export default LoginPage
+            {/* Card */}
+            <Card
+                elevation={6}
+                sx={{
+                    maxWidth: 560,
+                    width: "100%",
+                    borderRadius: 3,
+                    backgroundColor: "rgba(255,255,255,0.95)",
+                    textAlign: "center",
+                    p: 3,
+                }}
+            >
+                <CardContent>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            justifyContent: "center",
+                            gap: 2,
+                            mt: 2,
+                        }}
+                    >
+                        <Button
+                            component={Link}
+                            href="/offtaker/login"
+                            variant="contained"
+                            sx={{
+                                backgroundColor: "#FFC107",
+                                color: "#FFFFFF",
+                                fontWeight: 600,
+                                px: 5,
+                                py: 1.5,
+                                boxShadow: 2,
+                                textDecoration: 'none',
+                                "&:hover": {
+                                    backgroundColor: "#ffb300",
+                                    color: "#FFFFFF",
+                                },
+                            }}
+                        >
+                            Login as Offtaker
+                        </Button>
+
+                        <Button
+                            component={Link}
+                            href="/investor/login"
+                            variant="contained"
+                            sx={{
+                                backgroundColor: "#696969",
+                                color: "#FFFFFF",
+                                fontWeight: 600,
+                                px: 5,
+                                py: 1.5,
+                                boxShadow: 2,
+                                textDecoration: 'none',
+                                "&:hover": {
+                                    backgroundColor: "#0d2333",
+                                    color: "#FFFFFF",
+                                },
+                            }}
+                        >
+                            Login as Investor
+                        </Button>
+                    </Box>
+                </CardContent>
+            </Card>
+        </Box>
+    );
+};
+
+export default LoginPage;

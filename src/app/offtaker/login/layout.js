@@ -1,9 +1,9 @@
 import LanguageSelector from '@/components/shared/LanguageSelector'
 
-export default function RegisterLayout({ children }) {
+export default function OfftakerLoginLayout({ children }) {
   return (
     <div className="auth-layout">
-      <LanguageSelector />
+      {/* <LanguageSelector /> */}
       {children}
     </div>
   )
