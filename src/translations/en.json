@@ -72,13 +72,19 @@
     "manageAllYourCrm": "Manage all your Sunshare crm",
     "letsSetupYourAccount": "Let's get you all setup, so you can verify your personal account and begin setting up your profile.",
     "fullName": "Full Name",
+    "firstName": "First Name",
+    "lastName": "Last Name",
     "username": "Username",
     "generatePassword": "Generate Password",
     "showHidePassword": "Show/Hide Password",
     "receiveCommunityEmails": "Yes, I want to receive Sunshare community emails",
     "agreeToTerms": "I agree to all the",
     "termsConditions": "Terms & Conditions",
-    "fees": "Fees"
+    "fees": "Fees",
+    "registerAs": "Register as",
+    "becomeOfftaker": "Become an Offtaker",
+    "becomeInvestor": "Become an Investor",
+    "termsPolicy": "Terms & Policy"
   },
   "common": {
     "save": "Save",
@@ -177,7 +183,19 @@
     "apiKeyRequired": "API key is required",
     "secretKeyRequired": "Secret key is required",
     "newpasswordsNotMatch": "New passwords do not match",
-    "statusRequired": "Status is required"
+    "statusRequired": "Status is required",
+    "usernameRequired": "Username is required",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "emailRequired": "Email is required",
+    "emailInvalidFormat": "Please enter a valid email address",
+    "confirmPasswordRequired": "Confirm password is required",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "usernameAlreadyExists": "Username already exists",
+    "emailAlreadyExists": "Email already exists",
+    "userTypeRequired": "Please select user type",
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required"
   },
   "menu": {
     "dashboards": "Dashboards",

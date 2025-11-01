@@ -1,51 +1,107 @@
-import React from 'react'
-import Link from 'next/link'
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { Box, Card, CardContent, Button, Typography } from "@mui/material";
 
 const LoginPage = () => {
     return (
-        <main
-            className="d-flex flex-column align-items-center justify-content-center min-vh-100 login-bg"
+        <Box
+            className="loginSection"
+            sx={{
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+                p: 2,
+            }}
         >
-            <div className="text-center mb-4">
-                <img
+            {/* Logo + Title */}
+            <Box sx={{ textAlign: "center", mb: 4 }}>
+                <Box
+                    component="img"
                     src="/images/main_logo.png"
                     alt="WeShare"
-                    className="img-fluid mb-3"
-                    style={{ maxWidth: '200px' }}
+                    sx={{
+                        maxWidth: 200,
+                        mb: 2,
+                    }}
                 />
-                <h4 className="mb-2 fw-semibold">Login into your Account</h4>
-            </div>
+                <Typography variant="h5" fontWeight={600}>
+                    Login into your Account
+                </Typography>
+            </Box>
 
-            <div
-                className="card shadow-lg border-0 text-center p-4"
-                style={{
-                    maxWidth: '560px',
-                    width: '100%',
-                    backgroundColor: 'rgba(255,255,255,0.95)',
-                    borderRadius: '1rem',
+            {/* Card */}
+            <Card
+                elevation={6}
+                sx={{
+                    maxWidth: 560,
+                    width: "100%",
+                    borderRadius: 3,
+                    backgroundColor: "rgba(255,255,255,0.95)",
+                    textAlign: "center",
+                    p: 3,
                 }}
             >
-                <div className="card-body">                  
-                    <div className="d-flex flex-wrap justify-content-center gap-3 mt-3">
-                        <Link
+                <CardContent>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            justifyContent: "center",
+                            gap: 2,
+                            mt: 2,
+                        }}
+                    >
+                        <Button
+                            component={Link}
                             href="/offtaker/login"
-                            className="btn btn-warning text-dark fw-semibold px-5 py-3 shadow-sm"
+                            variant="contained"
+                            sx={{
+                                backgroundColor: "#FFC107",
+                                color: "#FFFFFF",
+                                fontWeight: 600,
+                                px: 5,
+                                py: 1.5,
+                                boxShadow: 2,
+                                textDecoration: 'none',
+                                "&:hover": {
+                                    backgroundColor: "#ffb300",
+                                    color: "#FFFFFF",
+                                },
+                            }}
                         >
                             Login as Offtaker
-                        </Link>
+                        </Button>
 
-                        <Link
+                        <Button
+                            component={Link}
                             href="/investor/login"
-                            className="btn fw-semibold px-5 py-3 shadow-sm"
-                            style={{ backgroundColor: '#102C41', color: '#fff' }}
+                            variant="contained"
+                            sx={{
+                                backgroundColor: "#696969",
+                                color: "#FFFFFF",
+                                fontWeight: 600,
+                                px: 5,
+                                py: 1.5,
+                                boxShadow: 2,
+                                textDecoration: 'none',
+                                "&:hover": {
+                                    backgroundColor: "#0d2333",
+                                    color: "#FFFFFF",
+                                },
+                            }}
                         >
                             Login as Investor
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        </main>
-    )
-}
+                        </Button>
+                    </Box>
+                </CardContent>
+            </Card>
+        </Box>
+    );
+};
 
-export default LoginPage
+export default LoginPage;

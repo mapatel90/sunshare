@@ -5,6 +5,15 @@
     (આ ફાઇલમાં તમે તમારા કસ્ટમ ક્લાસ એડ કરી ને એપમાં ઉપયોગ કરી શકો છો)
 */
 
+// Global font family
+* {
+  font-family: "Poppins", sans-serif !important;
+}
+
+body {
+  font-family: "Poppins", sans-serif !important;
+}
+
 // Utility spacing classes
 .u-mt-1 {
     margin-top: .25rem !important;
@@ -92,11 +101,51 @@
     width: 478px;
 }
 
-.login-bg {
-    background-image: linear-gradient(to bottom, rgba(237, 237, 237, 0.4), rgba(255,230,188,0.4), rgba(255,230,188,0.4) ), url('/images/footer-one-bg1.jpg');
-    background-size: 100% 100%, cover;
-    background-position: center center;
-    background-attachment: fixed;
-    background-repeat: no-repeat, no-repeat;
-    padding: 2rem;
+// .login-bg {
+//     background-image: linear-gradient(to bottom, rgba(237, 237, 237, 0.4), rgba(255,230,188,0.4), rgba(255,230,188,0.4) ), url('/images/footer-one-bg1.jpg');
+//     background-size: 100% 100%, cover;
+//     background-position: center center;
+//     background-attachment: fixed;
+//     background-repeat: no-repeat, no-repeat;
+//     padding: 2rem;
+// }
+
+// Login section styles Start
+.loginSection {
+  position: relative;
+  background: url('/images/loginBgImg.png') no-repeat center center top;
+  background-size: contain;
 }
+
+.loginSection::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/images/footer-one-bg1.svg') no-repeat center bottom;
+  background-size: contain;
+  background-blend-mode: lighten;
+  opacity: 1;
+  z-index: 0;
+}
+
+.loginSection::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(217, 217, 217, 0) 0%, #FFE6BC 100%);
+  z-index: 0;
+}
+
+/* Ensure content is above the background layers */
+.loginSection > * {
+  position: relative;
+  z-index: 1;
+}
+
+// Login section styles End
