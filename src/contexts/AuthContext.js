@@ -67,8 +67,6 @@ export default function AuthProvider({ children }) {
 
   const login = async (username, password) => {
     try {
-      console.log('🔄 Attempting login for username:', username)
-
       // Use API helper for login (without auth token)
       const data = await apiPost(
         '/api/auth/login',
@@ -86,8 +84,8 @@ export default function AuthProvider({ children }) {
         // Store token (backend returns 'token', not 'accessToken')
         localStorage.setItem('accessToken', data.data.token)
 
-        // Set cookie for middleware
-        document.cookie = `accessToken=${data.data.token}; path=/; max-age=86400` // 24 hours
+        // Set cookie for middleware only 2 hours
+        document.cookie = `accessToken=${data.data.token}; path=/; max-age=7200` // 2 hours
 
         // Transform user data to match frontend expectations
         const transformedUser = {
@@ -99,12 +97,17 @@ export default function AuthProvider({ children }) {
           status: data.data.user.status === 1 ? 'active' : 'inactive',
           avatar: data.data.user.avatar || null
         }
-
         // Set user
         setUser(transformedUser)
 
         // Redirect to dashboard
-        router.push('/admin/dashboards/analytics')
+        if (transformedUser.userRole === 3) {
+          router.push('/offtaker/dashboards/analytics')
+        } else if (transformedUser.userRole === 4) {
+          router.push('/investor/dashboards/analytics')
+        } else {
+          router.push('/admin/dashboards/analytics')
+        }
 
         return { success: true, message: data.message }
       } else {
